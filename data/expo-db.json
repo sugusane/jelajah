@@ -1,0 +1,1124 @@
+{
+  "users": {
+    "test_user_1": {
+      "id": "test_user_1",
+      "name": "Budi Test",
+      "completedMissions": [
+        "spot-masuk-1",
+        "booth-makan-1",
+        "booth-sponsor-c",
+        "spot-stage"
+      ],
+      "earnedPoints": 85,
+      "spentPoints": 50,
+      "tickets": []
+    },
+    "user_raeqhl": {
+      "id": "user_raeqhl",
+      "name": "Penjelajah PMW",
+      "completedMissions": [
+        "booth-makan-7",
+        "booth-sponsor-a",
+        "booth-sponsor-c"
+      ],
+      "earnedPoints": 70,
+      "spentPoints": 50,
+      "tickets": []
+    },
+    "user_on9dm7": {
+      "id": "user_on9dm7",
+      "name": "Akmal",
+      "completedMissions": [
+        "spot-stage",
+        "booth-makan-1",
+        "spot-masuk-1",
+        "spot-masuk-2"
+      ],
+      "earnedPoints": 55,
+      "spentPoints": 75,
+      "tickets": []
+    },
+    "test-user-1788487927279": {
+      "id": "test-user-1788487927279",
+      "name": "Tester Yupi",
+      "completedMissions": [
+        "gate-masuk-1",
+        "booth-1",
+        "booth-c",
+        "stage-utama"
+      ],
+      "earnedPoints": 85,
+      "spentPoints": 50,
+      "tickets": []
+    },
+    "test_usr_1788501352316": {
+      "id": "test_usr_1788501352316",
+      "name": "Tester Anti-Cheat",
+      "completedMissions": [
+        "spot-masuk-1",
+        "booth-1",
+        "booth-a",
+        "spot-stage"
+      ],
+      "earnedPoints": 85,
+      "spentPoints": 35,
+      "tickets": []
+    },
+    "test_usr_1788501389503": {
+      "id": "test_usr_1788501389503",
+      "name": "Tester Anti-Cheat",
+      "completedMissions": [
+        "spot-masuk-1",
+        "booth-1",
+        "booth-a",
+        "spot-stage"
+      ],
+      "earnedPoints": 85,
+      "spentPoints": 35,
+      "tickets": []
+    },
+    "user_0v6t8k": {
+      "id": "user_0v6t8k",
+      "name": "Penjelajah PMW",
+      "completedMissions": [
+        "spot-masuk-1",
+        "booth-makan-1",
+        "booth-sponsor-c",
+        "spot-stage",
+        "booth-sponsor-a"
+      ],
+      "earnedPoints": 110,
+      "spentPoints": 85,
+      "tickets": [],
+      "deviceId": "dev_7p9r7brnmtmlu5ky"
+    },
+    "test_usr_1788502100385": {
+      "id": "test_usr_1788502100385",
+      "name": "Tester Anti-Cheat",
+      "completedMissions": [
+        "spot-masuk-1",
+        "booth-1",
+        "booth-a",
+        "spot-stage"
+      ],
+      "earnedPoints": 85,
+      "spentPoints": 35,
+      "tickets": []
+    },
+    "test_usr_1788503803937": {
+      "id": "test_usr_1788503803937",
+      "name": "Tester Anti-Cheat",
+      "completedMissions": [
+        "spot-masuk-1",
+        "booth-1",
+        "booth-a",
+        "spot-stage"
+      ],
+      "earnedPoints": 85,
+      "spentPoints": 35,
+      "tickets": []
+    },
+    "usr_b7b3ccc0": {
+      "id": "usr_b7b3ccc0",
+      "name": "Mahasiswa Juara",
+      "identifier": "NIM_1788504995950",
+      "passwordHash": "576e516a2285451bbe2ed244ea494a2b26e6875d986f97286ab6267ea4482302",
+      "deviceId": "dev_test_phone_1788504995950",
+      "deviceIds": [
+        "dev_test_phone_1788504995950"
+      ],
+      "completedMissions": [
+        "spot-masuk-1",
+        "spot-stage",
+        "booth-makan-1"
+      ],
+      "earnedPoints": 60,
+      "spentPoints": 50,
+      "tickets": [],
+      "createdAt": "2026-09-04T06:56:35.953Z"
+    },
+    "usr_fc8fb1bd": {
+      "id": "usr_fc8fb1bd",
+      "name": "Akun Nuyul Teman",
+      "identifier": "NIM_FAKE_1788504996014",
+      "passwordHash": "1c86e2b0f5470f835ad2494a145c4305cee8b58f74dc75361face119314b1c51",
+      "deviceId": "dev_test_phone_1788504995950",
+      "deviceIds": [
+        "dev_test_phone_1788504995950"
+      ],
+      "completedMissions": [
+        "spot-masuk-1",
+        "spot-stage",
+        "booth-makan-1"
+      ],
+      "earnedPoints": 60,
+      "spentPoints": 0,
+      "tickets": [],
+      "createdAt": "2026-09-04T06:56:36.016Z"
+    }
+  },
+  "tickets": {
+    "JLJ-BTTH": {
+      "token": "JLJ-BTTH",
+      "userId": "test_user_1",
+      "userName": "Budi Test",
+      "rewardId": "rw-voucher-3k",
+      "rewardName": "Voucher Diskon Rp 3.000 Kuliner",
+      "cost": 50,
+      "status": "DISBURSED",
+      "createdAt": "08.59",
+      "disbursedAt": "08.59"
+    },
+    "JLJ-0Y5C": {
+      "token": "JLJ-0Y5C",
+      "userId": "user_raeqhl",
+      "userName": "Penjelajah PMW",
+      "rewardId": "rw-voucher-3k",
+      "rewardName": "Voucher Diskon Rp 3.000 Kuliner",
+      "cost": 50,
+      "status": "PENDING",
+      "createdAt": "09.03",
+      "disbursedAt": null
+    },
+    "JLJ-7MA7": {
+      "token": "JLJ-7MA7",
+      "userId": "test-user-1788487927279",
+      "userName": "Tester Yupi",
+      "rewardId": "rw-voucher-3k",
+      "rewardName": "Voucher Diskon Rp 3.000 Kuliner",
+      "cost": 50,
+      "status": "DISBURSED",
+      "createdAt": "09.12",
+      "disbursedAt": "09.12"
+    },
+    "JLJ-D8QO": {
+      "token": "JLJ-D8QO",
+      "userId": "user_on9dm7",
+      "userName": "Akmal",
+      "rewardId": "rw-ganci",
+      "rewardName": "Gantungan Kunci Akrilik JELAJAH",
+      "cost": 75,
+      "status": "PENDING",
+      "createdAt": "09.13",
+      "disbursedAt": null
+    },
+    "JLJ-F92139": {
+      "token": "JLJ-F92139",
+      "userId": "test_usr_1788501352316",
+      "userName": "Tester Anti-Cheat",
+      "rewardId": "rw-sticker",
+      "rewardName": "Stiker Hologram JELAJAH Expo",
+      "cost": 35,
+      "status": "DISBURSED",
+      "createdAt": "12.55",
+      "disbursedAt": "12.55"
+    },
+    "JLJ-156D03": {
+      "token": "JLJ-156D03",
+      "userId": "test_usr_1788501389503",
+      "userName": "Tester Anti-Cheat",
+      "rewardId": "rw-sticker",
+      "rewardName": "Stiker Hologram JELAJAH Expo",
+      "cost": 35,
+      "status": "DISBURSED",
+      "createdAt": "12.56",
+      "disbursedAt": "12.56"
+    },
+    "JLJ-9BE827": {
+      "token": "JLJ-9BE827",
+      "userId": "test_usr_1788502100385",
+      "userName": "Tester Anti-Cheat",
+      "rewardId": "rw-sticker",
+      "rewardName": "Stiker Hologram JELAJAH Expo",
+      "cost": 35,
+      "status": "DISBURSED",
+      "createdAt": "13.08",
+      "disbursedAt": "13.08"
+    },
+    "JLJ-6BBE9A": {
+      "token": "JLJ-6BBE9A",
+      "userId": "test_usr_1788503803937",
+      "userName": "Tester Anti-Cheat",
+      "rewardId": "rw-sticker",
+      "rewardName": "Stiker Hologram JELAJAH Expo",
+      "cost": 35,
+      "status": "DISBURSED",
+      "createdAt": "13.36",
+      "disbursedAt": "13.36"
+    },
+    "JLJ-386D57": {
+      "token": "JLJ-386D57",
+      "userId": "user_0v6t8k",
+      "userName": "Penjelajah PMW",
+      "rewardId": "rw-sticker",
+      "rewardName": "Stiker Hologram JELAJAH Expo",
+      "cost": 35,
+      "status": "DISBURSED",
+      "createdAt": "13.38",
+      "disbursedAt": "13.39"
+    },
+    "JLJ-F29970": {
+      "token": "JLJ-F29970",
+      "userId": "user_0v6t8k",
+      "userName": "Penjelajah PMW",
+      "rewardId": "rw-voucher-3k",
+      "rewardName": "Voucher Diskon Rp 3.000 Kuliner",
+      "cost": 50,
+      "status": "DISBURSED",
+      "createdAt": "13.40",
+      "disbursedAt": "13.40"
+    },
+    "JLJ-8095B0": {
+      "token": "JLJ-8095B0",
+      "userId": "usr_b7b3ccc0",
+      "userName": "Mahasiswa Juara",
+      "userIdentifier": "NIM_1788504995950",
+      "rewardId": "rw-voucher-3k",
+      "rewardName": "Voucher Diskon Rp 3.000 Kuliner",
+      "cost": 50,
+      "deviceId": "dev_test_phone_1788504995950",
+      "status": "PENDING",
+      "createdAt": "13.56",
+      "disbursedAt": null
+    }
+  },
+  "rewards": [
+    {
+      "id": "rw-sticker",
+      "name": "Stiker Hologram JELAJAH Expo",
+      "cost": 35,
+      "stock": 10,
+      "sponsor": "Official JELAJAH"
+    },
+    {
+      "id": "rw-voucher-3k",
+      "name": "Voucher Diskon Rp 3.000 Kuliner",
+      "cost": 50,
+      "stock": 5,
+      "sponsor": "Sponsor UMKM Kampus"
+    },
+    {
+      "id": "rw-ganci",
+      "name": "Gantungan Kunci Akrilik JELAJAH",
+      "cost": 75,
+      "stock": 3,
+      "sponsor": "Official JELAJAH"
+    },
+    {
+      "id": "rw-voucher-5k",
+      "name": "Voucher Diskon Rp 5.000 Kuliner",
+      "cost": 90,
+      "stock": 2,
+      "sponsor": "Sponsor Kuliner Premium"
+    },
+    {
+      "id": "rw-totebag",
+      "name": "Totebag Kanvas Sponsor & Pin Enamel",
+      "cost": 140,
+      "stock": 2,
+      "sponsor": "Paragon & Telkomsel"
+    },
+    {
+      "id": "rw-grandprize",
+      "name": "Tiket Undian Grand Prize Panggung",
+      "cost": 180,
+      "stock": 1,
+      "sponsor": "BSI & Yamaha"
+    }
+  ],
+  "missions": [
+    {
+      "id": "spot-masuk-1",
+      "category": "special",
+      "zone": "Pintu Masuk Barat",
+      "name": "Gate Masuk 1 (Zona Kuliner)",
+      "shortLabel": "IN-1",
+      "boothType": "Spot Publik",
+      "type": "checkin",
+      "points": 15,
+      "icon": "🚪",
+      "isQuickRoute": true,
+      "coords": {
+        "x": 38.5,
+        "y": 78.5
+      },
+      "title": "Check-in Selamat Datang",
+      "desc": "Selamat datang di Expo PMW! Dapatkan poin perdanamu dengan melakukan check-in di pintu masuk 1.",
+      "task": {
+        "type": "instant",
+        "prompt": "Tekan tombol konfirmasi kehadiranmu di Gate Masuk 1.",
+        "btnText": "Konfirmasi Check-in Masuk"
+      }
+    },
+    {
+      "id": "spot-masuk-2",
+      "category": "special",
+      "zone": "Pintu Masuk Timur",
+      "name": "Gate Masuk 2 (Zona Sponsor)",
+      "shortLabel": "IN-2",
+      "boothType": "Spot Publik",
+      "type": "trivia",
+      "points": 15,
+      "icon": "🎯",
+      "coords": {
+        "x": 67.5,
+        "y": 78.5
+      },
+      "title": "Tebak Slogan Acara",
+      "desc": "Sebelum mulai berkeliling, uji pengetahuanmu tentang semangat expo hari ini!",
+      "task": {
+        "type": "quiz",
+        "question": "Apa tujuan utama diadakannya Expo Wirausaha Kampus?",
+        "options": [
+          "Membantu mahasiswa memasarkan inovasi & produk wirausaha",
+          "Hanya ajang berkumpul tanpa transaksi",
+          "Kompetisi tidur terlama di kampus",
+          "Menghabiskan anggaran tahunan"
+        ],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "spot-stage",
+      "category": "special",
+      "zone": "Stage Utama",
+      "name": "Panggung Utama PMW",
+      "shortLabel": "STAGE",
+      "boothType": "Panggung",
+      "type": "photo",
+      "points": 25,
+      "icon": "🎤",
+      "isQuickRoute": true,
+      "coords": {
+        "x": 8.5,
+        "y": 39
+      },
+      "title": "Selfie Semangat Panggung",
+      "desc": "Ambil foto selfie dengan latar belakang Stage Utama atau keseruan audiens panggung!",
+      "task": {
+        "type": "photo",
+        "prompt": "Unggah foto selfiemu dengan latar Stage Utama expo.",
+        "btnText": "Ambil / Unggah Foto"
+      }
+    },
+    {
+      "id": "spot-tengah",
+      "category": "special",
+      "zone": "Lorong Publik",
+      "name": "Plaza Foto Tengah",
+      "shortLabel": "FOTO",
+      "boothType": "Spot Publik",
+      "type": "trivia",
+      "points": 20,
+      "icon": "📸",
+      "coords": {
+        "x": 38.5,
+        "y": 36
+      },
+      "title": "Eksplorasi Koridor Tengah",
+      "desc": "Tahukah kamu inovasi apa yang paling diminati generasi muda saat ini di bidang wirausaha?",
+      "task": {
+        "type": "quiz",
+        "question": "Teknologi apa yang dimanfaatkan oleh JELAJAH untuk meramaikan expo ini?",
+        "options": [
+          "Gamifikasi Peta Interaktif & Web App Frictionless",
+          "Koran dinding manual",
+          "Surat berantai pos",
+          "Sinyal asap panggung"
+        ],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "booth-makan-1",
+      "category": "makanan",
+      "zone": "Klaster Makanan A",
+      "name": "Booth 1: Kopi Susu Aren Senja",
+      "shortLabel": "B1",
+      "boothNum": "1",
+      "boothType": "Kuliner",
+      "type": "quiz",
+      "points": 20,
+      "icon": "☕",
+      "isQuickRoute": true,
+      "coords": {
+        "x": 28.5,
+        "y": 11.5
+      },
+      "title": "Menu Andalan Booth 1",
+      "desc": "Kunjungi Booth 1 dan cari tahu racikan kopi favorit para mahasiswa!",
+      "secretCode": "KOPI01",
+      "task": {
+        "type": "quiz",
+        "question": "Apa biji kopi khas Jawa Timur yang menjadi dasar racikan Kopi Aren Senja di Booth 1?",
+        "options": [
+          "Robusta Dampit Malang",
+          "Kopi Instan Sachet",
+          "Biji Bunga Matahari",
+          "Kopi Decaf Import"
+        ],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "booth-makan-2",
+      "category": "makanan",
+      "zone": "Klaster Makanan A",
+      "name": "Booth 2: Dimsum Mentai Lumer",
+      "shortLabel": "B2",
+      "boothNum": "2",
+      "boothType": "Kuliner",
+      "type": "code",
+      "points": 20,
+      "icon": "🥟",
+      "coords": {
+        "x": 28.5,
+        "y": 19.5
+      },
+      "title": "Tanya Kode Rahasia Booth 2",
+      "desc": "Datang ke Booth 2, sapa penjaga booth dengan ramah, dan minta KODE RAHASIA JELAJAH di meja kasir!",
+      "secretCode": "DIMSUM2",
+      "task": {
+        "type": "secret_code",
+        "hint": "Tanyakan langsung ke kasir Booth 2 atau lihat stiker kode di meja kasir.",
+        "placeholder": "Contoh: DIMSUM2"
+      }
+    },
+    {
+      "id": "booth-makan-3",
+      "category": "makanan",
+      "zone": "Klaster Makanan A",
+      "name": "Booth 3: Rice Bowl Sambal Matah",
+      "shortLabel": "B3",
+      "boothNum": "3",
+      "boothType": "Kuliner",
+      "type": "quiz",
+      "points": 20,
+      "icon": "🍚",
+      "coords": {
+        "x": 28.5,
+        "y": 27.5
+      },
+      "title": "Sensasi Pedas Booth 3",
+      "desc": "Buktikan kecintaanmu pada masakan pedas Nusantara di booth wirausaha mahasiswa ini.",
+      "secretCode": "MATAH3",
+      "task": {
+        "type": "quiz",
+        "question": "Berapa level kepedasan tertinggi sambal matah yang ditawarkan Booth 3?",
+        "options": [
+          "Level 5 (Super Geledek)",
+          "Hanya ada level 0 (Manis)",
+          "Level 100",
+          "Level Tak Terhingga"
+        ],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "booth-makan-4",
+      "category": "makanan",
+      "zone": "Klaster Makanan A",
+      "name": "Booth 4: Churros & Croffle Garing",
+      "shortLabel": "B4",
+      "boothNum": "4",
+      "boothType": "Kuliner",
+      "type": "code",
+      "points": 20,
+      "icon": "🧇",
+      "coords": {
+        "x": 28.5,
+        "y": 44.5
+      },
+      "title": "Topping Favorit Booth 4",
+      "desc": "Cari tahu kode unik di display booth pastry favorit ini!",
+      "secretCode": "CROFFLE4",
+      "task": {
+        "type": "secret_code",
+        "hint": "Kode rahasia tertera di sebelah menu promo Booth 4.",
+        "placeholder": "Ketik kode di sini"
+      }
+    },
+    {
+      "id": "booth-makan-5",
+      "category": "makanan",
+      "zone": "Klaster Makanan A",
+      "name": "Booth 5: Es Teh Buah Tropis",
+      "shortLabel": "B5",
+      "boothNum": "5",
+      "boothType": "Kuliner",
+      "type": "quiz",
+      "points": 20,
+      "icon": "🍹",
+      "coords": {
+        "x": 28.5,
+        "y": 55.5
+      },
+      "title": "Kesegaran Booth 5",
+      "desc": "Pelepas dahaga paling dicari pengunjung expo saat cuaca terik!",
+      "secretCode": "ESTEH5",
+      "task": {
+        "type": "quiz",
+        "question": "Varian buah segar apa yang menjadi best seller di Booth 5?",
+        "options": [
+          "Peach Jasmine & Lemon Markisa",
+          "Durian Bakar",
+          "Pare Pahit",
+          "Bawang Bombay"
+        ],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "booth-makan-6",
+      "category": "makanan",
+      "zone": "Klaster Makanan A",
+      "name": "Booth 6: Burger Geprek Mozzarella",
+      "shortLabel": "B6",
+      "boothNum": "6",
+      "boothType": "Kuliner",
+      "type": "photo",
+      "points": 25,
+      "icon": "🍔",
+      "coords": {
+        "x": 28.5,
+        "y": 67.5
+      },
+      "title": "Foto Depan Booth 6",
+      "desc": "Ambil foto kreasi burger unik atau banner promo di Booth 6!",
+      "secretCode": "BURGER6",
+      "task": {
+        "type": "photo",
+        "prompt": "Upload foto keseruan di sekitar Booth 6 Burger Geprek.",
+        "btnText": "Ambil / Unggah Foto"
+      }
+    },
+    {
+      "id": "booth-makan-7",
+      "category": "makanan",
+      "zone": "Klaster Makanan B",
+      "name": "Booth 7: Takoyaki Gurita Jumbo",
+      "shortLabel": "B7",
+      "boothNum": "7",
+      "boothType": "Kuliner",
+      "type": "quiz",
+      "points": 20,
+      "icon": "🐙",
+      "coords": {
+        "x": 52.5,
+        "y": 11.5
+      },
+      "title": "Jajanan Khas Jepang Booth 7",
+      "desc": "Kelezatan potongan gurita asli dengan taburan katsuobushi melimpah.",
+      "secretCode": "TAKO07",
+      "task": {
+        "type": "quiz",
+        "question": "Bahan taburan gurih tipis di atas Takoyaki Booth 7 yang bergerak-gerak disebut?",
+        "options": [
+          "Katsuobushi (serpihan cakalang asap)",
+          "Kertas minyak halus",
+          "Keju parut basi",
+          "Daun kering taman"
+        ],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "booth-makan-8",
+      "category": "makanan",
+      "zone": "Klaster Makanan B",
+      "name": "Booth 8: Matcha Oat Latte Bar",
+      "shortLabel": "B8",
+      "boothNum": "8",
+      "boothType": "Kuliner",
+      "type": "code",
+      "points": 20,
+      "icon": "🍵",
+      "coords": {
+        "x": 52.5,
+        "y": 19.5
+      },
+      "title": "Kode Matcha Sehat Booth 8",
+      "desc": "Minuman sehat kekinian dengan susu oat plant-based berkualitas tinggi.",
+      "secretCode": "MATCHA8",
+      "task": {
+        "type": "secret_code",
+        "hint": "Mintalah kode rahasia kepada barista Booth 8!",
+        "placeholder": "Masukkan kode"
+      }
+    },
+    {
+      "id": "booth-makan-9",
+      "category": "makanan",
+      "zone": "Klaster Makanan B",
+      "name": "Booth 9: Cireng Bumbu Rujak Salju",
+      "shortLabel": "B9",
+      "boothNum": "9",
+      "boothType": "Kuliner",
+      "type": "quiz",
+      "points": 20,
+      "icon": "🌶️",
+      "coords": {
+        "x": 52.5,
+        "y": 27.5
+      },
+      "title": "Camilan Tradisional Modern",
+      "desc": "Tekstur kenyal renyah dengan cocolan sambal rujak gula aren pedas manis.",
+      "secretCode": "CIRENG9",
+      "task": {
+        "type": "quiz",
+        "question": "Bahan tepung utama pembuat cireng di Booth 9 adalah?",
+        "options": [
+          "Tepung Tapioka (Aci)",
+          "Tepung Beras Ketan Hitam",
+          "Tepung Semen",
+          "Tepung Jagung Manis"
+        ],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "booth-makan-10",
+      "category": "makanan",
+      "zone": "Klaster Makanan B",
+      "name": "Booth 10: Tteokbokki & Odeng Korea",
+      "shortLabel": "B10",
+      "boothNum": "10",
+      "boothType": "Kuliner",
+      "type": "code",
+      "points": 20,
+      "icon": "🍢",
+      "coords": {
+        "x": 52.5,
+        "y": 44.5
+      },
+      "title": "Street Food Seoul Booth 10",
+      "desc": "Nikmati hangatnya kuah kaldu odeng dan saus gochujang autentik.",
+      "secretCode": "KOREA10",
+      "task": {
+        "type": "secret_code",
+        "hint": "Lihat kode stiker JELAJAH di depan gerobak Booth 10.",
+        "placeholder": "Ketik kode rahasia"
+      }
+    },
+    {
+      "id": "booth-makan-11",
+      "category": "makanan",
+      "zone": "Klaster Makanan B",
+      "name": "Booth 11: Gelato Buah Lokal Segar",
+      "shortLabel": "B11",
+      "boothNum": "11",
+      "boothType": "Kuliner",
+      "type": "quiz",
+      "points": 20,
+      "icon": "🍨",
+      "coords": {
+        "x": 52.5,
+        "y": 55.5
+      },
+      "title": "Gelato Wirausaha Booth 11",
+      "desc": "Dibuat langsung dari buah-buahan segar petani lokal binaan kampus.",
+      "secretCode": "GELATO11",
+      "task": {
+        "type": "quiz",
+        "question": "Mengapa gelato lebih padat dan creamy dibanding es krim biasa?",
+        "options": [
+          "Kandungan lemak susu lebih seimbang dan udara yang masuk lebih sedikit",
+          "Ditambahkan lem makanan khusus",
+          "Dibekukan dengan nitrogen selama 1 tahun",
+          "Karena dibuat tanpa susu sama sekali"
+        ],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "booth-makan-12",
+      "category": "makanan",
+      "zone": "Klaster Makanan B",
+      "name": "Booth 12: Kebab Daging Asap Special",
+      "shortLabel": "B12",
+      "boothNum": "12",
+      "boothType": "Kuliner",
+      "type": "code",
+      "points": 20,
+      "icon": "🌯",
+      "coords": {
+        "x": 52.5,
+        "y": 67.5
+      },
+      "title": "Daging Asap Aromatik Booth 12",
+      "desc": "Daging asap lezat berpadu keju lumer dan saus racikan spesial.",
+      "secretCode": "KEBAB12",
+      "task": {
+        "type": "secret_code",
+        "hint": "Kunjungi Booth 12 dan temukan kode rahasia di tent card kasir.",
+        "placeholder": "Kode 7 huruf"
+      }
+    },
+    {
+      "id": "booth-sponsor-a",
+      "category": "sponsor",
+      "zone": "Deretan Mitra Sponsor",
+      "name": "Booth A: Bank Syariah Indonesia (BSI)",
+      "shortLabel": "A",
+      "boothLetter": "A",
+      "boothType": "Sponsor Utama",
+      "type": "quiz",
+      "points": 25,
+      "icon": "🏦",
+      "coords": {
+        "x": 74.5,
+        "y": 9.5
+      },
+      "title": "Solusi Finansial Mahasiswa",
+      "desc": "Kenali kemudahan transaksi digital kampus dan pembukaan rekening online.",
+      "secretCode": "BSI2026",
+      "task": {
+        "type": "quiz",
+        "question": "Aplikasi mobile banking resmi dari BSI untuk kemudahan transaksi QRIS adalah?",
+        "options": [
+          "BSI Mobile / BYOND by BSI",
+          "Game Mobile Legends",
+          "Aplikasi Tiket Bioskop",
+          "Kalkulator Biasa"
+        ],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "booth-sponsor-b",
+      "category": "sponsor",
+      "zone": "Deretan Mitra Sponsor",
+      "name": "Booth B: Telkomsel Digital Ecosystem",
+      "shortLabel": "B",
+      "boothLetter": "B",
+      "boothType": "Sponsor Teknologi",
+      "type": "code",
+      "points": 25,
+      "icon": "📶",
+      "coords": {
+        "x": 74.5,
+        "y": 15
+      },
+      "title": "Koneksi 5G & Promo Kuota",
+      "desc": "Kunjungi booth Telkomsel, tanyakan paket kuota khusus mahasiswa untuk dapatkan kodenya!",
+      "secretCode": "BYU2026",
+      "task": {
+        "type": "secret_code",
+        "hint": "Dapatkan kode rahasia langsung dari kru Telkomsel di Booth B.",
+        "placeholder": "Ketik kode di sini"
+      }
+    },
+    {
+      "id": "booth-sponsor-c",
+      "category": "sponsor",
+      "zone": "Deretan Mitra Sponsor",
+      "name": "Booth C: Paragon Corp (Wardah & Kahf)",
+      "shortLabel": "C",
+      "boothLetter": "C",
+      "boothType": "Sponsor Beauty & Grooming",
+      "type": "quiz",
+      "points": 25,
+      "icon": "✨",
+      "isQuickRoute": true,
+      "coords": {
+        "x": 74.5,
+        "y": 20.5
+      },
+      "title": "Skin Check & Edukasi Perawatan",
+      "desc": "Konsultasi kesehatan kulit gratis dan diskon produk perawatan harian.",
+      "secretCode": "KAHF26",
+      "task": {
+        "type": "quiz",
+        "question": "Brand perawatan diri pria dari Paragon yang terkenal dengan aroma alami adalah?",
+        "options": [
+          "Kahf",
+          "Pasta Gigi Anak",
+          "Oli Mesin",
+          "Cat Minyak"
+        ],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "booth-sponsor-d",
+      "category": "sponsor",
+      "zone": "Deretan Mitra Sponsor",
+      "name": "Booth D: Ruangguru & Skill Academy",
+      "shortLabel": "D",
+      "boothLetter": "D",
+      "boothType": "Sponsor Pendidikan",
+      "type": "code",
+      "points": 25,
+      "icon": "📚",
+      "coords": {
+        "x": 74.5,
+        "y": 26
+      },
+      "title": "Klaim Tes Minat Karir",
+      "desc": "Ikuti tes bakat singkat di Booth D dan catat kode voucher belajar gratis!",
+      "secretCode": "PINTAR26",
+      "task": {
+        "type": "secret_code",
+        "hint": "Kode diberikan setelah mencoba mini assessment di tablet Booth D.",
+        "placeholder": "Kode promo Booth D"
+      }
+    },
+    {
+      "id": "booth-sponsor-e",
+      "category": "sponsor",
+      "zone": "Deretan Mitra Sponsor",
+      "name": "Booth E: E-Commerce & Logistic Partner (J&T)",
+      "shortLabel": "E",
+      "boothLetter": "E",
+      "boothType": "Sponsor Logistik",
+      "type": "quiz",
+      "points": 25,
+      "icon": "📦",
+      "coords": {
+        "x": 74.5,
+        "y": 31.5
+      },
+      "title": "Ekspedisi Bisnis Mahasiswa",
+      "desc": "Dukung pengiriman produk wirausaha kampus ke seluruh penjuru Nusantara.",
+      "secretCode": "KIRIM26",
+      "task": {
+        "type": "quiz",
+        "question": "Keunggulan layanan jemput paket (pick up) gratis bagi wirausahawan adalah?",
+        "options": [
+          "Menghemat waktu tanpa harus mengantre di counter kurir",
+          "Paket otomatis lenyap ke udara",
+          "Harus bayar ongkos jalan kaki",
+          "Hanya bisa kirim surat cinta"
+        ],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "booth-sponsor-f",
+      "category": "sponsor",
+      "zone": "Deretan Mitra Sponsor",
+      "name": "Booth F: Hydro Coco & Kalbe Nutrition",
+      "shortLabel": "F",
+      "boothLetter": "F",
+      "boothType": "Sponsor Minuman Sehat",
+      "type": "code",
+      "points": 25,
+      "icon": "🥥",
+      "coords": {
+        "x": 74.5,
+        "y": 37
+      },
+      "title": "Uji Elektrolit Tubuhmu",
+      "desc": "Cicipi hidrasi alami air kelapa murni dan ambil kode rahasianya.",
+      "secretCode": "SEHAT26",
+      "task": {
+        "type": "secret_code",
+        "hint": "Kode rahasia ada di kemasan dummy raksasa Hydro Coco Booth F.",
+        "placeholder": "Masukkan kode"
+      }
+    },
+    {
+      "id": "booth-sponsor-g",
+      "category": "sponsor",
+      "zone": "Deretan Mitra Sponsor",
+      "name": "Booth G: Startup Incubator & Coworking",
+      "shortLabel": "G",
+      "boothLetter": "G",
+      "boothType": "Sponsor Startup",
+      "type": "quiz",
+      "points": 25,
+      "icon": "💡",
+      "coords": {
+        "x": 74.5,
+        "y": 42.5
+      },
+      "title": "Akselerasi Ide Bisnis",
+      "desc": "Dapatkan kesempatan mentoring dan pendanaan hibah wirausaha.",
+      "secretCode": "PITCH26",
+      "task": {
+        "type": "quiz",
+        "question": "Apa arti istilah MVP dalam pengembangan produk teknologi baru?",
+        "options": [
+          "Minimum Viable Product (Produk versi awal berfitur inti)",
+          "Most Valuable Player dalam game MOBA",
+          "Makan Video Podcast",
+          "Mobil Van Pribadi"
+        ],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "booth-sponsor-h",
+      "category": "sponsor",
+      "zone": "Deretan Mitra Sponsor",
+      "name": "Booth H: Yamaha Motor Indonesia",
+      "shortLabel": "H",
+      "boothLetter": "H",
+      "boothType": "Sponsor Otomotif",
+      "type": "photo",
+      "points": 30,
+      "icon": "🏍️",
+      "coords": {
+        "x": 74.5,
+        "y": 48
+      },
+      "title": "Foto Keren Bersama Motor Sport",
+      "desc": "Pose keren di booth display motor Yamaha dan upload fotomu!",
+      "secretCode": "YAMAHA26",
+      "task": {
+        "type": "photo",
+        "prompt": "Upload fotomu bersama unit motor yang dipajang di Booth H.",
+        "btnText": "Ambil / Unggah Foto"
+      }
+    },
+    {
+      "id": "booth-sponsor-i",
+      "category": "sponsor",
+      "zone": "Deretan Mitra Sponsor",
+      "name": "Booth I: Gramedia Bookstore & Merch",
+      "shortLabel": "I",
+      "boothLetter": "I",
+      "boothType": "Sponsor Literasi",
+      "type": "quiz",
+      "points": 25,
+      "icon": "📖",
+      "coords": {
+        "x": 74.5,
+        "y": 53.5
+      },
+      "title": "Kuis Wawasan Buku Bisnis",
+      "desc": "Temukan koleksi buku best-seller wirausaha dengan diskon spesial expo.",
+      "secretCode": "BUKU26",
+      "task": {
+        "type": "quiz",
+        "question": "Penulis buku bisnis legendaris 'Rich Dad Poor Dad' adalah?",
+        "options": [
+          "Robert T. Kiyosaki",
+          "Sherlock Holmes",
+          "Harry Potter",
+          "Tony Stark"
+        ],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "booth-sponsor-j",
+      "category": "sponsor",
+      "zone": "Deretan Mitra Sponsor",
+      "name": "Booth J: Kopi Kenangan & Chigo",
+      "shortLabel": "J",
+      "boothLetter": "J",
+      "boothType": "Sponsor F&B Chain",
+      "type": "code",
+      "points": 25,
+      "icon": "🍗",
+      "coords": {
+        "x": 74.5,
+        "y": 59
+      },
+      "title": "Voucher Diskon Grab-and-Go",
+      "desc": "Scan QR di Booth J untuk aktivasi promo Buy 1 Get 1 di aplikasi!",
+      "secretCode": "KENANGAN26",
+      "task": {
+        "type": "secret_code",
+        "hint": "Minta kode promo ke staf kasir Booth J.",
+        "placeholder": "Kode rahasia Booth J"
+      }
+    },
+    {
+      "id": "booth-sponsor-k",
+      "category": "sponsor",
+      "zone": "Deretan Mitra Sponsor",
+      "name": "Booth K: Emina Cosmetics Glow Spot",
+      "shortLabel": "K",
+      "boothLetter": "K",
+      "boothType": "Sponsor Kecantikan Remaja",
+      "type": "quiz",
+      "points": 25,
+      "icon": "🌸",
+      "coords": {
+        "x": 74.5,
+        "y": 64.5
+      },
+      "title": "Sunscreen Protection Quiz",
+      "desc": "Cek pentingnya perlindungan kulit dari paparan sinar UV matahari saat beraktivitas.",
+      "secretCode": "GLOW26",
+      "task": {
+        "type": "quiz",
+        "question": "Berapa jam sekali sunscreen sebaiknya di-reapply saat berada di luar ruangan?",
+        "options": [
+          "Setiap 2 - 3 jam sekali",
+          "Cukup 1 kali setahun",
+          "Hanya saat malam hari",
+          "Tidak perlu diulang sama sekali"
+        ],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "booth-sponsor-l",
+      "category": "sponsor",
+      "zone": "Deretan Mitra Sponsor",
+      "name": "Booth L: Cinema XXI & M-Tix",
+      "shortLabel": "L",
+      "boothLetter": "L",
+      "boothType": "Sponsor Hiburan",
+      "type": "code",
+      "points": 25,
+      "icon": "🍿",
+      "coords": {
+        "x": 74.5,
+        "y": 70
+      },
+      "title": "Tebak Film & Kode Popcorn",
+      "desc": "Mainkan mini game tebak poster film di tablet Booth L!",
+      "secretCode": "NONTON26",
+      "task": {
+        "type": "secret_code",
+        "hint": "Ketik kode kupon popcorn yang dibagikan kru XXI di Booth L.",
+        "placeholder": "Kode 8 karakter"
+      }
+    },
+    {
+      "id": "booth-sponsor-m",
+      "category": "sponsor",
+      "zone": "Deretan Mitra Sponsor",
+      "name": "Booth M: Tokopedia by TikTok Shop",
+      "shortLabel": "M",
+      "boothLetter": "M",
+      "boothType": "Sponsor E-Commerce",
+      "type": "quiz",
+      "points": 25,
+      "icon": "🛍️",
+      "coords": {
+        "x": 74.5,
+        "y": 75.5
+      },
+      "title": "Live Shopping Experience",
+      "desc": "Pelajari cara berwirausaha dengan teknik live streaming interaktif kekinian.",
+      "secretCode": "SHOP26",
+      "task": {
+        "type": "quiz",
+        "question": "Fitur yang memungkinkan audiens membeli barang langsung saat creator live streaming dinamakan?",
+        "options": [
+          "Live Shopping Cart / Keranjang Kuning",
+          "Kotak Pos Kayu",
+          "Faksimili Kilat",
+          "Telepon Umum Koin"
+        ],
+        "answerIndex": 0
+      }
+    }
+  ],
+  "devices": {
+    "dev_test_phone_1788504995950": {
+      "claimedRewards": {
+        "rw-voucher-3k": "JLJ-8095B0"
+      },
+      "users": [
+        "usr_b7b3ccc0",
+        "usr_fc8fb1bd"
+      ]
+    }
+  }
+}

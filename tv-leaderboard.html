@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JELAJAH Live Leaderboard — Monitor TV Booth</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --forest: #0B2418;
+      --forest-card: #133927;
+      --gold: #F0A93E;
+      --gold-deep: #C9821F;
+      --teal: #2B8C82;
+      --white: #FFFFFF;
+      --paper: #F6F2E6;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: radial-gradient(120% 120% at 50% 10%, #164630 0%, var(--forest) 80%);
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* TOP HEADER */
+    header {
+      padding: 18px 36px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid rgba(240, 169, 62, 0.35);
+      background: rgba(11, 36, 24, 0.6);
+      backdrop-filter: blur(10px);
+    }
+
+    .brand-box {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-icon {
+      width: 46px;
+      height: 46px;
+      background: var(--gold);
+      color: #0B2418;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Fredoka';
+      font-weight: 700;
+      font-size: 26px;
+      box-shadow: 0 4px 12px rgba(240, 169, 62, 0.4);
+    }
+
+    .brand-text h1 {
+      font-family: 'Fredoka';
+      font-size: 28px;
+      letter-spacing: 1px;
+      color: var(--white);
+    }
+
+    .brand-text p {
+      font-size: 13px;
+      color: var(--gold);
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .header-stats {
+      display: flex;
+      gap: 24px;
+    }
+
+    .stat-badge {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 8px 18px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+    }
+
+    .stat-badge strong {
+      color: var(--gold);
+      font-family: 'Fredoka';
+      font-size: 18px;
+    }
+
+    /* MAIN TV SPLIT */
+    .tv-grid {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      padding: 24px 36px;
+      gap: 32px;
+      align-items: stretch;
+    }
+
+    /* LEFT: PODIUM & TOP LEADERBOARD */
+    .board-card {
+      background: rgba(19, 57, 39, 0.65);
+      border: 1.5px solid rgba(255, 255, 255, 0.12);
+      border-radius: 24px;
+      padding: 24px 28px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+      backdrop-filter: blur(8px);
+    }
+
+    .board-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .board-title-row h2 {
+      font-family: 'Fredoka';
+      font-size: 26px;
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .live-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(222, 93, 78, 0.2);
+      border: 1px solid #DE5D4E;
+      color: #FF8A80;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      background: #FF5252;
+      border-radius: 50%;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.8); opacity: 0.7; }
+      50% { transform: scale(1.3); opacity: 1; }
+      100% { transform: scale(0.8); opacity: 0.7; }
+    }
+
+    /* TV PODIUM */
+    .tv-podium {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 18px;
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .podium-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+      max-width: 140px;
+    }
+
+    .podium-box.rank-1 {
+      order: 2;
+    }
+
+    .podium-box.rank-2 {
+      order: 1;
+    }
+
+    .podium-box.rank-3 {
+      order: 3;
+    }
+
+    .tv-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.15);
+      border: 3px solid var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      margin-bottom: 8px;
+      position: relative;
+    }
+
+    .rank-1 .tv-avatar {
+      width: 76px;
+      height: 76px;
+      border-color: var(--gold);
+      font-size: 34px;
+      box-shadow: 0 0 25px rgba(240, 169, 62, 0.5);
+    }
+
+    .tv-pod-name {
+      font-weight: 700;
+      font-size: 15px;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 130px;
+    }
+
+    .tv-pod-pts {
+      font-family: 'Fredoka';
+      color: var(--gold);
+      font-size: 16px;
+      font-weight: 700;
+      margin-top: 2px;
+    }
+
+    .tv-pod-base {
+      width: 100%;
+      border-radius: 12px 12px 0 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Fredoka';
+      font-weight: 700;
+      margin-top: 8px;
+    }
+
+    .rank-1 .tv-pod-base {
+      height: 80px;
+      background: linear-gradient(180deg, var(--gold) 0%, var(--gold-deep) 100%);
+      color: #0B2418;
+      font-size: 28px;
+    }
+
+    .rank-2 .tv-pod-base {
+      height: 55px;
+      background: #C4C4C4;
+      color: #222;
+      font-size: 22px;
+    }
+
+    .rank-3 .tv-pod-base {
+      height: 40px;
+      background: #CD7F32;
+      color: #FFF;
+      font-size: 20px;
+    }
+
+    /* TV RANK TABLE */
+    .tv-list {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      overflow: hidden;
+    }
+
+    .tv-row {
+      display: flex;
+      align-items: center;
+      padding: 10px 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      gap: 16px;
+      transition: background 0.3s ease;
+    }
+
+    .tv-rank {
+      font-family: 'Fredoka';
+      font-size: 18px;
+      font-weight: 700;
+      width: 32px;
+      color: var(--gold);
+    }
+
+    .tv-name {
+      flex: 1;
+      font-weight: 600;
+      font-size: 15.5px;
+    }
+
+    .tv-badge {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.6);
+      background: rgba(255, 255, 255, 0.08);
+      padding: 3px 10px;
+      border-radius: 999px;
+    }
+
+    .tv-pts {
+      font-family: 'Fredoka';
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--gold);
+    }
+
+    /* RIGHT: CALL TO ACTION & QR DISPLAY */
+    .promo-card {
+      background: linear-gradient(160deg, #FAF3E0 0%, #F5E9CE 100%);
+      border-radius: 24px;
+      padding: 32px;
+      color: #0B2418;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      justify-content: space-between;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+    }
+
+    .promo-header h3 {
+      font-family: 'Fredoka';
+      font-size: 28px;
+      color: #0B2418;
+      line-height: 1.2;
+    }
+
+    .promo-header p {
+      font-size: 15px;
+      color: #4A564F;
+      margin-top: 8px;
+      max-width: 320px;
+    }
+
+    .tv-qr-box {
+      background: #FFFFFF;
+      padding: 20px;
+      border-radius: 24px;
+      box-shadow: 0 12px 30px rgba(11, 36, 24, 0.15);
+      margin: 20px 0;
+      border: 3px solid var(--gold);
+    }
+
+    .tv-qr-box svg {
+      display: block;
+    }
+
+    .promo-footer {
+      width: 100%;
+    }
+
+    .url-pill {
+      background: #0B2418;
+      color: var(--gold);
+      font-family: 'Fredoka';
+      font-weight: 700;
+      font-size: 20px;
+      padding: 12px 24px;
+      border-radius: 999px;
+      display: inline-block;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 12px rgba(11, 36, 24, 0.3);
+    }
+
+    /* LIVE ACTIVITY TICKER AT BOTTOM */
+    footer {
+      background: rgba(11, 36, 24, 0.9);
+      border-top: 2px solid rgba(240, 169, 62, 0.4);
+      padding: 12px 36px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .ticker-tag {
+      background: var(--gold);
+      color: #0B2418;
+      font-family: 'Fredoka';
+      font-weight: 700;
+      font-size: 13px;
+      padding: 4px 12px;
+      border-radius: 6px;
+      flex: none;
+    }
+
+    .ticker-content {
+      font-size: 14.5px;
+      color: rgba(255, 255, 255, 0.9);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP HEADER -->
+  <header>
+    <div class="brand-box">
+      <div class="brand-icon" style="background:var(--gold); border:2px solid #FFF; width:48px; height:48px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:26px;">
+        🏆
+      </div>
+      <div class="brand-text">
+        <h1>JELAJAH LIVE DISPLAY</h1>
+        <p>EXPO WIRAUSAHA PMW 2026 · UPN "VETERAN" JAWA TIMUR</p>
+      </div>
+    </div>
+    <div class="header-stats">
+      <div class="stat-badge">
+        <span>👥 Total Penjelajah:</span>
+        <strong id="statVisitors">148 Orang</strong>
+      </div>
+      <div class="stat-badge">
+        <span>⭐ Poin Terkumpul:</span>
+        <strong id="statPoints">9.420 pts</strong>
+      </div>
+      <div class="stat-badge">
+        <span>🎁 Hadiah Ditukar:</span>
+        <strong id="statRewards">54 Voucher</strong>
+      </div>
+    </div>
+  </header>
+
+  <!-- TV MAIN GRID -->
+  <main class="tv-grid">
+    <!-- LEFT: PODIUM & TOP 10 LIST -->
+    <div class="board-card">
+      <div class="board-title-row">
+        <h2>🏆 Leaderboard Penjelajah Expo</h2>
+        <div class="live-indicator">
+          <div class="live-dot"></div>
+          <span>UPDATE REAL-TIME</span>
+        </div>
+      </div>
+
+      <!-- PODIUM -->
+      <div class="tv-podium">
+        <!-- 2nd Place -->
+        <div class="podium-box rank-2">
+          <div class="tv-avatar">🥈</div>
+          <div class="tv-pod-name" id="tv2Name">Nadia Safitri</div>
+          <div class="tv-pod-pts" id="tv2Pts">240 pts</div>
+          <div class="tv-pod-base">2</div>
+        </div>
+        <!-- 1st Place -->
+        <div class="podium-box rank-1">
+          <div class="tv-avatar">🥇</div>
+          <div class="tv-pod-name" id="tv1Name">Fathur Rahman</div>
+          <div class="tv-pod-pts" id="tv1Pts">265 pts</div>
+          <div class="tv-pod-base">1</div>
+        </div>
+        <!-- 3rd Place -->
+        <div class="podium-box rank-3">
+          <div class="tv-avatar">🥉</div>
+          <div class="tv-pod-name" id="tv3Name">Dimas Arya</div>
+          <div class="tv-pod-pts" id="tv3Pts">215 pts</div>
+          <div class="tv-pod-base">3</div>
+        </div>
+      </div>
+
+      <!-- LIST RANK 4 - 8 -->
+      <div class="tv-list" id="tvLeaderList">
+        <!-- Generated by JS -->
+      </div>
+    </div>
+
+    <!-- RIGHT: SCAN QR CODE TO JOIN -->
+    <div class="promo-card">
+      <div class="promo-header">
+        <h3>Mau Dapatkan Hadiah &amp; Masuk Papan Skor?</h3>
+        <p>Arahkan kamera HP ke QR code di bawah untuk membuka peta interaktif tanpa instal aplikasi!</p>
+      </div>
+
+      <div class="tv-qr-box" id="tvQrHolder">
+        <!-- QR Code rendered via JS -->
+      </div>
+
+      <div class="promo-footer">
+        <p style="font-size:13px; font-weight:600; color:#55665D; margin-bottom:8px;">Buka langsung di browser HP:</p>
+        <div class="url-pill">jelajah.tech</div>
+      </div>
+    </div>
+  </main>
+
+  <!-- LIVE ACTIVITY TICKER FOOTER -->
+  <footer>
+    <div class="ticker-tag">⚡ AKTIVITAS TERBARU</div>
+    <div class="ticker-content" id="liveTickerText">
+      🎉 Pengunjung @Rani baru saja menyelesaikan kuis di Booth Sponsor D (+25 pts)!
+    </div>
+  </footer>
+
+  <script src="js/map-data.js"></script>
+  <script src="js/qrcode.min.js"></script>
+  <script>
+    // Render Real Scannable QR Code
+    async function initTVQRCode() {
+      let targetUrl = "https://jelajah.tech";
+      try {
+        const res = await fetch('/api/info');
+        if (res.ok) {
+          const info = await res.json();
+          if (info.primaryIP && info.primaryIP !== 'localhost') {
+            targetUrl = `http://${info.primaryIP}:${info.port || 3000}`;
+          }
+        }
+      } catch(e) {}
+
+      const holder = document.getElementById('tvQrHolder');
+      if (holder && window.QRCode) {
+        holder.innerHTML = '';
+        new window.QRCode(holder, {
+          text: targetUrl,
+          width: 210,
+          height: 210,
+          colorDark: '#0B2418',
+          colorLight: '#ffffff',
+          correctLevel: window.QRCode.CorrectLevel.M
+        });
+      }
+    }
+    initTVQRCode();
+
+    // Dynamic Live Ticker Feeds
+    const activities = [
+      "🎉 Pengunjung @Rani baru saja menyelesaikan kuis di Booth Sponsor D (+25 pts)!",
+      "🥟 Pengunjung @Aldo berhasil menembus kode rahasia di Booth 2 Dimsum Mentai (+20 pts)!",
+      "🎟️ Pengunjung @Siti menukarkan Voucher Diskon Kuliner Rp 5.000!",
+      "📸 Pengunjung @Budi mengunggah selfie keren di Panggung Utama (+25 pts)!",
+      "☕ Pengunjung @Nabila mencicipi Kopi Susu Senja di Booth 1 (+20 pts)!",
+      "✨ Pengunjung @Dimas mengklaim Gantungan Kunci Akrilik JELAJAH!"
+    ];
+
+    let tickerIdx = 0;
+    const tickerEl = document.getElementById('liveTickerText');
+    setInterval(() => {
+      tickerIdx = (tickerIdx + 1) % activities.length;
+      tickerEl.style.opacity = 0;
+      setTimeout(() => {
+        tickerEl.textContent = activities[tickerIdx];
+        tickerEl.style.opacity = 1;
+      }, 300);
+    }, 4500);
+
+    // Sync leaderboard with local storage if user played on this browser
+    function updateLeaderboard() {
+      const data = window.JELAJAH_DATA.initialLeaderboard;
+      const savedUser = localStorage.getItem('jelajah_user');
+      let list = [...data];
+      if (savedUser) {
+        try {
+          const u = JSON.parse(savedUser);
+          if (u.earnedPoints > 0) {
+            list.push({
+              rank: 99,
+              name: u.name,
+              score: u.earnedPoints,
+              completed: u.completedMissions.length,
+              badge: "Live Participant"
+            });
+          }
+        } catch(e) {}
+      }
+
+      list.sort((a, b) => b.score - a.score);
+      list.forEach((p, idx) => p.rank = idx + 1);
+
+      if (list[0]) { document.getElementById('tv1Name').textContent = list[0].name; document.getElementById('tv1Pts').textContent = list[0].score + ' pts'; }
+      if (list[1]) { document.getElementById('tv2Name').textContent = list[1].name; document.getElementById('tv2Pts').textContent = list[1].score + ' pts'; }
+      if (list[2]) { document.getElementById('tv3Name').textContent = list[2].name; document.getElementById('tv3Pts').textContent = list[2].score + ' pts'; }
+
+      const container = document.getElementById('tvLeaderList');
+      container.innerHTML = '';
+      list.slice(3, 8).forEach(item => {
+        const row = document.createElement('div');
+        row.className = 'tv-row';
+        row.innerHTML = `
+          <div class="tv-rank">#${item.rank}</div>
+          <div class="tv-name">${item.name}</div>
+          <div class="tv-badge">${item.completed} titik · ${item.badge}</div>
+          <div class="tv-pts">${item.score} pts</div>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    updateLeaderboard();
+    setInterval(updateLeaderboard, 5000);
+  </script>
+</body>
+</html>

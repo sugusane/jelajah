@@ -1,0 +1,12 @@
+{
+  "name": "jelajah-tech",
+  "version": "1.0.0",
+  "description": "JELAJAH (jelajah.tech) — Gamifikasi Expo & Peta Interaktif PMW",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": ["expo", "gamification", "smart-tourism", "jelajah"],
+  "author": "JELAJAH Team",
+  "license": "ISC"
+}
