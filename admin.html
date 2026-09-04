@@ -710,6 +710,15 @@
     <button class="admin-tab-btn" id="tabBtnMissions">
       <span>🎯</span> Kelola Misi &amp; Tantangan (Challenge Builder)
     </button>
+    <button class="admin-tab-btn" id="tabBtnRewards">
+      <span>🎁</span> Kelola Hadiah (CRUD)
+    </button>
+    <button class="admin-tab-btn" id="tabBtnPhotoAudit">
+      <span>📸</span> Audit Foto Pengunjung
+    </button>
+    <button class="admin-tab-btn" id="tabBtnUsers">
+      <span>👥</span> Kelola Akun Pengunjung
+    </button>
   </div>
 
   <!-- SECTION 1: VALIDASI TIKET & INVENTORY HADIAH -->
@@ -765,9 +774,12 @@
       <div>
         <div class="admin-panel-card">
           <div class="panel-card-title">
-            <span>📷 Scanner Webcam Laptop</span>
-            <span style="font-size:12px; color:var(--ink-muted); font-weight:normal;">Bisa gunakan webcam laptop</span>
+            <span>🎁 Scanner Validasi Voucher Hadiah</span>
+            <span style="font-size:12px; color:#1B5E20; font-weight:700; background:#E8F5E9; padding:2px 8px; border-radius:6px;">Bukan Tiket Masuk Expo</span>
           </div>
+          <p style="font-size:12.5px; color:var(--ink-muted); margin-bottom:12px; line-height:1.4;">
+            Arahkan kamera webcam laptop ke <strong>layar HP pengunjung yang menampilkan QR Voucher Hadiah</strong> saat mereka menukarkan merchandise / voucher kuliner di Meja Panitia.
+          </p>
 
           <div class="scanner-box-wrapper">
             <video id="webcamVideo" autoplay playsinline muted></video>
@@ -785,11 +797,11 @@
           <!-- MANUAL CODE INPUT ALTERNATIVE -->
           <div style="margin-top:16px; padding-top:14px; border-top:1px solid var(--line);">
             <label style="font-size:12.5px; font-weight:700; color:var(--forest); display:block; margin-bottom:4px;">
-              ATAU KETIK KODE TIKET PENGUNJUNG (4 - 8 Karakter):
+              ATAU KETIK KODE VOUCHER HADIAH (Contoh: JLJ-9824):
             </label>
             <div class="manual-code-bar">
               <input type="text" id="manualTicketInput" class="manual-code-input" placeholder="Contoh: JLJ-9824" maxlength="12" />
-              <button class="btn-verify-manual" id="btnCheckManual">Periksa Tiket</button>
+              <button class="btn-verify-manual" id="btnCheckManual">Periksa Voucher</button>
             </div>
           </div>
 
@@ -918,6 +930,108 @@
     </div>
   </div>
 
+</div>
+
+<!-- SECTION 3: KELOLA HADIAH (CRUD) -->
+<div id="sectionRewards" style="display:none; padding:20px;">
+  <div class="admin-panel-card">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+      <div>
+        <h3 style="font-family:'Fredoka'; font-size:20px; color:var(--forest); margin:0;">🎁 Kelola Hadiah & Voucher (Full CRUD)</h3>
+        <p style="font-size:12.5px; color:var(--ink-muted); margin-top:3px;">Tambah, ubah nama/biaya/stok, atau hapus hadiah yang tersedia untuk pengunjung.</p>
+      </div>
+      <button id="btnAddNewReward" style="background:var(--yupi-green); color:#FFF; font-family:'Fredoka'; font-size:14px; font-weight:700; padding:10px 18px; border-radius:10px; border:none; cursor:pointer; box-shadow:0 3px 0 var(--yupi-green-deep);">
+        ➕ Tambah Hadiah Baru
+      </button>
+    </div>
+    <div id="rewardsCrudList" style="display:flex; flex-direction:column; gap:12px;">
+      <!-- Rendered via JS -->
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 4: AUDIT FOTO PENGUNJUNG -->
+<div id="sectionPhotoAudit" style="display:none; padding:20px;">
+  <div class="admin-panel-card">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+      <div>
+        <h3 style="font-family:'Fredoka'; font-size:20px; color:var(--forest); margin:0;">📸 Audit Foto Pengunjung</h3>
+        <p style="font-size:12.5px; color:var(--ink-muted); margin-top:3px;">Tinjau foto yang dikirim pengunjung untuk misi foto. Setujui atau tolak (poin dicabut jika ditolak).</p>
+      </div>
+      <button id="btnRefreshPhotos" style="background:#EDE8DF; color:#5D3B0A; font-family:'Fredoka'; font-size:13px; font-weight:700; padding:10px 16px; border-radius:10px; border:1px solid #D6CDBF; cursor:pointer;">
+        🔄 Refresh Data
+      </button>
+    </div>
+    <div id="photoAuditList" style="display:flex; flex-direction:column; gap:12px;">
+      <p style="font-size:13px; color:var(--ink-muted); text-align:center; padding:20px;">Klik "Refresh Data" untuk memuat antrian foto pengunjung.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 5: KELOLA AKUN PENGUNJUNG -->
+<div id="sectionUsers" style="display:none; padding:20px;">
+  <div class="admin-panel-card">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:10px;">
+      <div>
+        <h3 style="font-family:'Fredoka'; font-size:20px; color:var(--forest); margin:0;">👥 Kelola Akun Pengunjung</h3>
+        <p style="font-size:12.5px; color:var(--ink-muted); margin-top:3px;">Cari pengunjung, reset password, sesuaikan poin, atau hapus akun bermasalah.</p>
+      </div>
+      <div style="display:flex; gap:8px; align-items:center;">
+        <input type="text" id="userSearchInput" placeholder="Cari nama / NIM / WA..." style="padding:8px 12px; border-radius:8px; border:1.5px solid var(--line); font-size:13px; width:220px; outline:none;" />
+        <button id="btnSearchUsers" style="background:var(--yupi-green); color:#FFF; font-family:'Fredoka'; font-size:14px; font-weight:700; padding:9px 16px; border-radius:10px; border:none; cursor:pointer;">🔍 Cari</button>
+      </div>
+    </div>
+    <div id="userManagementList" style="display:flex; flex-direction:column; gap:10px;">
+      <p style="font-size:13px; color:var(--ink-muted); text-align:center; padding:20px;">Ketik nama atau NIM di kolom cari, lalu klik Cari.</p>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: REWARD FORM (ADD / EDIT) -->
+<div id="rewardModalOverlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.55); z-index:9999; display:flex; align-items:center; justify-content:center; padding:20px; box-sizing:border-box;">
+  <div style="background:#FFF; border-radius:16px; padding:24px; max-width:480px; width:100%; box-shadow:0 8px 32px rgba(0,0,0,0.18); max-height:90vh; overflow-y:auto;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+      <h3 id="rewardModalHeading" style="font-family:'Fredoka'; font-size:18px; color:var(--forest); margin:0;">➕ Tambah Hadiah Baru</h3>
+      <button id="btnCloseRewardModal" style="background:transparent; border:none; font-size:24px; cursor:pointer; color:var(--ink-muted);">&times;</button>
+    </div>
+    <form id="rewardEditForm">
+      <div style="margin-bottom:12px;">
+        <label style="font-size:11.5px; font-weight:700; color:var(--forest); display:block; margin-bottom:4px;">ID UNIK HADIAH:</label>
+        <input type="text" id="rwFormId" class="form-control" required placeholder="Contoh: rw-sticker-baru" />
+        <small style="font-size:10.5px; color:var(--ink-muted);">Hanya huruf kecil, angka, dan tanda hubung. Tidak bisa diubah setelah dibuat.</small>
+      </div>
+      <div style="margin-bottom:12px;">
+        <label style="font-size:11.5px; font-weight:700; color:var(--forest); display:block; margin-bottom:4px;">NAMA HADIAH:</label>
+        <input type="text" id="rwFormName" class="form-control" required placeholder="Contoh: Voucher Diskon Rp 5.000" />
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px;">
+        <div>
+          <label style="font-size:11.5px; font-weight:700; color:var(--forest); display:block; margin-bottom:4px;">BIAYA POIN:</label>
+          <input type="number" id="rwFormCost" class="form-control" required min="1" placeholder="Contoh: 75" />
+        </div>
+        <div>
+          <label style="font-size:11.5px; font-weight:700; color:var(--forest); display:block; margin-bottom:4px;">STOK AWAL:</label>
+          <input type="number" id="rwFormStock" class="form-control" required min="0" placeholder="Contoh: 50" />
+        </div>
+      </div>
+      <div style="margin-bottom:16px;">
+        <label style="font-size:11.5px; font-weight:700; color:var(--forest); display:block; margin-bottom:4px;">SPONSOR / KETERANGAN:</label>
+        <input type="text" id="rwFormSponsor" class="form-control" placeholder="Contoh: Official JELAJAH / Sponsor UMKM" />
+      </div>
+      <button type="submit" class="btn-submit-action" style="width:100%;">💾 Simpan Hadiah</button>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL: USER MANAGEMENT ACTIONS -->
+<div id="userActionModalOverlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.55); z-index:9999; display:flex; align-items:center; justify-content:center; padding:20px; box-sizing:border-box;">
+  <div style="background:#FFF; border-radius:16px; padding:24px; max-width:460px; width:100%; box-shadow:0 8px 32px rgba(0,0,0,0.18);">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+      <h3 id="userActionHeading" style="font-family:'Fredoka'; font-size:18px; color:var(--forest); margin:0;">⚙️ Kelola Akun</h3>
+      <button id="btnCloseUserActionModal" style="background:transparent; border:none; font-size:24px; cursor:pointer; color:var(--ink-muted);">&times;</button>
+    </div>
+    <div id="userActionContent"></div>
+  </div>
 </div>
 
 <!-- MODAL FORM: CREATE / EDIT MISSION -->
@@ -1052,6 +1166,7 @@
 <script src="js/qrcode.min.js"></script>
 <script>
   const ADMIN_PIN = 'jelajah1945';
+  const ADMIN_KEY = ADMIN_PIN;
 
   // --- AUDIO SYNTH (BEEP) ---
   const AudioCtx = window.AudioContext || window.webkitAudioContext;
@@ -1072,26 +1187,306 @@
     } catch(e) {}
   }
 
-  // --- TAB SWITCHER LOGIC ---
-  const tabBtnValidation = document.getElementById('tabBtnValidation');
-  const tabBtnMissions = document.getElementById('tabBtnMissions');
-  const sectionValidation = document.getElementById('sectionValidation');
-  const sectionMissions = document.getElementById('sectionMissions');
+  // --- TAB SWITCHER LOGIC (5 TABS) ---
+  const allTabBtns = document.querySelectorAll('.admin-tab-btn');
+  const allSections = {
+    'tabBtnValidation': document.getElementById('sectionValidation'),
+    'tabBtnMissions': document.getElementById('sectionMissions'),
+    'tabBtnRewards': document.getElementById('sectionRewards'),
+    'tabBtnPhotoAudit': document.getElementById('sectionPhotoAudit'),
+    'tabBtnUsers': document.getElementById('sectionUsers'),
+  };
 
-  tabBtnValidation.addEventListener('click', () => {
-    tabBtnValidation.classList.add('active');
-    tabBtnMissions.classList.remove('active');
-    sectionValidation.style.display = 'block';
-    sectionMissions.style.display = 'none';
+  function switchAdminTab(clickedBtn) {
+    allTabBtns.forEach(btn => btn.classList.remove('active'));
+    Object.values(allSections).forEach(sec => { if (sec) sec.style.display = 'none'; });
+    clickedBtn.classList.add('active');
+    const sectionEl = allSections[clickedBtn.id];
+    if (sectionEl) sectionEl.style.display = 'block';
+
+    if (clickedBtn.id === 'tabBtnMissions') {
+      renderChallengeCards();
+    } else if (clickedBtn.id === 'tabBtnRewards') {
+      renderRewardsCrud();
+    } else if (clickedBtn.id === 'tabBtnPhotoAudit') {
+      loadPhotoAudit();
+    }
+  }
+
+  allTabBtns.forEach(btn => {
+    btn.addEventListener('click', () => switchAdminTab(btn));
   });
 
-  tabBtnMissions.addEventListener('click', () => {
-    tabBtnMissions.classList.add('active');
-    tabBtnValidation.classList.remove('active');
-    sectionValidation.style.display = 'none';
-    sectionMissions.style.display = 'block';
-    renderChallengeCards();
+  // ============================================================
+  // REWARDS CRUD (Tambah / Edit / Hapus Hadiah)
+  // ============================================================
+  let currentRewards = [];
+
+  function renderRewardsCrud() {
+    fetch('/api/admin/stats', { headers: { 'X-Admin-Key': ADMIN_KEY } })
+      .then(r => r.json())
+      .then(data => {
+        if (data.rewards) currentRewards = data.rewards;
+        const list = document.getElementById('rewardsCrudList');
+        if (!list) return;
+
+        if (currentRewards.length === 0) {
+          list.innerHTML = '<p style="text-align:center; color:var(--ink-muted); padding:20px;">Belum ada hadiah. Tambahkan hadiah baru!</p>';
+          return;
+        }
+
+        list.innerHTML = currentRewards.map(rw => `
+          <div style="background:#FAF7F0; border:1.5px solid var(--line); border-radius:12px; padding:14px 16px; display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+            <div style="flex:1;">
+              <div style="font-family:'Fredoka'; font-size:16px; color:var(--forest); font-weight:700;">${rw.name}</div>
+              <div style="font-size:12px; color:var(--ink-muted); margin-top:3px;">
+                ID: <code>${rw.id}</code> &nbsp;|&nbsp; Biaya: <strong>${rw.cost} pts</strong> &nbsp;|&nbsp; Stok: <strong style="color:${rw.stock > 5 ? '#2E7D32' : '#C62828'}">${rw.stock}</strong> &nbsp;|&nbsp; ${rw.sponsor || ''}
+              </div>
+            </div>
+            <div style="display:flex; gap:8px;">
+              <button onclick="openEditReward('${rw.id}')" style="background:#E3F2FD; color:#1565C0; border:none; padding:7px 14px; border-radius:8px; font-family:'Fredoka'; font-size:13px; font-weight:700; cursor:pointer;">✏️ Edit</button>
+              <button onclick="deleteReward('${rw.id}', '${rw.name}')" style="background:#FFEBEE; color:#C62828; border:none; padding:7px 14px; border-radius:8px; font-family:'Fredoka'; font-size:13px; font-weight:700; cursor:pointer;">🗑️ Hapus</button>
+            </div>
+          </div>
+        `).join('');
+      }).catch(() => {
+        document.getElementById('rewardsCrudList').innerHTML = '<p style="color:red; text-align:center;">Gagal memuat daftar hadiah dari server.</p>';
+      });
+  }
+
+  function openEditReward(rewardId) {
+    const rw = currentRewards.find(r => r.id === rewardId);
+    if (!rw) return;
+    document.getElementById('rewardModalHeading').textContent = `✏️ Edit Hadiah: ${rw.name}`;
+    document.getElementById('rwFormId').value = rw.id;
+    document.getElementById('rwFormId').readOnly = true;
+    document.getElementById('rwFormName').value = rw.name;
+    document.getElementById('rwFormCost').value = rw.cost;
+    document.getElementById('rwFormStock').value = rw.stock;
+    document.getElementById('rwFormSponsor').value = rw.sponsor || '';
+    document.getElementById('rewardModalOverlay').style.display = 'flex';
+  }
+
+  async function deleteReward(rewardId, rewardName) {
+    if (!confirm(`Hapus hadiah "${rewardName}"? Tindakan ini tidak bisa dibatalkan.`)) return;
+    const res = await fetch('/api/admin/rewards?delete=1', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Admin-Key': ADMIN_KEY },
+      body: JSON.stringify({ id: rewardId })
+    });
+    const data = await res.json();
+    alert(data.message || data.error);
+    renderRewardsCrud();
+  }
+
+  document.getElementById('btnAddNewReward').addEventListener('click', () => {
+    document.getElementById('rewardModalHeading').textContent = '➕ Tambah Hadiah Baru';
+    document.getElementById('rewardEditForm').reset();
+    document.getElementById('rwFormId').readOnly = false;
+    document.getElementById('rewardModalOverlay').style.display = 'flex';
   });
+
+  document.getElementById('btnCloseRewardModal').addEventListener('click', () => {
+    document.getElementById('rewardModalOverlay').style.display = 'none';
+  });
+
+  document.getElementById('rewardEditForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const reward = {
+      id: document.getElementById('rwFormId').value.trim().toLowerCase(),
+      name: document.getElementById('rwFormName').value.trim(),
+      cost: parseInt(document.getElementById('rwFormCost').value) || 50,
+      stock: parseInt(document.getElementById('rwFormStock').value) || 0,
+      sponsor: document.getElementById('rwFormSponsor').value.trim()
+    };
+    const res = await fetch('/api/admin/rewards', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Admin-Key': ADMIN_KEY },
+      body: JSON.stringify({ reward })
+    });
+    const data = await res.json();
+    alert(data.message || data.error);
+    if (data.success) {
+      document.getElementById('rewardModalOverlay').style.display = 'none';
+      renderRewardsCrud();
+    }
+  });
+
+  // ============================================================
+  // PHOTO AUDIT
+  // ============================================================
+  async function loadPhotoAudit() {
+    const list = document.getElementById('photoAuditList');
+    list.innerHTML = '<p style="text-align:center; padding:20px; color:var(--ink-muted);">Memuat data foto...</p>';
+    try {
+      const res = await fetch('/api/admin/photo-reviews', { headers: { 'X-Admin-Key': ADMIN_KEY } });
+      const data = await res.json();
+      if (!data.reviews || data.reviews.length === 0) {
+        list.innerHTML = '<p style="text-align:center; padding:20px; color:var(--ink-muted);">✅ Tidak ada foto yang menunggu audit. Semua bersih!</p>';
+        return;
+      }
+
+      list.innerHTML = data.reviews.map(r => {
+        const statusColor = r.status === 'APPROVED' ? '#2E7D32' : r.status === 'REJECTED' ? '#C62828' : '#F57F17';
+        const statusLabel = r.status === 'APPROVED' ? '✅ DISETUJUI' : r.status === 'REJECTED' ? '❌ DITOLAK' : '⏳ MENUNGGU REVIEW';
+        const thumbHtml = r.photoBase64 ? `<img src="${r.photoBase64}" style="width:80px; height:80px; object-fit:cover; border-radius:8px; border:2px solid var(--line); cursor:pointer;" onclick="this.style.width=this.style.width==='80px'?'260px':'80px'; this.style.height=this.style.height==='80px'?'auto':'80px';" title="Klik untuk perbesar" />` : '<div style="width:80px; height:80px; background:#EDE8DF; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:24px;">📷</div>';
+        return `
+          <div style="background:#FAF7F0; border:1.5px solid var(--line); border-radius:12px; padding:14px 16px; display:flex; gap:14px; align-items:flex-start; flex-wrap:wrap;">
+            ${thumbHtml}
+            <div style="flex:1; min-width:160px;">
+              <div style="font-family:'Fredoka'; font-size:15px; color:var(--forest);">${r.userName} <span style="font-size:11px; color:var(--ink-muted);">(${r.userIdentifier})</span></div>
+              <div style="font-size:12px; color:var(--ink-muted);">Misi: ${r.missionName} &nbsp;|&nbsp; ${r.timestamp || ''}</div>
+              <div style="margin-top:6px; font-size:12px; font-weight:700; color:${statusColor};">${statusLabel}</div>
+              ${r.status === 'PENDING' ? `
+                <div style="margin-top:8px; display:flex; gap:8px;">
+                  <button onclick="auditPhoto('${r.id}','approve')" style="background:#E8F5E9; color:#2E7D32; border:none; padding:6px 14px; border-radius:8px; font-family:'Fredoka'; font-size:13px; font-weight:700; cursor:pointer;">✅ Setujui</button>
+                  <button onclick="auditPhoto('${r.id}','reject')" style="background:#FFEBEE; color:#C62828; border:none; padding:6px 14px; border-radius:8px; font-family:'Fredoka'; font-size:13px; font-weight:700; cursor:pointer;">❌ Tolak &amp; Cabut Poin</button>
+                </div>` : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
+    } catch(e) {
+      list.innerHTML = '<p style="color:red; text-align:center;">Gagal memuat data foto. Coba lagi.</p>';
+    }
+  }
+
+  async function auditPhoto(reviewId, action) {
+    if (action === 'reject' && !confirm('Yakin TOLAK foto ini? Poin pengunjung untuk misi ini akan DICABUT!')) return;
+    const res = await fetch('/api/admin/photo-review/action', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Admin-Key': ADMIN_KEY },
+      body: JSON.stringify({ reviewId, action })
+    });
+    const data = await res.json();
+    if (data.success) {
+      playBeep(action === 'approve' ? 660 : 330, 0.3);
+      loadPhotoAudit();
+    } else {
+      alert(data.error || 'Gagal memproses audit');
+    }
+  }
+
+  document.getElementById('btnRefreshPhotos').addEventListener('click', loadPhotoAudit);
+
+  // ============================================================
+  // USER MANAGEMENT
+  // ============================================================
+  document.getElementById('btnSearchUsers').addEventListener('click', searchUsers);
+  document.getElementById('userSearchInput').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') searchUsers();
+  });
+
+  async function searchUsers() {
+    const q = document.getElementById('userSearchInput').value.trim();
+    const list = document.getElementById('userManagementList');
+    list.innerHTML = '<p style="text-align:center; padding:20px; color:var(--ink-muted);">Mencari...</p>';
+    try {
+      const url = q ? `/api/admin/users?q=${encodeURIComponent(q)}` : '/api/admin/users';
+      const res = await fetch(url, { headers: { 'X-Admin-Key': ADMIN_KEY } });
+      const data = await res.json();
+
+      if (!data.users || data.users.length === 0) {
+        list.innerHTML = '<p style="text-align:center; padding:20px; color:var(--ink-muted);">Tidak ada pengunjung ditemukan.</p>';
+        return;
+      }
+
+      list.innerHTML = data.users.map(u => `
+        <div style="background:#FAF7F0; border:1.5px solid var(--line); border-radius:12px; padding:12px 16px; display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+          <div style="flex:1;">
+            <div style="font-family:'Fredoka'; font-size:15px; color:var(--forest); font-weight:700;">${u.name} <span style="font-size:11px; color:var(--ink-muted);">(${u.identifier})</span></div>
+            <div style="font-size:12px; color:var(--ink-muted); margin-top:2px;">
+              Poin: <strong>${u.earnedPoints || 0}</strong> &nbsp;|&nbsp; Misi Selesai: <strong>${(u.completedMissions || []).length}</strong> &nbsp;|&nbsp; Tiket: <strong>${(u.tickets || []).length}</strong>
+            </div>
+            <div style="font-size:11px; color:var(--ink-muted);">ID: <code>${u.id}</code> | Dev: <code>${u.deviceId}</code></div>
+          </div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <button onclick="openUserAction('${u.id}', '${u.name.replace(/'/g,"\\'")}')" style="background:#E3F2FD; color:#1565C0; border:none; padding:7px 14px; border-radius:8px; font-family:'Fredoka'; font-size:13px; font-weight:700; cursor:pointer;">⚙️ Kelola</button>
+          </div>
+        </div>
+      `).join('');
+    } catch(e) {
+      list.innerHTML = '<p style="color:red; text-align:center;">Gagal memuat data pengunjung.</p>';
+    }
+  }
+
+  function openUserAction(userId, userName) {
+    document.getElementById('userActionHeading').textContent = `⚙️ Kelola: ${userName}`;
+    document.getElementById('userActionContent').innerHTML = `
+      <div style="background:#F6FAF7; border-radius:10px; padding:14px; margin-bottom:14px; font-size:13px;">
+        <strong>User ID:</strong> <code>${userId}</code>
+      </div>
+
+      <div style="margin-bottom:16px;">
+        <label style="font-size:12px; font-weight:700; color:#153726; display:block; margin-bottom:4px;">🔑 RESET PASSWORD:</label>
+        <div style="display:flex; gap:8px;">
+          <input type="text" id="newPasswordInput" placeholder="Password baru (min. 4 karakter)" style="flex:1; padding:8px 12px; border-radius:8px; border:1.5px solid #C8E6C9; font-size:13px; outline:none;" />
+          <button onclick="resetUserPassword('${userId}')" style="background:#153726; color:#FFF; border:none; padding:8px 14px; border-radius:8px; font-family:'Fredoka'; font-size:13px; font-weight:700; cursor:pointer;">Reset</button>
+        </div>
+      </div>
+
+      <div style="margin-bottom:16px;">
+        <label style="font-size:12px; font-weight:700; color:#153726; display:block; margin-bottom:4px;">🎯 SESUAIKAN POIN TOTAL:</label>
+        <div style="display:flex; gap:8px;">
+          <input type="number" id="adjustPointsInput" placeholder="Masukkan jumlah poin baru" style="flex:1; padding:8px 12px; border-radius:8px; border:1.5px solid #C8E6C9; font-size:13px; outline:none;" />
+          <button onclick="adjustUserPoints('${userId}')" style="background:#F0A93E; color:#0E2519; border:none; padding:8px 14px; border-radius:8px; font-family:'Fredoka'; font-size:13px; font-weight:700; cursor:pointer;">Terapkan</button>
+        </div>
+      </div>
+
+      <div style="border-top:1px solid var(--line); padding-top:14px;">
+        <button onclick="deleteUser('${userId}', '${userName.replace(/'/g, "\\'")}')" style="background:#FFEBEE; color:#C62828; border:1px solid #FFCDD2; padding:8px 16px; border-radius:8px; font-family:'Fredoka'; font-size:13px; font-weight:700; cursor:pointer; width:100%;">🗑️ Hapus Akun Ini Secara Permanen</button>
+      </div>
+    `;
+    document.getElementById('userActionModalOverlay').style.display = 'flex';
+  }
+
+  document.getElementById('btnCloseUserActionModal').addEventListener('click', () => {
+    document.getElementById('userActionModalOverlay').style.display = 'none';
+  });
+
+  async function resetUserPassword(userId) {
+    const pwd = document.getElementById('newPasswordInput').value.trim();
+    if (!pwd || pwd.length < 4) { alert('Password baru minimal 4 karakter!'); return; }
+    const res = await fetch('/api/admin/user/reset-password', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Admin-Key': ADMIN_KEY },
+      body: JSON.stringify({ userId, newPassword: pwd })
+    });
+    const data = await res.json();
+    alert(data.message || data.error);
+    if (data.success) document.getElementById('userActionModalOverlay').style.display = 'none';
+  }
+
+  async function adjustUserPoints(userId) {
+    const pts = parseInt(document.getElementById('adjustPointsInput').value);
+    if (isNaN(pts) || pts < 0) { alert('Masukkan angka poin yang valid!'); return; }
+    const res = await fetch('/api/admin/user/adjust-points', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Admin-Key': ADMIN_KEY },
+      body: JSON.stringify({ userId, directPoints: pts })
+    });
+    const data = await res.json();
+    alert(data.message || data.error);
+    if (data.success) {
+      document.getElementById('userActionModalOverlay').style.display = 'none';
+      searchUsers();
+    }
+  }
+
+  async function deleteUser(userId, userName) {
+    if (!confirm(`HAPUS PERMANEN akun "${userName}"?\n\nTindakan ini tidak bisa dibatalkan!`)) return;
+    const res = await fetch('/api/admin/user/delete', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Admin-Key': ADMIN_KEY },
+      body: JSON.stringify({ userId })
+    });
+    const data = await res.json();
+    alert(data.message || data.error);
+    if (data.success) {
+      document.getElementById('userActionModalOverlay').style.display = 'none';
+      searchUsers();
+    }
+  }
 
   // --- NETWORK INFO & QR HP ---
   async function initNetworkInfo() {

@@ -17,6 +17,25 @@ const AUTH_SALT = 'JELAJAH_SALT_2026_PMW';
 // Sesi panitia aktif & Pelacak Pengunjung Online
 const adminSessions = new Map(); // token -> timestamp
 const activeVisitors = new Map(); // visitorKey -> timestamp
+const authRateLimits = new Map(); // ip -> { count, resetTime }
+
+function checkRateLimit(ip, maxPerMinute = 20) {
+  const now = Date.now();
+  let record = authRateLimits.get(ip);
+  if (!record || now > record.resetTime) {
+    record = { count: 1, resetTime: now + 60000 };
+    authRateLimits.set(ip, record);
+    return true;
+  }
+  record.count++;
+  if (record.count > maxPerMinute) return false;
+  return true;
+}
+
+function sanitizeInput(str) {
+  if (typeof str !== 'string') return '';
+  return str.replace(/[<>]/g, '').trim();
+}
 
 function recordActiveVisitor(id) {
   if (!id) return;
@@ -115,7 +134,8 @@ function loadDB() {
     tickets: {},
     rewards: DEFAULT_REWARDS,
     missions: defaultMissions,
-    devices: {}
+    devices: {},
+    photoReviews: []
   };
 
   // Pastikan struktur field lengkap
@@ -124,6 +144,7 @@ function loadDB() {
   if (!data.rewards || !Array.isArray(data.rewards) || data.rewards.length === 0) data.rewards = DEFAULT_REWARDS;
   if (!data.missions || !Array.isArray(data.missions) || data.missions.length === 0) data.missions = defaultMissions;
   if (!data.devices) data.devices = {};
+  if (!data.photoReviews || !Array.isArray(data.photoReviews)) data.photoReviews = [];
 
   return data;
 }
@@ -321,8 +342,15 @@ const server = http.createServer(async (req, res) => {
 
   // POST /api/auth/register
   if (pathname === '/api/auth/register' && req.method === 'POST') {
+    const clientIp = (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || req.socket.remoteAddress || 'unknown';
+    if (!checkRateLimit(clientIp, 25)) {
+      return sendJSON(res, { error: 'Terlalu banyak permintaan pendaftaran. Harap tunggu 1 menit.' }, 429);
+    }
+
     const body = await parseRequestBody(req);
-    const { name, identifier, password, deviceId } = body;
+    let { name, identifier, password, deviceId } = body;
+    name = sanitizeInput(name);
+    identifier = sanitizeInput(identifier);
 
     if (!name || name.trim().length < 2) {
       return sendJSON(res, { error: 'Nama minimal 2 karakter!' }, 400);
@@ -342,7 +370,7 @@ const server = http.createServer(async (req, res) => {
       return sendJSON(res, { error: `NIM / No. WhatsApp / Email "${identifier}" sudah terdaftar! Silakan login.` }, 400);
     }
 
-    const devId = deviceId || ('dev_' + crypto.randomBytes(6).toString('hex'));
+    const devId = sanitizeInput(deviceId) || ('dev_' + crypto.randomBytes(6).toString('hex'));
     const userId = 'usr_' + crypto.randomBytes(4).toString('hex');
 
     const newUser = {
@@ -377,8 +405,14 @@ const server = http.createServer(async (req, res) => {
 
   // POST /api/auth/login
   if (pathname === '/api/auth/login' && req.method === 'POST') {
+    const clientIp = (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || req.socket.remoteAddress || 'unknown';
+    if (!checkRateLimit(clientIp, 25)) {
+      return sendJSON(res, { error: 'Terlalu banyak percobaan login. Harap tunggu 1 menit.' }, 429);
+    }
+
     const body = await parseRequestBody(req);
-    const { identifier, password, deviceId } = body;
+    let { identifier, password, deviceId } = body;
+    identifier = sanitizeInput(identifier);
 
     if (!identifier || !password) {
       return sendJSON(res, { error: 'Harap masukkan identitas dan password!' }, 400);
@@ -823,9 +857,285 @@ const server = http.createServer(async (req, res) => {
       rw.stock = Math.max(0, parseInt(stock) || 0);
       saveDB();
       console.log(`[ADMIN STOCK] Stok ${rw.name} diubah menjadi: ${rw.stock}`);
-      return sendJSON(res, { success: true, reward: rw, message: `Stok "${rw.name}" berhasil diatur ke ${rw.stock}.` });
     }
     return sendJSON(res, { error: 'Hadiah tidak ditemukan' }, 404);
+  }
+
+  // --- E. REWARDS CRUD (FULL CUSTOMIZABLE OLEH ADMIN) ---
+
+  // Admin: Tambah / Edit Hadiah (Full CRUD)
+  // POST /api/admin/rewards
+  if (pathname === '/api/admin/rewards' && req.method === 'POST' && !parsedUrl.searchParams.get('delete')) {
+    if (!checkAdminAuth(req, parsedUrl)) {
+      return sendJSON(res, { error: 'Akses ditolak: Membutuhkan PIN Admin' }, 401);
+    }
+
+    const body = await parseRequestBody(req);
+    const reward = body.reward;
+    if (!reward || !reward.id || !reward.name) {
+      return sendJSON(res, { error: 'ID dan Nama Hadiah wajib diisi!' }, 400);
+    }
+
+    reward.id = sanitizeInput(reward.id).toLowerCase();
+    reward.name = sanitizeInput(reward.name);
+    reward.sponsor = sanitizeInput(reward.sponsor || 'Official Expo');
+    reward.cost = Math.max(1, parseInt(reward.cost) || 50);
+    reward.stock = Math.max(0, parseInt(reward.stock) || 0);
+
+    const existingIdx = db.rewards.findIndex(r => r.id === reward.id);
+    if (existingIdx >= 0) {
+      db.rewards[existingIdx] = { ...db.rewards[existingIdx], ...reward };
+      console.log(`[ADMIN REWARDS] Hadiah diupdate: ${reward.name}`);
+    } else {
+      db.rewards.push(reward);
+      console.log(`[ADMIN REWARDS] Hadiah baru ditambahkan: ${reward.name}`);
+    }
+
+    saveDB();
+    return sendJSON(res, {
+      success: true,
+      reward,
+      rewards: db.rewards,
+      message: `Hadiah "${reward.name}" berhasil disimpan!`
+    });
+  }
+
+  // Admin: Hapus Hadiah
+  // DELETE /api/admin/rewards
+  if (pathname === '/api/admin/rewards' && (req.method === 'DELETE' || (req.method === 'POST' && parsedUrl.searchParams.get('delete')))) {
+    if (!checkAdminAuth(req, parsedUrl)) {
+      return sendJSON(res, { error: 'Akses ditolak: Membutuhkan PIN Admin' }, 401);
+    }
+
+    const body = await parseRequestBody(req);
+    const rewardId = (body.rewardId || body.id || parsedUrl.searchParams.get('id') || '').trim();
+    if (!rewardId) {
+      return sendJSON(res, { error: 'ID Hadiah harus disertakan' }, 400);
+    }
+
+    const initialLen = db.rewards.length;
+    db.rewards = db.rewards.filter(r => r.id !== rewardId);
+
+    if (db.rewards.length === initialLen) {
+      return sendJSON(res, { error: `Hadiah "${rewardId}" tidak ditemukan` }, 404);
+    }
+
+    saveDB();
+    console.log(`[ADMIN REWARDS] Hadiah dihapus: ${rewardId}`);
+    return sendJSON(res, {
+      success: true,
+      rewards: db.rewards,
+      message: `Hadiah "${rewardId}" berhasil dihapus.`
+    });
+  }
+
+  // --- F. PHOTO SUBMISSION & AUDIT QUEUE ---
+
+  // Pengunjung: Upload / Kirim Bukti Foto Misi
+  // POST /api/mission/photo-submit
+  if (pathname === '/api/mission/photo-submit' && req.method === 'POST') {
+    const body = await parseRequestBody(req);
+    const { userId, userName, userIdentifier, missionId, missionName, photoBase64 } = body;
+
+    if (!userId || !missionId) {
+      return sendJSON(res, { error: 'Data upload foto tidak lengkap' }, 400);
+    }
+
+    const reviewId = 'ph_' + crypto.randomBytes(4).toString('hex');
+    const reviewItem = {
+      id: reviewId,
+      userId,
+      userName: sanitizeInput(userName) || 'Penjelajah',
+      userIdentifier: sanitizeInput(userIdentifier) || '-',
+      missionId,
+      missionName: sanitizeInput(missionName) || 'Tantangan Foto',
+      photoBase64: (photoBase64 || '').substring(0, 150000),
+      status: 'PENDING',
+      timestamp: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
+      createdAt: new Date().toISOString()
+    };
+
+    db.photoReviews = db.photoReviews || [];
+    db.photoReviews.unshift(reviewItem);
+    if (db.photoReviews.length > 250) db.photoReviews.pop();
+
+    // Pastikan user mendapatkan poin misi
+    const user = db.users[userId];
+    if (user) {
+      if (!user.completedMissions.includes(missionId)) {
+        user.completedMissions.push(missionId);
+      }
+      let totalEarned = 0;
+      user.completedMissions.forEach(mId => totalEarned += getMissionPoints(mId));
+      user.earnedPoints = totalEarned;
+    }
+
+    saveDB();
+    console.log(`[PHOTO SUBMIT] User ${userName} mengirim foto untuk misi ${missionId}`);
+    return sendJSON(res, { success: true, reviewId, message: 'Foto berhasil diunggah untuk audit panitia!' });
+  }
+
+  // Admin: Ambil Daftar Foto Pengunjung untuk Diaudit
+  // GET /api/admin/photo-reviews
+  if (pathname === '/api/admin/photo-reviews' && req.method === 'GET') {
+    if (!checkAdminAuth(req, parsedUrl)) {
+      return sendJSON(res, { error: 'Akses ditolak: Membutuhkan PIN Admin' }, 401);
+    }
+    return sendJSON(res, {
+      success: true,
+      reviews: db.photoReviews || []
+    });
+  }
+
+  // Admin: Aksi Audit Foto (Approve / Reject & Revoke Points)
+  // POST /api/admin/photo-review/action
+  if (pathname === '/api/admin/photo-review/action' && req.method === 'POST') {
+    if (!checkAdminAuth(req, parsedUrl)) {
+      return sendJSON(res, { error: 'Akses ditolak: Membutuhkan PIN Admin' }, 401);
+    }
+
+    const body = await parseRequestBody(req);
+    const { reviewId, action } = body;
+
+    const review = (db.photoReviews || []).find(r => r.id === reviewId);
+    if (!review) {
+      return sendJSON(res, { error: 'Data review foto tidak ditemukan' }, 404);
+    }
+
+    if (action === 'reject') {
+      review.status = 'REJECTED';
+      const user = db.users[review.userId];
+      if (user) {
+        user.completedMissions = (user.completedMissions || []).filter(mId => mId !== review.missionId);
+        let totalEarned = 0;
+        user.completedMissions.forEach(mId => totalEarned += getMissionPoints(mId));
+        user.earnedPoints = totalEarned;
+      }
+      saveDB();
+      console.log(`[PHOTO AUDIT] Foto ${reviewId} DITOLAK. Poin untuk ${review.userName} dicabut.`);
+      return sendJSON(res, {
+        success: true,
+        status: 'REJECTED',
+        message: `Foto ${review.userName} ditolak dan poin telah dibatalkan!`
+      });
+    } else {
+      review.status = 'APPROVED';
+      saveDB();
+      return sendJSON(res, {
+        success: true,
+        status: 'APPROVED',
+        message: `Foto ${review.userName} resmi disetujui!`
+      });
+    }
+  }
+
+  // --- G. KELOLA AKUN PENGUNJUNG & RESET PASSWORD ---
+
+  // Admin: List & Search Pengunjung Terdaftar
+  // GET /api/admin/users
+  if (pathname === '/api/admin/users' && req.method === 'GET') {
+    if (!checkAdminAuth(req, parsedUrl)) {
+      return sendJSON(res, { error: 'Akses ditolak: Membutuhkan PIN Admin' }, 401);
+    }
+
+    const q = (parsedUrl.searchParams.get('q') || '').toLowerCase().trim();
+    let userList = Object.values(db.users).map(sanitizeUser);
+
+    if (q) {
+      userList = userList.filter(u =>
+        (u.name || '').toLowerCase().includes(q) ||
+        (u.identifier || '').toLowerCase().includes(q) ||
+        (u.id || '').toLowerCase().includes(q)
+      );
+    }
+
+    return sendJSON(res, { success: true, users: userList, total: userList.length });
+  }
+
+  // Admin: Reset Password Pengunjung
+  // POST /api/admin/user/reset-password
+  if (pathname === '/api/admin/user/reset-password' && req.method === 'POST') {
+    if (!checkAdminAuth(req, parsedUrl)) {
+      return sendJSON(res, { error: 'Akses ditolak: Membutuhkan PIN Admin' }, 401);
+    }
+
+    const body = await parseRequestBody(req);
+    const { userId, newPassword } = body;
+    const user = db.users[userId];
+    if (!user) {
+      return sendJSON(res, { error: 'User tidak ditemukan' }, 404);
+    }
+
+    const pwd = (newPassword || '1234').trim();
+    user.passwordHash = hashPassword(pwd);
+    saveDB();
+
+    console.log(`[ADMIN USER] Password user ${user.name} (${user.identifier}) direset ke: ${pwd}`);
+    return sendJSON(res, {
+      success: true,
+      message: `Password akun "${user.name}" (${user.identifier}) berhasil direset menjadi "${pwd}".`
+    });
+  }
+
+  // Admin: Sesuaikan Poin Pengunjung
+  // POST /api/admin/user/adjust-points
+  if (pathname === '/api/admin/user/adjust-points' && req.method === 'POST') {
+    if (!checkAdminAuth(req, parsedUrl)) {
+      return sendJSON(res, { error: 'Akses ditolak: Membutuhkan PIN Admin' }, 401);
+    }
+
+    const body = await parseRequestBody(req);
+    const { userId, deltaPoints, directPoints } = body;
+    const user = db.users[userId];
+    if (!user) {
+      return sendJSON(res, { error: 'User tidak ditemukan' }, 404);
+    }
+
+    if (directPoints !== undefined) {
+      user.earnedPoints = Math.max(0, parseInt(directPoints) || 0);
+    } else {
+      user.earnedPoints = Math.max(0, (user.earnedPoints || 0) + (parseInt(deltaPoints) || 0));
+    }
+    saveDB();
+
+    console.log(`[ADMIN USER] Poin user ${user.name} disesuaikan: total ${user.earnedPoints} pts`);
+    return sendJSON(res, {
+      success: true,
+      user: sanitizeUser(user),
+      message: `Poin ${user.name} berhasil diperbarui menjadi ${user.earnedPoints} pts.`
+    });
+  }
+
+  // Admin: Hapus Akun Pengunjung
+  // POST /api/admin/user/delete
+  if (pathname === '/api/admin/user/delete' && req.method === 'POST') {
+    if (!checkAdminAuth(req, parsedUrl)) {
+      return sendJSON(res, { error: 'Akses ditolak: Membutuhkan PIN Admin' }, 401);
+    }
+
+    const body = await parseRequestBody(req);
+    const { userId } = body;
+    const user = db.users[userId];
+    if (!user) {
+      return sendJSON(res, { error: 'User tidak ditemukan' }, 404);
+    }
+
+    const userName = user.name;
+    delete db.users[userId];
+
+    // Bersihkan device mapping
+    Object.values(db.devices || {}).forEach(d => {
+      if (d.users && Array.isArray(d.users)) {
+        d.users = d.users.filter(uId => uId !== userId);
+      }
+    });
+
+    saveDB();
+    console.log(`[ADMIN USER] Akun ${userName} (${userId}) telah dihapus.`);
+    return sendJSON(res, {
+      success: true,
+      message: `Akun pengunjung "${userName}" berhasil dihapus dari sistem.`
+    });
   }
 
   // 8. Info Host & IP WiFi Jaringan

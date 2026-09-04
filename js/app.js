@@ -525,25 +525,10 @@
 
       // Bottom Navigation Tabs
       this.elNavItems.forEach(item => {
-        item.addEventListener('click', () => {
+        item.addEventListener('click', (e) => {
+          e.preventDefault();
           this.sound.click();
-          const targetTab = item.dataset.tab;
-          this.elNavItems.forEach(nav => nav.classList.remove('active'));
-          item.classList.add('active');
-
-          this.elTabViews.forEach(view => {
-            if (view.id === 'tab-' + targetTab) {
-              view.classList.add('active');
-            } else {
-              view.classList.remove('active');
-            }
-          });
-
-          if (targetTab === 'leaderboard') {
-            this.renderLeaderboard();
-          } else if (targetTab === 'rewards') {
-            this.renderRewards();
-          }
+          this.switchTab(item.dataset.tab, true);
         });
       });
 
@@ -644,6 +629,43 @@
         pinInput.addEventListener('keydown', (e) => {
           if (e.key === 'Enter') btnVerifyPin.click();
         });
+      }
+    }
+
+    switchTab(targetTab, smoothScroll = true) {
+      if (!targetTab) return;
+      this.elNavItems.forEach(nav => {
+        if (nav.dataset.tab === targetTab) {
+          nav.classList.add('active');
+        } else {
+          nav.classList.remove('active');
+        }
+      });
+
+      let targetView = null;
+      this.elTabViews.forEach(view => {
+        if (view.id === 'tab-' + targetTab) {
+          view.classList.add('active');
+          targetView = view;
+        } else {
+          view.classList.remove('active');
+        }
+      });
+
+      if (targetTab === 'leaderboard') {
+        this.renderLeaderboard();
+      } else if (targetTab === 'rewards') {
+        this.renderRewards();
+      }
+
+      if (smoothScroll) {
+        // Smooth scroll to header or target content
+        const headerEl = document.querySelector('.event-header') || targetView;
+        if (headerEl) {
+          headerEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
       }
     }
 
@@ -765,6 +787,15 @@
           } catch(err) {
             this.showToast('Gagal menghubungi server');
           }
+        });
+      }
+
+      const btnForgot = document.getElementById('btnForgotPassword');
+      if (btnForgot) {
+        btnForgot.addEventListener('click', (e) => {
+          e.preventDefault();
+          this.sound.click();
+          alert('🔑 Lupa Password Akunmu?\n\nSilakan kunjungi MEJA INFORMASI / PANITIA di booth utama expo.\n\nSebutkan Nama & NIM/WhatsApp terdaftarmu dengan menunjukkan KTM atau bukti identitas, panitia akan langsung mereset password akunmu dalam hitungan detik melalui Panel Admin.');
         });
       }
     }
@@ -1115,7 +1146,49 @@
           }
         });
 
-        submitBtn.addEventListener('click', () => {
+        submitBtn.addEventListener('click', async () => {
+          submitBtn.disabled = true;
+          submitBtn.textContent = 'Mengirim Bukti Foto...';
+
+          let thumbnailBase64 = '';
+          try {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const maxDim = 450;
+            let w = previewImg.naturalWidth || 450;
+            let h = previewImg.naturalHeight || 450;
+            if (w > h && w > maxDim) {
+              h = Math.round(h * (maxDim / w));
+              w = maxDim;
+            } else if (h > maxDim) {
+              w = Math.round(w * (maxDim / h));
+              h = maxDim;
+            }
+            canvas.width = w;
+            canvas.height = h;
+            ctx.drawImage(previewImg, 0, 0, w, h);
+            thumbnailBase64 = canvas.toDataURL('image/jpeg', 0.68);
+          } catch(e) {
+            thumbnailBase64 = previewImg.src ? previewImg.src.substring(0, 15000) : '';
+          }
+
+          try {
+            await fetch('/api/mission/photo-submit', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                userId: this.user.id,
+                userName: this.user.name,
+                userIdentifier: this.user.identifier,
+                missionId: loc.id,
+                missionName: loc.name,
+                photoBase64: thumbnailBase64
+              })
+            });
+          } catch(e) {
+            console.warn('Gagal sinkron foto ke server, tetap simpan lokal:', e.message);
+          }
+
           this.sound.success();
           this.completeMission(loc);
         });

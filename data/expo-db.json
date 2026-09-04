@@ -9,9 +9,10 @@
         "booth-sponsor-c",
         "spot-stage"
       ],
-      "earnedPoints": 85,
+      "earnedPoints": 100,
       "spentPoints": 50,
-      "tickets": []
+      "tickets": [],
+      "passwordHash": "671a5a65bc3ba49d61d73c69e18d0970aa0605213dbb0409c426c9751a271daf"
     },
     "user_raeqhl": {
       "id": "user_raeqhl",
@@ -490,7 +491,7 @@
       "task": {
         "type": "secret_code",
         "hint": "Tanyakan langsung ke kasir Booth 2 atau lihat stiker kode di meja kasir.",
-        "placeholder": "Contoh: DIMSUM2"
+        "placeholder": "Contoh: ABC123XYZ"
       }
     },
     {
@@ -1129,5 +1130,31 @@
         "usr_fc8fb1bd"
       ]
     }
-  }
+  },
+  "photoReviews": [
+    {
+      "id": "ph_d4f16169",
+      "userId": "test_user_1",
+      "userName": "Budi Test",
+      "userIdentifier": "21081010099",
+      "missionId": "spot-stage",
+      "missionName": "Stage Utama (Selfie Panggung)",
+      "photoBase64": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/testthumb",
+      "status": "APPROVED",
+      "timestamp": "15.45",
+      "createdAt": "2026-09-04T08:45:37.461Z"
+    },
+    {
+      "id": "ph_8f0d8c36",
+      "userId": "test_user_1",
+      "userName": "Budi Test",
+      "userIdentifier": "21081010099",
+      "missionId": "spot-stage",
+      "missionName": "Stage Utama (Selfie Panggung)",
+      "photoBase64": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/testthumb",
+      "status": "APPROVED",
+      "timestamp": "15.45",
+      "createdAt": "2026-09-04T08:45:13.267Z"
+    }
+  ]
 }

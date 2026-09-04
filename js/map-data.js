@@ -145,7 +145,7 @@ window.JELAJAH_DATA = {
       task: {
         type: "secret_code",
         hint: "Tanyakan langsung ke kasir Booth 2 atau lihat stiker kode di meja kasir.",
-        placeholder: "Contoh: DIMSUM2"
+        placeholder: "Contoh: ABC123XYZ"
       }
     },
     {

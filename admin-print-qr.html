@@ -167,11 +167,24 @@
 
   <!-- ADMIN TOOLBAR (HIDDEN WHEN PRINTING) -->
   <div class="no-print">
-    <div>
-      <h1>Lembar Cetak QR Code &amp; Kode Booth JELAJAH</h1>
-      <p>Tempelkan kartu ini di meja/banner masing-masing booth makanan 1-12 dan sponsor A-M.</p>
+    <div style="flex:1;">
+      <h1>🖨️ Lembar Cetak QR Code &amp; Kode Booth JELAJAH</h1>
+      <p>Otomatis sinkron dengan database misi/booth di server. Pilih kategori atau cari booth yang ingin dicetak.</p>
+      <div style="margin-top:12px; display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+        <select id="filterCategory" style="padding:8px 12px; border-radius:8px; border:1.5px solid #153726; font-size:13px; font-weight:600; outline:none; background:#FFF;">
+          <option value="all">Semua Kategori (Tampilkan Semua)</option>
+          <option value="makanan">🍔 Klaster Kuliner (1-12)</option>
+          <option value="sponsor">🏢 Klaster Sponsor (A-M)</option>
+          <option value="special">📍 Spot Khusus &amp; Panggung</option>
+        </select>
+        <input type="text" id="searchBooth" placeholder="Cari nama booth / ID..." style="padding:8px 12px; border-radius:8px; border:1.5px solid #153726; font-size:13px; width:220px; outline:none; background:#FFF;" />
+        <span id="boothCountInfo" style="font-size:12.5px; font-weight:600; color:#57655E;">Memuat data booth...</span>
+      </div>
     </div>
-    <button class="btn-print" onclick="window.print()">🖨️ Cetak Semua Kartu (A4)</button>
+    <div style="display:flex; flex-direction:column; gap:8px; align-items:flex-end;">
+      <button class="btn-print" onclick="window.print()">🖨️ Cetak Kartu Tampil (A4)</button>
+      <a href="admin.html" style="font-size:12px; color:#153726; font-weight:600; text-decoration:none;">← Kembali ke Panel Admin</a>
+    </div>
   </div>
 
   <!-- PRINTABLE CARDS CONTAINER -->
@@ -182,45 +195,97 @@
   <script src="js/map-data.js"></script>
   <script src="js/qrcode.min.js"></script>
   <script>
+    let allLocations = [];
     const grid = document.getElementById('cardsGrid');
-    const locations = window.JELAJAH_DATA.locations;
+    const filterCat = document.getElementById('filterCategory');
+    const searchInput = document.getElementById('searchBooth');
+    const countInfo = document.getElementById('boothCountInfo');
 
-    locations.forEach((loc, idx) => {
-      const card = document.createElement('div');
-      card.className = 'booth-card';
-      const targetUrl = `https://jelajah.tech/?mission=${loc.id}`;
-      const codeDisplay = loc.secretCode || ('JLJ-' + loc.id.toUpperCase().replace('BOOTH-', '').replace('SPOT-', ''));
-      const qrId = `qr-booth-${idx}`;
-
-      card.innerHTML = `
-        <div class="card-top-tag">PILOT EXPO PMW 2026</div>
-        <div class="card-booth-label">${loc.name}</div>
-        <div class="card-booth-sub">${loc.zone} · <strong>+${loc.points} Poin</strong></div>
-        <div class="qr-container" id="${qrId}" style="display:flex; align-items:center; justify-content:center;"></div>
-        <div class="code-badge-box">
-          <span>KODE RAHASIA JELAJAH:</span>
-          <strong>${codeDisplay}</strong>
-        </div>
-        <div class="card-instructions">
-          Scan QR atau masukkan kode rahasia di atas untuk klaim poin &amp; tukar hadiah voucher!
-        </div>
-        <div class="card-footer-url">🌐 Buka: jelajah.tech</div>
-      `;
-
-      grid.appendChild(card);
-
-      const qrContainer = document.getElementById(qrId);
-      if (qrContainer && window.QRCode) {
-        new window.QRCode(qrContainer, {
-          text: targetUrl,
-          width: 136,
-          height: 136,
-          colorDark: '#0A8754',
-          colorLight: '#ffffff',
-          correctLevel: window.QRCode.CorrectLevel.M
-        });
+    async function loadLocations() {
+      try {
+        const res = await fetch('/api/missions');
+        if (res.ok) {
+          const data = await res.json();
+          if (data.missions && data.missions.length > 0) {
+            allLocations = data.missions;
+          }
+        }
+      } catch (e) {
+        console.warn('Gagal memuat misi dari API, fallback ke map-data.js:', e);
       }
-    });
+
+      if (!allLocations || allLocations.length === 0) {
+        allLocations = (window.JELAJAH_DATA && window.JELAJAH_DATA.locations) ? window.JELAJAH_DATA.locations : [];
+      }
+
+      renderCards();
+    }
+
+    function renderCards() {
+      grid.innerHTML = '';
+      const cat = filterCat.value;
+      const q = searchInput.value.toLowerCase().trim();
+
+      const filtered = allLocations.filter(loc => {
+        if (cat !== 'all' && loc.category !== cat) return false;
+        if (q) {
+          const matchName = (loc.name || '').toLowerCase().includes(q);
+          const matchId = (loc.id || '').toLowerCase().includes(q);
+          const matchZone = (loc.zone || '').toLowerCase().includes(q);
+          if (!matchName && !matchId && !matchZone) return false;
+        }
+        return true;
+      });
+
+      countInfo.textContent = `Menampilkan ${filtered.length} dari ${allLocations.length} booth`;
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:40px; color:#57655E;">Tidak ada booth yang cocok dengan filter.</div>';
+        return;
+      }
+
+      filtered.forEach((loc, idx) => {
+        const card = document.createElement('div');
+        card.className = 'booth-card';
+        const targetUrl = `https://jelajah.tech/?mission=${loc.id}`;
+        const codeDisplay = loc.secretCode || ('JLJ-' + loc.id.toUpperCase().replace('BOOTH-', '').replace('SPOT-', ''));
+        const qrId = `qr-booth-${loc.id}-${idx}`;
+
+        card.innerHTML = `
+          <div class="card-top-tag">PILOT EXPO PMW 2026</div>
+          <div class="card-booth-label">${loc.name}</div>
+          <div class="card-booth-sub">${loc.zone || 'Expo Area'} · <strong>+${loc.points} Poin</strong></div>
+          <div class="qr-container" id="${qrId}" style="display:flex; align-items:center; justify-content:center;"></div>
+          <div class="code-badge-box">
+            <span>KODE RAHASIA JELAJAH:</span>
+            <strong>${codeDisplay}</strong>
+          </div>
+          <div class="card-instructions">
+            Scan QR atau masukkan kode rahasia di atas untuk klaim poin &amp; tukar hadiah voucher!
+          </div>
+          <div class="card-footer-url">🌐 Buka: jelajah.tech</div>
+        `;
+
+        grid.appendChild(card);
+
+        const qrContainer = document.getElementById(qrId);
+        if (qrContainer && window.QRCode) {
+          new window.QRCode(qrContainer, {
+            text: targetUrl,
+            width: 136,
+            height: 136,
+            colorDark: '#0A8754',
+            colorLight: '#ffffff',
+            correctLevel: window.QRCode.CorrectLevel.M
+          });
+        }
+      });
+    }
+
+    filterCat.addEventListener('change', renderCards);
+    searchInput.addEventListener('input', renderCards);
+
+    loadLocations();
   </script>
 </body>
 </html>
