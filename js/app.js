@@ -528,9 +528,28 @@
         item.addEventListener('click', (e) => {
           e.preventDefault();
           this.sound.click();
-          this.switchTab(item.dataset.tab, true);
+          this.switchTab(item.dataset.tab);
         });
       });
+
+      // Scroll spy untuk sinkronisasi ikon aktif saat pengguna scroll halaman
+      const tabSections = ['map', 'rewards', 'leaderboard', 'guide'];
+      window.addEventListener('scroll', () => {
+        const scrollPosition = window.scrollY + 220;
+        for (let i = tabSections.length - 1; i >= 0; i--) {
+          const section = document.getElementById('tab-' + tabSections[i]);
+          if (section && section.offsetTop <= scrollPosition) {
+            this.elNavItems.forEach(nav => {
+              if (nav.dataset.tab === tabSections[i]) {
+                nav.classList.add('active');
+              } else {
+                nav.classList.remove('active');
+              }
+            });
+            break;
+          }
+        }
+      }, { passive: true });
 
       // Close modal on click overlay
       document.querySelectorAll('.modal-overlay').forEach(overlay => {
@@ -632,7 +651,7 @@
       }
     }
 
-    switchTab(targetTab, smoothScroll = true) {
+    switchTab(targetTab) {
       if (!targetTab) return;
       this.elNavItems.forEach(nav => {
         if (nav.dataset.tab === targetTab) {
@@ -642,15 +661,8 @@
         }
       });
 
-      let targetView = null;
-      this.elTabViews.forEach(view => {
-        if (view.id === 'tab-' + targetTab) {
-          view.classList.add('active');
-          targetView = view;
-        } else {
-          view.classList.remove('active');
-        }
-      });
+      const targetEl = document.getElementById('tab-' + targetTab);
+      if (!targetEl) return;
 
       if (targetTab === 'leaderboard') {
         this.renderLeaderboard();
@@ -658,15 +670,8 @@
         this.renderRewards();
       }
 
-      if (smoothScroll) {
-        // Smooth scroll to header or target content
-        const headerEl = document.querySelector('.event-header') || targetView;
-        if (headerEl) {
-          headerEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        } else {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-      }
+      // Smooth scroll langsung ke lokasi elemen yang dituju
+      targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
     initAuthEvents() {

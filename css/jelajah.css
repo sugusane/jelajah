@@ -1611,3 +1611,12 @@ button {
     gap: 14px;
   }
 }
+
+/* SECTION SMOOTH SCROLL ANCHORING */
+html {
+  scroll-behavior: smooth;
+}
+
+.tab-view {
+  scroll-margin-top: 80px;
+}

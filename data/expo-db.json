@@ -1,338 +1,47 @@
 {
-  "users": {
-    "test_user_1": {
-      "id": "test_user_1",
-      "name": "Budi Test",
-      "completedMissions": [
-        "spot-masuk-1",
-        "booth-makan-1",
-        "booth-sponsor-c",
-        "spot-stage"
-      ],
-      "earnedPoints": 100,
-      "spentPoints": 50,
-      "tickets": [],
-      "passwordHash": "671a5a65bc3ba49d61d73c69e18d0970aa0605213dbb0409c426c9751a271daf"
-    },
-    "user_raeqhl": {
-      "id": "user_raeqhl",
-      "name": "Penjelajah PMW",
-      "completedMissions": [
-        "booth-makan-7",
-        "booth-sponsor-a",
-        "booth-sponsor-c"
-      ],
-      "earnedPoints": 70,
-      "spentPoints": 50,
-      "tickets": []
-    },
-    "user_on9dm7": {
-      "id": "user_on9dm7",
-      "name": "Akmal",
-      "completedMissions": [
-        "spot-stage",
-        "booth-makan-1",
-        "spot-masuk-1",
-        "spot-masuk-2"
-      ],
-      "earnedPoints": 55,
-      "spentPoints": 75,
-      "tickets": []
-    },
-    "test-user-1788487927279": {
-      "id": "test-user-1788487927279",
-      "name": "Tester Yupi",
-      "completedMissions": [
-        "gate-masuk-1",
-        "booth-1",
-        "booth-c",
-        "stage-utama"
-      ],
-      "earnedPoints": 85,
-      "spentPoints": 50,
-      "tickets": []
-    },
-    "test_usr_1788501352316": {
-      "id": "test_usr_1788501352316",
-      "name": "Tester Anti-Cheat",
-      "completedMissions": [
-        "spot-masuk-1",
-        "booth-1",
-        "booth-a",
-        "spot-stage"
-      ],
-      "earnedPoints": 85,
-      "spentPoints": 35,
-      "tickets": []
-    },
-    "test_usr_1788501389503": {
-      "id": "test_usr_1788501389503",
-      "name": "Tester Anti-Cheat",
-      "completedMissions": [
-        "spot-masuk-1",
-        "booth-1",
-        "booth-a",
-        "spot-stage"
-      ],
-      "earnedPoints": 85,
-      "spentPoints": 35,
-      "tickets": []
-    },
-    "user_0v6t8k": {
-      "id": "user_0v6t8k",
-      "name": "Penjelajah PMW",
-      "completedMissions": [
-        "spot-masuk-1",
-        "booth-makan-1",
-        "booth-sponsor-c",
-        "spot-stage",
-        "booth-sponsor-a"
-      ],
-      "earnedPoints": 110,
-      "spentPoints": 85,
-      "tickets": [],
-      "deviceId": "dev_7p9r7brnmtmlu5ky"
-    },
-    "test_usr_1788502100385": {
-      "id": "test_usr_1788502100385",
-      "name": "Tester Anti-Cheat",
-      "completedMissions": [
-        "spot-masuk-1",
-        "booth-1",
-        "booth-a",
-        "spot-stage"
-      ],
-      "earnedPoints": 85,
-      "spentPoints": 35,
-      "tickets": []
-    },
-    "test_usr_1788503803937": {
-      "id": "test_usr_1788503803937",
-      "name": "Tester Anti-Cheat",
-      "completedMissions": [
-        "spot-masuk-1",
-        "booth-1",
-        "booth-a",
-        "spot-stage"
-      ],
-      "earnedPoints": 85,
-      "spentPoints": 35,
-      "tickets": []
-    },
-    "usr_b7b3ccc0": {
-      "id": "usr_b7b3ccc0",
-      "name": "Mahasiswa Juara",
-      "identifier": "NIM_1788504995950",
-      "passwordHash": "576e516a2285451bbe2ed244ea494a2b26e6875d986f97286ab6267ea4482302",
-      "deviceId": "dev_test_phone_1788504995950",
-      "deviceIds": [
-        "dev_test_phone_1788504995950"
-      ],
-      "completedMissions": [
-        "spot-masuk-1",
-        "spot-stage",
-        "booth-makan-1"
-      ],
-      "earnedPoints": 60,
-      "spentPoints": 50,
-      "tickets": [],
-      "createdAt": "2026-09-04T06:56:35.953Z"
-    },
-    "usr_fc8fb1bd": {
-      "id": "usr_fc8fb1bd",
-      "name": "Akun Nuyul Teman",
-      "identifier": "NIM_FAKE_1788504996014",
-      "passwordHash": "1c86e2b0f5470f835ad2494a145c4305cee8b58f74dc75361face119314b1c51",
-      "deviceId": "dev_test_phone_1788504995950",
-      "deviceIds": [
-        "dev_test_phone_1788504995950"
-      ],
-      "completedMissions": [
-        "spot-masuk-1",
-        "spot-stage",
-        "booth-makan-1"
-      ],
-      "earnedPoints": 60,
-      "spentPoints": 0,
-      "tickets": [],
-      "createdAt": "2026-09-04T06:56:36.016Z"
-    },
-    "u_test": {
-      "id": "u_test",
-      "name": "Penjelajah PMW",
-      "completedMissions": [],
-      "earnedPoints": 0,
-      "spentPoints": 0,
-      "tickets": [],
-      "deviceId": "unknown"
-    }
-  },
-  "tickets": {
-    "JLJ-BTTH": {
-      "token": "JLJ-BTTH",
-      "userId": "test_user_1",
-      "userName": "Budi Test",
-      "rewardId": "rw-voucher-3k",
-      "rewardName": "Voucher Diskon Rp 3.000 Kuliner",
-      "cost": 50,
-      "status": "DISBURSED",
-      "createdAt": "08.59",
-      "disbursedAt": "08.59"
-    },
-    "JLJ-0Y5C": {
-      "token": "JLJ-0Y5C",
-      "userId": "user_raeqhl",
-      "userName": "Penjelajah PMW",
-      "rewardId": "rw-voucher-3k",
-      "rewardName": "Voucher Diskon Rp 3.000 Kuliner",
-      "cost": 50,
-      "status": "PENDING",
-      "createdAt": "09.03",
-      "disbursedAt": null
-    },
-    "JLJ-7MA7": {
-      "token": "JLJ-7MA7",
-      "userId": "test-user-1788487927279",
-      "userName": "Tester Yupi",
-      "rewardId": "rw-voucher-3k",
-      "rewardName": "Voucher Diskon Rp 3.000 Kuliner",
-      "cost": 50,
-      "status": "DISBURSED",
-      "createdAt": "09.12",
-      "disbursedAt": "09.12"
-    },
-    "JLJ-D8QO": {
-      "token": "JLJ-D8QO",
-      "userId": "user_on9dm7",
-      "userName": "Akmal",
-      "rewardId": "rw-ganci",
-      "rewardName": "Gantungan Kunci Akrilik JELAJAH",
-      "cost": 75,
-      "status": "PENDING",
-      "createdAt": "09.13",
-      "disbursedAt": null
-    },
-    "JLJ-F92139": {
-      "token": "JLJ-F92139",
-      "userId": "test_usr_1788501352316",
-      "userName": "Tester Anti-Cheat",
-      "rewardId": "rw-sticker",
-      "rewardName": "Stiker Hologram JELAJAH Expo",
-      "cost": 35,
-      "status": "DISBURSED",
-      "createdAt": "12.55",
-      "disbursedAt": "12.55"
-    },
-    "JLJ-156D03": {
-      "token": "JLJ-156D03",
-      "userId": "test_usr_1788501389503",
-      "userName": "Tester Anti-Cheat",
-      "rewardId": "rw-sticker",
-      "rewardName": "Stiker Hologram JELAJAH Expo",
-      "cost": 35,
-      "status": "DISBURSED",
-      "createdAt": "12.56",
-      "disbursedAt": "12.56"
-    },
-    "JLJ-9BE827": {
-      "token": "JLJ-9BE827",
-      "userId": "test_usr_1788502100385",
-      "userName": "Tester Anti-Cheat",
-      "rewardId": "rw-sticker",
-      "rewardName": "Stiker Hologram JELAJAH Expo",
-      "cost": 35,
-      "status": "DISBURSED",
-      "createdAt": "13.08",
-      "disbursedAt": "13.08"
-    },
-    "JLJ-6BBE9A": {
-      "token": "JLJ-6BBE9A",
-      "userId": "test_usr_1788503803937",
-      "userName": "Tester Anti-Cheat",
-      "rewardId": "rw-sticker",
-      "rewardName": "Stiker Hologram JELAJAH Expo",
-      "cost": 35,
-      "status": "DISBURSED",
-      "createdAt": "13.36",
-      "disbursedAt": "13.36"
-    },
-    "JLJ-386D57": {
-      "token": "JLJ-386D57",
-      "userId": "user_0v6t8k",
-      "userName": "Penjelajah PMW",
-      "rewardId": "rw-sticker",
-      "rewardName": "Stiker Hologram JELAJAH Expo",
-      "cost": 35,
-      "status": "DISBURSED",
-      "createdAt": "13.38",
-      "disbursedAt": "13.39"
-    },
-    "JLJ-F29970": {
-      "token": "JLJ-F29970",
-      "userId": "user_0v6t8k",
-      "userName": "Penjelajah PMW",
-      "rewardId": "rw-voucher-3k",
-      "rewardName": "Voucher Diskon Rp 3.000 Kuliner",
-      "cost": 50,
-      "status": "DISBURSED",
-      "createdAt": "13.40",
-      "disbursedAt": "13.40"
-    },
-    "JLJ-8095B0": {
-      "token": "JLJ-8095B0",
-      "userId": "usr_b7b3ccc0",
-      "userName": "Mahasiswa Juara",
-      "userIdentifier": "NIM_1788504995950",
-      "rewardId": "rw-voucher-3k",
-      "rewardName": "Voucher Diskon Rp 3.000 Kuliner",
-      "cost": 50,
-      "deviceId": "dev_test_phone_1788504995950",
-      "status": "PENDING",
-      "createdAt": "13.56",
-      "disbursedAt": null
-    }
-  },
+  "users": {},
+  "tickets": {},
   "rewards": [
     {
       "id": "rw-sticker",
       "name": "Stiker Hologram JELAJAH Expo",
       "cost": 35,
-      "stock": 10,
+      "stock": 100,
       "sponsor": "Official JELAJAH"
     },
     {
       "id": "rw-voucher-3k",
       "name": "Voucher Diskon Rp 3.000 Kuliner",
       "cost": 50,
-      "stock": 5,
+      "stock": 50,
       "sponsor": "Sponsor UMKM Kampus"
     },
     {
       "id": "rw-ganci",
       "name": "Gantungan Kunci Akrilik JELAJAH",
       "cost": 75,
-      "stock": 3,
+      "stock": 40,
       "sponsor": "Official JELAJAH"
     },
     {
       "id": "rw-voucher-5k",
       "name": "Voucher Diskon Rp 5.000 Kuliner",
       "cost": 90,
-      "stock": 2,
+      "stock": 30,
       "sponsor": "Sponsor Kuliner Premium"
     },
     {
       "id": "rw-totebag",
       "name": "Totebag Kanvas Sponsor & Pin Enamel",
       "cost": 140,
-      "stock": 2,
+      "stock": 20,
       "sponsor": "Paragon & Telkomsel"
     },
     {
       "id": "rw-grandprize",
       "name": "Tiket Undian Grand Prize Panggung",
       "cost": 180,
-      "stock": 1,
+      "stock": 10,
       "sponsor": "BSI & Yamaha"
     }
   ],
@@ -1120,41 +829,6 @@
       }
     }
   ],
-  "devices": {
-    "dev_test_phone_1788504995950": {
-      "claimedRewards": {
-        "rw-voucher-3k": "JLJ-8095B0"
-      },
-      "users": [
-        "usr_b7b3ccc0",
-        "usr_fc8fb1bd"
-      ]
-    }
-  },
-  "photoReviews": [
-    {
-      "id": "ph_d4f16169",
-      "userId": "test_user_1",
-      "userName": "Budi Test",
-      "userIdentifier": "21081010099",
-      "missionId": "spot-stage",
-      "missionName": "Stage Utama (Selfie Panggung)",
-      "photoBase64": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/testthumb",
-      "status": "APPROVED",
-      "timestamp": "15.45",
-      "createdAt": "2026-09-04T08:45:37.461Z"
-    },
-    {
-      "id": "ph_8f0d8c36",
-      "userId": "test_user_1",
-      "userName": "Budi Test",
-      "userIdentifier": "21081010099",
-      "missionId": "spot-stage",
-      "missionName": "Stage Utama (Selfie Panggung)",
-      "photoBase64": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/testthumb",
-      "status": "APPROVED",
-      "timestamp": "15.45",
-      "createdAt": "2026-09-04T08:45:13.267Z"
-    }
-  ]
+  "devices": {},
+  "photoReviews": []
 }
