@@ -1,0 +1,1690 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel Admin &amp; Challenge Builder — JELAJAH Expo PMW</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/jelajah.css">
+  <style>
+    body {
+      background: #F4F3EE;
+      color: #17241E;
+      min-height: 100vh;
+    }
+
+    .admin-shell {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .admin-header {
+      background: linear-gradient(135deg, var(--yupi-green-deep) 0%, var(--yupi-green) 100%);
+      color: var(--white);
+      border-radius: 16px;
+      padding: 20px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 16px rgba(14, 37, 25, 0.15);
+      margin-bottom: 20px;
+      border-bottom: 3.5px solid var(--yupi-gold);
+    }
+
+    .admin-header h1 {
+      font-family: 'Fredoka';
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .admin-header p {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.85);
+      margin-top: 3px;
+    }
+
+    .admin-nav-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-nav-admin {
+      background: rgba(255, 255, 255, 0.14);
+      color: var(--white);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn-nav-admin:hover {
+      background: var(--yupi-gold);
+      color: var(--ink-main);
+      border-color: var(--yupi-gold);
+    }
+
+    /* TABS SWITCHER */
+    .admin-tab-bar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 22px;
+      background: #E8E5DD;
+      padding: 6px;
+      border-radius: 14px;
+    }
+
+    .admin-tab-btn {
+      flex: 1;
+      padding: 12px 18px;
+      border: none;
+      background: transparent;
+      font-family: 'Fredoka';
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--forest);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .admin-tab-btn.active {
+      background: var(--forest);
+      color: #FFF;
+      box-shadow: 0 3px 10px rgba(11, 36, 24, 0.2);
+    }
+
+    /* WIFI CONNECTION HELPER BANNER */
+    .wifi-guide-card {
+      background: linear-gradient(135deg, var(--yupi-green-light) 0%, #FFF8E6 100%);
+      border: 2px solid var(--yupi-gold);
+      border-radius: 16px;
+      padding: 16px 20px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .wifi-guide-text h3 {
+      font-family: 'Fredoka';
+      font-size: 17px;
+      color: var(--yupi-green-deep);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .wifi-qr-box {
+      background: #FFF;
+      padding: 8px;
+      border-radius: 12px;
+      border: 2px solid var(--yupi-green);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      flex: none;
+    }
+
+    /* KPI STATS CARDS */
+    .admin-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .admin-stat-card {
+      background: var(--white);
+      border: 1.5px solid var(--line);
+      border-radius: 14px;
+      padding: 16px 20px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--ink-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .stat-val {
+      font-family: 'Fredoka';
+      font-size: 28px;
+      color: var(--forest);
+      margin-top: 4px;
+    }
+
+    .stat-desc {
+      font-size: 11.5px;
+      color: #6A7770;
+      margin-top: 2px;
+    }
+
+    /* MAIN ADMIN TWO-COLUMN LAYOUT */
+    .admin-main-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 24px;
+    }
+
+    .admin-panel-card {
+      background: var(--white);
+      border: 1.5px solid var(--line);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 24px;
+    }
+
+    .panel-card-title {
+      font-family: 'Fredoka';
+      font-size: 19px;
+      color: var(--forest);
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* SCANNER VIEWPORT ON LAPTOP */
+    .scanner-box-wrapper {
+      background: #0E2519;
+      border-radius: 14px;
+      overflow: hidden;
+      position: relative;
+      aspect-ratio: 16 / 10;
+      max-height: 280px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+    }
+
+    #webcamVideo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .scanner-target-guide {
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      border: 3px solid var(--gold);
+      border-radius: 16px;
+      box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.45);
+      pointer-events: none;
+      animation: targetPulse 2s infinite;
+    }
+
+    @keyframes targetPulse {
+      0%, 100% { border-color: var(--gold); }
+      50% { border-color: #FFA726; transform: scale(1.03); }
+    }
+
+    .scanner-laser {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: #FF5252;
+      box-shadow: 0 0 8px #FF5252;
+      animation: laserScan 2.2s ease-in-out infinite alternate;
+    }
+
+    @keyframes laserScan {
+      0% { top: 10%; }
+      100% { top: 90%; }
+    }
+
+    .scanner-controls {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .btn-cam-action {
+      background: var(--forest);
+      color: var(--white);
+      font-family: 'Fredoka';
+      font-weight: 600;
+      font-size: 13px;
+      padding: 9px 16px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .manual-code-bar {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .manual-code-input {
+      flex: 1;
+      padding: 12px 16px;
+      border: 2px solid var(--line);
+      border-radius: 10px;
+      font-family: 'Fredoka', monospace;
+      font-size: 16px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      outline: none;
+    }
+
+    .btn-verify-manual {
+      background: var(--yupi-gold);
+      color: var(--ink-main);
+      font-family: 'Fredoka';
+      font-weight: 700;
+      font-size: 14px;
+      padding: 0 20px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .validation-card {
+      border: 2px dashed #C9821F;
+      background: #FDF9EE;
+      border-radius: 14px;
+      padding: 20px;
+      margin-top: 16px;
+      display: none;
+    }
+
+    .validation-card.show {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .validation-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1.5px solid #ECD8B5;
+    }
+
+    .status-badge-ticket {
+      font-family: 'Fredoka';
+      font-size: 12px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-weight: 700;
+    }
+
+    .status-badge-ticket.ready { background: #D4EDDA; color: #155724; }
+    .status-badge-ticket.used { background: #F8D7DA; color: #721C24; }
+
+    .ticket-info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      font-size: 13.5px;
+      margin-bottom: 18px;
+    }
+
+    .btn-confirm-disburse {
+      width: 100%;
+      background: var(--yupi-green);
+      color: #FFF;
+      font-family: 'Fredoka';
+      font-size: 16px;
+      font-weight: 700;
+      padding: 14px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 0 var(--yupi-green-deep);
+    }
+
+    .btn-confirm-disburse:disabled {
+      background: #A0AEC0;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+
+    /* INVENTORY STOK (DIRECT NUMERIC INPUT) */
+    .inventory-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .inventory-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      border: 1.5px solid var(--line);
+      border-radius: 12px;
+      background: #FAFAF7;
+      gap: 12px;
+    }
+
+    .inventory-info h5 {
+      font-family: 'Fredoka';
+      font-size: 14.5px;
+      color: var(--forest);
+    }
+
+    .inventory-info p {
+      font-size: 11.5px;
+      color: var(--ink-muted);
+      margin-top: 2px;
+    }
+
+    .inventory-stock-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: none;
+    }
+
+    .stock-numeric-input {
+      width: 76px;
+      padding: 7px 8px;
+      font-family: 'Fredoka', monospace;
+      font-size: 16px;
+      font-weight: 700;
+      text-align: center;
+      border: 2px solid var(--forest);
+      border-radius: 8px;
+      background: #FFF;
+      outline: none;
+    }
+
+    .stock-numeric-input:focus {
+      border-color: var(--yupi-green);
+      box-shadow: 0 0 0 3px rgba(10, 135, 84, 0.2);
+    }
+
+    .btn-stock-save {
+      background: var(--forest);
+      color: #FFF;
+      font-family: 'Fredoka';
+      font-size: 12.5px;
+      font-weight: 600;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: background 0.15s;
+    }
+
+    .btn-stock-save:hover {
+      background: var(--yupi-green);
+    }
+
+    .stock-quick-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      border: 1px solid var(--line);
+      background: #EDE8DF;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      color: var(--forest);
+    }
+
+    /* AUDIT LOG TABLE */
+    .audit-table-wrap {
+      overflow-x: auto;
+    }
+
+    .audit-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      text-align: left;
+    }
+
+    .audit-table th {
+      background: #EFEBE4;
+      padding: 10px 12px;
+      font-weight: 600;
+      color: var(--forest-deep);
+    }
+
+    .audit-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    /* CHALLENGE BUILDER STYLES */
+    .challenge-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .challenge-filter-bar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .filter-chip {
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-family: 'Fredoka';
+      font-size: 13px;
+      border: 1.5px solid var(--line);
+      background: #FFF;
+      cursor: pointer;
+      color: var(--forest);
+    }
+
+    .filter-chip.active {
+      background: var(--forest);
+      color: #FFF;
+      border-color: var(--forest);
+    }
+
+    .challenge-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 16px;
+    }
+
+    .challenge-admin-card {
+      background: #FFF;
+      border: 2px solid var(--line);
+      border-radius: 14px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 12px;
+      position: relative;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .challenge-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .challenge-badge-row {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 6px;
+      flex-wrap: wrap;
+    }
+
+    .c-badge {
+      font-family: 'Fredoka';
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+
+    .c-badge-points { background: #FFF4D9; color: #8A5800; }
+    .c-badge-type { background: #E8F5E9; color: #1B5E20; }
+    .c-badge-zone { background: #EDE7F6; color: #4A148C; }
+
+    .c-title {
+      font-family: 'Fredoka';
+      font-size: 16px;
+      color: var(--forest);
+      margin: 0;
+    }
+
+    .c-details-box {
+      background: #FAF8F2;
+      border: 1px dashed #D6CDBF;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 12.5px;
+      color: #384A40;
+    }
+
+    .c-actions-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 8px;
+      border-top: 1px solid var(--line);
+    }
+
+    .btn-edit-c {
+      background: var(--forest);
+      color: #FFF;
+      font-family: 'Fredoka';
+      font-size: 13px;
+      padding: 7px 14px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-delete-c {
+      background: #FEE2E2;
+      color: #991B1B;
+      font-family: 'Fredoka';
+      font-size: 13px;
+      padding: 7px 12px;
+      border-radius: 8px;
+      border: 1px solid #FCA5A5;
+      cursor: pointer;
+    }
+
+    /* MODAL FORM BUILDER */
+    .builder-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(14, 37, 25, 0.65);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 16px;
+    }
+
+    .builder-modal-overlay.active {
+      display: flex;
+    }
+
+    .builder-modal-card {
+      background: #FFF;
+      border-radius: 18px;
+      width: 100%;
+      max-width: 680px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      position: relative;
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--forest);
+      margin-bottom: 5px;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1.5px solid var(--line);
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13.5px;
+      outline: none;
+      box-sizing: border-box;
+    }
+
+    .form-control:focus {
+      border-color: var(--forest);
+    }
+
+    .form-row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    @media (max-width: 960px) {
+      .admin-stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .admin-main-grid { grid-template-columns: 1fr; }
+      .wifi-guide-card { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="admin-shell">
+  <!-- TOP HEADER -->
+  <header class="admin-header">
+    <div style="display:flex; align-items:center; gap:14px;">
+      <div style="width:46px; height:46px; border-radius:12px; background:var(--yupi-gold); color:#0B2418; display:flex; align-items:center; justify-content:center; font-size:24px; box-shadow:0 3px 10px rgba(0,0,0,0.25); flex:none;">
+        🛡️
+      </div>
+      <div>
+        <h1>⚡ PANEL KONTROL &amp; ADMIN JELAJAH</h1>
+        <p>Kelola Misi, Kuis, Stok Hadiah &amp; Validasi Tiket Pengunjung Expo PMW</p>
+      </div>
+    </div>
+    <div class="admin-nav-links">
+      <a href="scanner.html" class="btn-nav-admin" style="background:var(--yupi-gold); color:var(--ink-main); border-color:var(--yupi-gold); font-weight:700;" target="_blank">📱 Scanner HP Panitia</a>
+      <a href="index.html" class="btn-nav-admin" target="_blank">🌐 Web Pengunjung</a>
+      <a href="tv-leaderboard.html" class="btn-nav-admin" target="_blank">📺 Layar TV</a>
+      <a href="admin-print-qr.html" class="btn-nav-admin" target="_blank">🖨️ Cetak QR Booth</a>
+    </div>
+  </header>
+
+  <!-- TAB NAVIGATION -->
+  <div class="admin-tab-bar">
+    <button class="admin-tab-btn active" id="tabBtnValidation">
+      <span>🎫</span> Validasi Tiket &amp; Stok Hadiah
+    </button>
+    <button class="admin-tab-btn" id="tabBtnMissions">
+      <span>🎯</span> Kelola Misi &amp; Tantangan (Challenge Builder)
+    </button>
+  </div>
+
+  <!-- SECTION 1: VALIDASI TIKET & INVENTORY HADIAH -->
+  <div id="sectionValidation">
+    <!-- WIFI CONNECTION & MOBILE SCANNER HELPER CARD -->
+    <div class="wifi-guide-card">
+      <div class="wifi-guide-text">
+        <h3>📶 Akses Melalui HP Panitia &amp; Pengunjung (WiFi Expo)</h3>
+        <p style="margin-top:6px; font-size:13px; line-height:1.6; color:#4B3614;">
+          Gunakan kamera belakang HP Panitia untuk mempermudah scan QR tiket pengunjung:<br>
+          • <strong>Scanner HP Panitia:</strong> <code style="background:#FFF; padding:3px 8px; border-radius:6px; font-weight:700; color:var(--yupi-green-deep); border:1px solid #C8E6C9;" id="scannerUrlDisplay">http://localhost:3000/scanner.html</code><br>
+          • <strong>Web Pengunjung:</strong> <code style="background:#FFF; padding:3px 8px; border-radius:6px; font-weight:700; color:var(--yupi-green); border:1px solid #C8E6C9;" id="wifiUrlDisplay">http://localhost:3000</code>
+        </p>
+        <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
+          <a href="scanner.html" target="_blank" style="background:var(--yupi-green); color:#FFF; font-family:'Fredoka'; font-size:14px; padding:10px 18px; border-radius:10px; text-decoration:none; font-weight:700; box-shadow:0 3px 0 var(--yupi-green-deep); display:inline-flex; align-items:center; gap:6px;">
+            <span>📸</span> Buka Scanner di HP Panitia
+          </a>
+        </div>
+      </div>
+      <div class="wifi-qr-box" id="wifiQrBox">
+        <div id="wifiQrContainer" style="width:116px; height:116px; display:flex; align-items:center; justify-content:center;"></div>
+        <span style="font-size:10px; font-weight:700; color:var(--yupi-green-deep); margin-top:6px;">SCAN HP PANITIA</span>
+      </div>
+    </div>
+
+    <!-- QUICK STATS (KPI REKAP EXPO) -->
+    <div class="admin-stats-grid">
+      <div class="admin-stat-card">
+        <div class="stat-label">Total Hadiah Diserahkan</div>
+        <div class="stat-val" id="statDisbursedCount">0</div>
+        <div class="stat-desc">Voucher &amp; merchandise terverifikasi</div>
+      </div>
+      <div class="admin-stat-card">
+        <div class="stat-label">Pengunjung Terdaftar</div>
+        <div class="stat-val" id="statVisitorsCount">0</div>
+        <div class="stat-desc">Peserta aktif akun Jelajah</div>
+      </div>
+      <div class="admin-stat-card">
+        <div class="stat-label">Total Tantangan Aktif</div>
+        <div class="stat-val" id="statMissionsCount">29</div>
+        <div class="stat-desc">Booth kuliner, sponsor &amp; gate</div>
+      </div>
+      <div class="admin-stat-card">
+        <div class="stat-label">Sistem Backend</div>
+        <div class="stat-val" style="font-size:20px; color:var(--teal);">ONLINE &amp; SINKRON</div>
+        <div class="stat-desc">Anti-Nuyul Device Lock Aktif</div>
+      </div>
+    </div>
+
+    <!-- MAIN GRID: SCANNER & VALIDATION (LEFT) + INVENTORY & LOG (RIGHT) -->
+    <div class="admin-main-grid">
+      <!-- LEFT: WEBCAM SCANNER & VALIDASI TIKET -->
+      <div>
+        <div class="admin-panel-card">
+          <div class="panel-card-title">
+            <span>📷 Scanner Webcam Laptop</span>
+            <span style="font-size:12px; color:var(--ink-muted); font-weight:normal;">Bisa gunakan webcam laptop</span>
+          </div>
+
+          <div class="scanner-box-wrapper">
+            <video id="webcamVideo" autoplay playsinline muted></video>
+            <div class="scanner-target-guide">
+              <div class="scanner-laser"></div>
+            </div>
+          </div>
+
+          <div class="scanner-controls">
+            <button class="btn-cam-action" id="btnStartCam">🎥 Nyalakan Kamera Webcam</button>
+            <button class="btn-cam-action" id="btnStopCam" style="background:#8C442A; display:none;">⏹️ Matikan Kamera</button>
+            <span id="camStatusText" style="font-size:12px; color:var(--ink-muted); align-self:center;">Status: Kamera belum aktif</span>
+          </div>
+
+          <!-- MANUAL CODE INPUT ALTERNATIVE -->
+          <div style="margin-top:16px; padding-top:14px; border-top:1px solid var(--line);">
+            <label style="font-size:12.5px; font-weight:700; color:var(--forest); display:block; margin-bottom:4px;">
+              ATAU KETIK KODE TIKET PENGUNJUNG (4 - 8 Karakter):
+            </label>
+            <div class="manual-code-bar">
+              <input type="text" id="manualTicketInput" class="manual-code-input" placeholder="Contoh: JLJ-9824" maxlength="12" />
+              <button class="btn-verify-manual" id="btnCheckManual">Periksa Tiket</button>
+            </div>
+          </div>
+
+          <!-- VALIDATION RESULT CARD -->
+          <div class="validation-card" id="validationResultCard">
+            <div class="validation-card-header">
+              <div>
+                <div style="font-size:11px; text-transform:uppercase; font-weight:700; color:#8C5913;">TIKET TERDETEKSI:</div>
+                <h3 id="resRewardName" style="font-family:'Fredoka'; font-size:20px; color:var(--forest);">Nama Hadiah</h3>
+              </div>
+              <span class="status-badge-ticket ready" id="resStatusBadge">SIAP DISERAHKAN</span>
+            </div>
+
+            <div class="ticket-info-grid">
+              <div><strong>Kode Tiket:</strong> <span id="resToken">JLJ-XXXX</span></div>
+              <div><strong>Nama Penjelajah:</strong> <span id="resUserName">-</span></div>
+              <div><strong>Identitas/NIM/WA:</strong> <span id="resUserIdent">-</span></div>
+              <div><strong>Biaya Poin:</strong> <span id="resCost">-</span> pts</div>
+              <div><strong>Waktu Klaim:</strong> <span id="resTime">-</span></div>
+              <div><strong>Perangkat HP:</strong> <span id="resDevice">-</span></div>
+            </div>
+
+            <button class="btn-confirm-disburse" id="btnDisburseReward">
+              <span>✅</span> Konfirmasi &amp; Serahkan Hadiah Fisik
+            </button>
+          </div>
+        </div>
+
+        <!-- AUDIT LOG (RIWAYAT TERAKHIR) -->
+        <div class="admin-panel-card">
+          <div class="panel-card-title">
+            <span>📋 Riwayat Penukaran Hadiah Real-Time</span>
+            <button id="btnExportCSV" style="background:#EFEBE4; color:var(--forest); font-size:12px; font-weight:700; padding:6px 12px; border-radius:6px; border:none; cursor:pointer;">
+              📥 Export Rekap (CSV)
+            </button>
+          </div>
+          <div class="audit-table-wrap">
+            <table class="audit-table">
+              <thead>
+                <tr>
+                  <th>Waktu</th>
+                  <th>Pengunjung</th>
+                  <th>Identitas</th>
+                  <th>Hadiah</th>
+                  <th>Kode</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="auditTableBody">
+                <!-- Rendered via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: MANAJEMEN STOK HADIAH (INVENTORY DIRECT INPUT) -->
+      <div>
+        <div class="admin-panel-card">
+          <div class="panel-card-title">
+            <span>📦 Kuota &amp; Stok Hadiah (Input Nominal)</span>
+            <span style="font-size:11.5px; color:var(--teal); font-weight:600;">Ketik &amp; Simpan</span>
+          </div>
+          <p style="font-size:12.5px; color:var(--ink-muted); margin-bottom:14px;">
+            Ketik angka nominal stok di kolom, lalu tekan tombol <strong>Simpan</strong> atau Enter untuk memperbarui kuota hadiah.
+          </p>
+          <div class="inventory-list" id="inventoryList">
+            <!-- Rendered via JS with direct number inputs -->
+          </div>
+        </div>
+
+        <!-- OPERASIONAL ADMIN & ANTI NUYUL -->
+        <div class="admin-panel-card" style="background:#FBF8F0; border-color:#E6D5B8;">
+          <h4 style="font-family:'Fredoka'; font-size:16px; color:#6B4B18; margin-bottom:8px;">
+            🛡️ Proteksi Anti-Nuyul &amp; Panduan Meja Hadiah
+          </h4>
+          <ul style="font-size:12.5px; color:#5D4622; line-height:1.6; padding-left:18px;">
+            <li><strong>Device Lock:</strong> Setiap browser HP pengunjung dikunci. 1 HP hanya berhak menukar 1x per jenis hadiah.</li>
+            <li><strong>Verifikasi Identitas:</strong> Sebelum menekan <em>Konfirmasi &amp; Serahkan</em>, mintalah pengunjung menunjukkan KTM / bukti identitas sesuai nama di layar.</li>
+            <li><strong>Kode Tiket Hangus:</strong> Begitu panitia menekan tombol konfirmasi, status tiket berubah jadi <em>DISBURSED</em> dan tidak bisa dipakai ulang.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: CHALLENGE BUILDER (KELOLA MISI & TANTANGAN FULL CUSTOMIZABLE) -->
+  <div id="sectionMissions" style="display:none;">
+    <div class="admin-panel-card">
+      <div class="challenge-toolbar">
+        <div>
+          <h3 style="font-family:'Fredoka'; font-size:20px; color:var(--forest); margin:0;">
+            🎯 Challenge Builder — Atur Kuis, Jawaban &amp; Booth
+          </h3>
+          <p style="font-size:12.5px; color:var(--ink-muted); margin-top:3px;">
+            Ubah pertanyaan, kunci jawaban, kode rahasia tenant, poin tantangan, atau tambahkan booth baru.
+          </p>
+        </div>
+        <div style="display:flex; gap:10px;">
+          <button id="btnResetMissions" style="background:#EDE8DF; color:#684D12; font-family:'Fredoka'; font-size:13px; font-weight:700; padding:10px 16px; border-radius:10px; border:1px solid #D6CDBF; cursor:pointer;">
+            ⟲ Reset ke Denah PMW
+          </button>
+          <button id="btnAddNewMission" style="background:var(--yupi-green); color:#FFF; font-family:'Fredoka'; font-size:14px; font-weight:700; padding:10px 18px; border-radius:10px; border:none; cursor:pointer; box-shadow:0 3px 0 var(--yupi-green-deep);">
+            ➕ Tambah Tantangan Baru
+          </button>
+        </div>
+      </div>
+
+      <!-- FILTER & SEARCH BAR -->
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:20px; background:#FAF7F0; padding:12px 16px; border-radius:12px; border:1px solid var(--line);">
+        <div class="challenge-filter-bar">
+          <button class="filter-chip active" data-cfilter="all">Semua (<span id="countAllMissions">0</span>)</button>
+          <button class="filter-chip" data-cfilter="makanan">🍔 Kuliner 1-12 (<span id="countFoodMissions">0</span>)</button>
+          <button class="filter-chip" data-cfilter="sponsor">🏢 Sponsor A-M (<span id="countSponsorMissions">0</span>)</button>
+          <button class="filter-chip" data-cfilter="special">📍 Spot Khusus (<span id="countSpecialMissions">0</span>)</button>
+        </div>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <input type="text" id="missionSearchInput" placeholder="Cari nama booth / ID..." style="padding:8px 12px; border-radius:8px; border:1.5px solid var(--line); font-size:13px; width:220px; outline:none;" />
+        </div>
+      </div>
+
+      <!-- MISSION CARDS GRID -->
+      <div class="challenge-cards-grid" id="challengeCardsGrid">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- MODAL FORM: CREATE / EDIT MISSION -->
+<div class="builder-modal-overlay" id="missionModalOverlay">
+  <div class="builder-modal-card">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; padding-bottom:12px; border-bottom:1.5px solid var(--line);">
+      <h3 id="modalMissionHeading" style="font-family:'Fredoka'; font-size:20px; color:var(--forest); margin:0;">
+        ✏️ Edit Tantangan Booth
+      </h3>
+      <button id="btnCloseMissionModal" style="background:transparent; border:none; font-size:24px; cursor:pointer; color:var(--ink-muted);">&times;</button>
+    </div>
+
+    <form id="missionEditForm">
+      <div class="form-row-2">
+        <div class="form-group">
+          <label>ID UNIK BOOTH / MISI:</label>
+          <input type="text" id="mFormId" class="form-control" required placeholder="Contoh: booth-makan-1 atau booth-kopi" />
+        </div>
+        <div class="form-group">
+          <label>KATEGORI ZONA:</label>
+          <select id="mFormCategory" class="form-control">
+            <option value="makanan">🍔 Kuliner / Makanan (1-12)</option>
+            <option value="sponsor">🏢 Tenant Sponsor (A-M)</option>
+            <option value="special">📍 Spot Khusus / Gate / Panggung</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row-2">
+        <div class="form-group">
+          <label>NAMA BOOTH / JUDUL:</label>
+          <input type="text" id="mFormName" class="form-control" required placeholder="Contoh: Booth 1: Ayam Geprek Kampus" />
+        </div>
+        <div class="form-group">
+          <label>NAMA ZONA LOKASI:</label>
+          <input type="text" id="mFormZone" class="form-control" placeholder="Contoh: Klaster Makanan Barat" />
+        </div>
+      </div>
+
+      <div class="form-row-2">
+        <div class="form-group">
+          <label>POIN REWARD (+PTS):</label>
+          <input type="number" id="mFormPoints" class="form-control" min="5" max="100" value="20" required />
+        </div>
+        <div class="form-group">
+          <label>IKON EMOJI:</label>
+          <input type="text" id="mFormIcon" class="form-control" value="🍗" maxlength="4" />
+        </div>
+      </div>
+
+      <div class="form-row-2">
+        <div class="form-group">
+          <label>KOORDINAT DENAH X (%):</label>
+          <input type="number" id="mFormCoordX" class="form-control" step="0.5" min="0" max="100" value="35" />
+        </div>
+        <div class="form-group">
+          <label>KOORDINAT DENAH Y (%):</label>
+          <input type="number" id="mFormCoordY" class="form-control" step="0.5" min="0" max="100" value="70" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>TIPE TANTANGAN PENGUNJUNG:</label>
+        <select id="mFormType" class="form-control">
+          <option value="trivia">📝 Kuis Trivia Pilihan Ganda</option>
+          <option value="code">🔑 Kode Rahasia Tenant (Ketik Kode)</option>
+          <option value="checkin">📍 Check-in Instan Lokasi</option>
+          <option value="photo">📸 Foto Selfie / Unggah Foto</option>
+        </select>
+      </div>
+
+      <!-- SUB-FORM: KUIS / TRIVIA -->
+      <div id="subFormQuiz" style="background:#F6FAF7; border:1.5px solid #C8E6C9; border-radius:12px; padding:14px; margin-bottom:14px;">
+        <div class="form-group">
+          <label style="color:#1B5E20;">PERTANYAAN KUIS:</label>
+          <textarea id="mFormQuestion" class="form-control" rows="2" placeholder="Tuliskan pertanyaan tantangan..."></textarea>
+        </div>
+        <div class="form-row-2">
+          <div class="form-group">
+            <label style="color:#1B5E20;">PILIHAN A:</label>
+            <input type="text" id="mFormOpt0" class="form-control" placeholder="Jawaban A" />
+          </div>
+          <div class="form-group">
+            <label style="color:#1B5E20;">PILIHAN B:</label>
+            <input type="text" id="mFormOpt1" class="form-control" placeholder="Jawaban B" />
+          </div>
+        </div>
+        <div class="form-row-2">
+          <div class="form-group">
+            <label style="color:#1B5E20;">PILIHAN C:</label>
+            <input type="text" id="mFormOpt2" class="form-control" placeholder="Jawaban C" />
+          </div>
+          <div class="form-group">
+            <label style="color:#1B5E20;">PILIHAN D:</label>
+            <input type="text" id="mFormOpt3" class="form-control" placeholder="Jawaban D" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label style="color:#1B5E20;">KUNCI JAWABAN BENAR:</label>
+          <select id="mFormAnswerIndex" class="form-control" style="font-weight:700;">
+            <option value="0">Jawaban A</option>
+            <option value="1">Jawaban B</option>
+            <option value="2">Jawaban C</option>
+            <option value="3">Jawaban D</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- SUB-FORM: KODE RAHASIA TENANT -->
+      <div id="subFormCode" style="background:#FFF9E6; border:1.5px solid #FFE082; border-radius:12px; padding:14px; margin-bottom:14px; display:none;">
+        <div class="form-group">
+          <label style="color:#8A5800;">KODE RAHASIA RESMI TENANT (YANG HARUS DIKETIK PENGUNJUNG):</label>
+          <input type="text" id="mFormSecretCode" class="form-control" style="font-family:'Fredoka', monospace; font-size:16px; font-weight:700; text-transform:uppercase; letter-spacing:2px;" placeholder="Contoh: JLJ-GEPREK1" />
+          <p style="font-size:11.5px; color:#7D5608; margin-top:4px;">
+            Kode ini bisa ditempel di meja booth atau dicetak di lembar QR agar pengunjung mendatangi tenant.
+          </p>
+        </div>
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:16px; padding-top:12px; border-top:1.5px solid var(--line);">
+        <button type="button" id="btnCancelMissionModal" style="background:#EFEBE4; color:var(--forest); font-family:'Fredoka'; font-size:14px; padding:10px 18px; border-radius:10px; border:none; cursor:pointer;">
+          Batal
+        </button>
+        <button type="submit" style="background:var(--yupi-green); color:#FFF; font-family:'Fredoka'; font-size:14px; font-weight:700; padding:10px 22px; border-radius:10px; border:none; cursor:pointer; box-shadow:0 3px 0 var(--yupi-green-deep);">
+          💾 Simpan Tantangan
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="js/qrcode.min.js"></script>
+<script>
+  const ADMIN_PIN = 'jelajah1945';
+
+  // --- AUDIO SYNTH (BEEP) ---
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  let audioCtx = null;
+  function playBeep(freq = 880, duration = 0.12) {
+    try {
+      if (!audioCtx) audioCtx = new AudioCtx();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + duration);
+    } catch(e) {}
+  }
+
+  // --- TAB SWITCHER LOGIC ---
+  const tabBtnValidation = document.getElementById('tabBtnValidation');
+  const tabBtnMissions = document.getElementById('tabBtnMissions');
+  const sectionValidation = document.getElementById('sectionValidation');
+  const sectionMissions = document.getElementById('sectionMissions');
+
+  tabBtnValidation.addEventListener('click', () => {
+    tabBtnValidation.classList.add('active');
+    tabBtnMissions.classList.remove('active');
+    sectionValidation.style.display = 'block';
+    sectionMissions.style.display = 'none';
+  });
+
+  tabBtnMissions.addEventListener('click', () => {
+    tabBtnMissions.classList.add('active');
+    tabBtnValidation.classList.remove('active');
+    sectionValidation.style.display = 'none';
+    sectionMissions.style.display = 'block';
+    renderChallengeCards();
+  });
+
+  // --- NETWORK INFO & QR HP ---
+  async function initNetworkInfo() {
+    let host = window.location.hostname;
+    let port = window.location.port || 3000;
+    try {
+      const res = await fetch('/api/info');
+      if (res.ok) {
+        const info = await res.json();
+        if (info.primaryIP && info.primaryIP !== 'localhost') host = info.primaryIP;
+        if (info.port) port = info.port;
+      }
+    } catch(e) {}
+
+    const targetUrl = `http://${host}:${port}`;
+    const scannerUrl = `${targetUrl}/scanner.html`;
+
+    document.getElementById('wifiUrlDisplay').textContent = targetUrl;
+    const scEl = document.getElementById('scannerUrlDisplay');
+    if (scEl) scEl.textContent = scannerUrl;
+
+    const qrContainer = document.getElementById('wifiQrContainer');
+    if (qrContainer && window.QRCode) {
+      qrContainer.innerHTML = '';
+      new window.QRCode(qrContainer, {
+        text: scannerUrl,
+        width: 112,
+        height: 112,
+        colorDark: '#0A8754',
+        colorLight: '#ffffff',
+        correctLevel: window.QRCode.CorrectLevel.M
+      });
+    }
+  }
+
+  initNetworkInfo();
+
+  // --- WEBCAM LAPTOP SCANNER ---
+  let videoStream = null;
+  let scanInterval = null;
+  const videoEl = document.getElementById('webcamVideo');
+  const btnStartCam = document.getElementById('btnStartCam');
+  const btnStopCam = document.getElementById('btnStopCam');
+  const camStatusText = document.getElementById('camStatusText');
+
+  btnStartCam.addEventListener('click', async () => {
+    try {
+      videoStream = await navigator.mediaDevices.getUserMedia({
+        video: { width: { ideal: 640 }, height: { ideal: 480 }, facingMode: 'user' }
+      });
+      videoEl.srcObject = videoStream;
+      btnStartCam.style.display = 'none';
+      btnStopCam.style.display = 'inline-flex';
+      camStatusText.textContent = 'Kamera aktif — Siap scan!';
+      camStatusText.style.color = '#2E7D32';
+
+      if ('BarcodeDetector' in window) {
+        const barcodeDetector = new BarcodeDetector({ formats: ['qr_code'] });
+        scanInterval = setInterval(async () => {
+          try {
+            const barcodes = await barcodeDetector.detect(videoEl);
+            if (barcodes.length > 0) {
+              handleDetectedCode(barcodes[0].rawValue);
+            }
+          } catch(err) {}
+        }, 600);
+      }
+    } catch(err) {
+      alert('Tidak dapat membuka webcam laptop. Silakan ketik kode tiket di kolom bawah.');
+      camStatusText.textContent = 'Webcam tidak terdeteksi/diizinkan.';
+    }
+  });
+
+  btnStopCam.addEventListener('click', () => {
+    if (videoStream) {
+      videoStream.getTracks().forEach(track => track.stop());
+      videoStream = null;
+    }
+    if (scanInterval) clearInterval(scanInterval);
+    videoEl.srcObject = null;
+    btnStartCam.style.display = 'inline-flex';
+    btnStopCam.style.display = 'none';
+    camStatusText.textContent = 'Status: Kamera dimatikan';
+    camStatusText.style.color = 'var(--ink-muted)';
+  });
+
+  // MANUAL CODE INPUT
+  document.getElementById('btnCheckManual').addEventListener('click', () => {
+    const inputVal = document.getElementById('manualTicketInput').value.trim().toUpperCase();
+    if (!inputVal) {
+      alert('Ketik kode tiket terlebih dahulu!');
+      return;
+    }
+    handleDetectedCode(inputVal);
+  });
+
+  document.getElementById('manualTicketInput').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') document.getElementById('btnCheckManual').click();
+  });
+
+  // TICKET LOOKUP & VERIFICATION
+  let currentInspectedTicket = null;
+
+  async function handleDetectedCode(rawText) {
+    playBeep(880, 0.1);
+    let token = rawText.trim().toUpperCase();
+    if (token.includes('=')) token = token.split('=').pop();
+
+    try {
+      const res = await fetch(`/api/ticket?token=${encodeURIComponent(token)}`);
+      const data = await res.json();
+      if (!res.ok || !data.ticket) {
+        alert(data.error || `Tiket "${token}" tidak ditemukan di database server!`);
+        return;
+      }
+      displayValidationCard(data.ticket);
+    } catch (e) {
+      alert('Gagal menghubungi server: ' + e.message);
+    }
+  }
+
+  function displayValidationCard(ticket) {
+    currentInspectedTicket = ticket;
+    const card = document.getElementById('validationResultCard');
+    const badge = document.getElementById('resStatusBadge');
+    const btn = document.getElementById('btnDisburseReward');
+
+    document.getElementById('resRewardName').textContent = ticket.rewardName;
+    document.getElementById('resToken').textContent = ticket.token;
+    document.getElementById('resUserName').textContent = ticket.userName;
+    document.getElementById('resUserIdent').textContent = ticket.userIdentifier || '-';
+    document.getElementById('resCost').textContent = ticket.cost;
+    document.getElementById('resTime').textContent = ticket.createdAt || '-';
+    document.getElementById('resDevice').textContent = ticket.deviceId ? ticket.deviceId.substring(0, 10) + '...' : '-';
+
+    if (ticket.status === 'DISBURSED') {
+      badge.textContent = 'SUDAH PERNAH DIAMBIL (HANGUS)';
+      badge.className = 'status-badge-ticket used';
+      btn.disabled = true;
+      btn.innerHTML = `⚠️ Hadiah Sudah Pernah Diserahkan (${ticket.disbursedAt || 'Tadi'})`;
+    } else {
+      badge.textContent = 'SIAP DISERAHKAN ✓';
+      badge.className = 'status-badge-ticket ready';
+      btn.disabled = false;
+      btn.innerHTML = `<span>✅</span> Konfirmasi &amp; Serahkan Hadiah Fisik`;
+    }
+
+    card.classList.add('show');
+    card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  document.getElementById('btnDisburseReward').addEventListener('click', async () => {
+    if (!currentInspectedTicket) return;
+    try {
+      const res = await fetch('/api/admin/verify', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Admin-Key': ADMIN_PIN
+        },
+        body: JSON.stringify({ token: currentInspectedTicket.token })
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert(data.error || 'Gagal memverifikasi tiket');
+        return;
+      }
+
+      playBeep(1046, 0.25);
+      alert(`Sukses! Hadiah "${data.ticket.rewardName}" telah diverifikasi dan resmi diserahkan kepada ${data.ticket.userName}. Kuota terpakai.`);
+      displayValidationCard(data.ticket);
+      fetchAdminStats();
+    } catch (e) {
+      alert('Gagal menghubungi server: ' + e.message);
+    }
+  });
+
+  // --- STATS, REWARDS & AUDIT LOG ---
+  let cachedTickets = [];
+  let cachedMissions = [];
+
+  async function fetchAdminStats() {
+    try {
+      const res = await fetch('/api/admin/stats', {
+        headers: { 'X-Admin-Key': ADMIN_PIN }
+      });
+      if (!res.ok) return;
+      const data = await res.json();
+
+      document.getElementById('statDisbursedCount').textContent = data.stats.totalDisbursed;
+      document.getElementById('statVisitorsCount').textContent = data.stats.totalVisitors;
+      document.getElementById('statMissionsCount').textContent = data.stats.totalMissions || 29;
+
+      renderInventory(data.rewards || []);
+      cachedTickets = data.tickets || [];
+      renderAuditTable(cachedTickets);
+
+      if (data.missions) {
+        cachedMissions = data.missions;
+        updateMissionCounters();
+      }
+    } catch(e) {}
+  }
+
+  function renderAuditTable(tickets) {
+    const tbody = document.getElementById('auditTableBody');
+    tbody.innerHTML = '';
+
+    if (tickets.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#8C9992; padding:18px;">Belum ada penukaran hadiah hari ini.</td></tr>';
+      return;
+    }
+
+    tickets.slice().reverse().forEach(row => {
+      const tr = document.createElement('tr');
+      const isDisbursed = row.status === 'DISBURSED';
+      tr.innerHTML = `
+        <td><strong>${row.disbursedAt || row.createdAt || '-'}</strong></td>
+        <td>${row.userName}</td>
+        <td><small>${row.userIdentifier || '-'}</small></td>
+        <td>${row.rewardName}</td>
+        <td><code>${row.token}</code></td>
+        <td>
+          <span style="font-size:11px; font-weight:700; padding:2px 8px; border-radius:999px; background:${isDisbursed ? '#E8F5E9' : '#FFF3E0'}; color:${isDisbursed ? '#2E7D32' : '#E65100'};">
+            ${isDisbursed ? 'SUDAH DIAMBIL ✓' : 'MENUNGGU KLAIM'}
+          </span>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  // --- INVENTORY MANAGEMENT DENGAN INPUT ANGKA LANGSUNG ---
+  function renderInventory(rewards) {
+    const listEl = document.getElementById('inventoryList');
+    listEl.innerHTML = '';
+
+    rewards.forEach(rw => {
+      const row = document.createElement('div');
+      row.className = 'inventory-row';
+      row.innerHTML = `
+        <div class="inventory-info">
+          <h5>${rw.name}</h5>
+          <p>Biaya: <strong>${rw.cost} pts</strong> · Sponsor: ${rw.sponsor}</p>
+        </div>
+        <div class="inventory-stock-controls">
+          <button class="stock-quick-btn btn-q-minus" data-id="${rw.id}">-5</button>
+          <input type="number" min="0" class="stock-numeric-input" id="stockInput_${rw.id}" value="${rw.stock}" title="Ketik angka langsung" />
+          <button class="stock-quick-btn btn-q-plus" data-id="${rw.id}">+5</button>
+          <button class="btn-stock-save" data-id="${rw.id}">💾 Simpan</button>
+        </div>
+      `;
+
+      const input = row.querySelector(`#stockInput_${rw.id}`);
+      const btnSave = row.querySelector('.btn-stock-save');
+
+      btnSave.addEventListener('click', async () => {
+        const val = parseInt(input.value) || 0;
+        await setDirectStock(rw.id, val);
+      });
+
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') btnSave.click();
+      });
+
+      row.querySelector('.btn-q-minus').addEventListener('click', async () => {
+        const current = parseInt(input.value) || 0;
+        const next = Math.max(0, current - 5);
+        input.value = next;
+        await setDirectStock(rw.id, next);
+      });
+
+      row.querySelector('.btn-q-plus').addEventListener('click', async () => {
+        const current = parseInt(input.value) || 0;
+        const next = current + 5;
+        input.value = next;
+        await setDirectStock(rw.id, next);
+      });
+
+      listEl.appendChild(row);
+    });
+  }
+
+  async function setDirectStock(rewardId, stock) {
+    try {
+      const res = await fetch('/api/admin/reward/set-stock', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Admin-Key': ADMIN_PIN
+        },
+        body: JSON.stringify({ rewardId, stock })
+      });
+      if (res.ok) {
+        playBeep(980, 0.08);
+        fetchAdminStats();
+      }
+    } catch(e) {}
+  }
+
+  // --- CHALLENGE BUILDER LOGIC ---
+  let activeChallengeFilter = 'all';
+
+  async function loadMissionsData() {
+    try {
+      const res = await fetch('/api/missions');
+      if (res.ok) {
+        const data = await res.json();
+        cachedMissions = data.missions || [];
+        updateMissionCounters();
+        renderChallengeCards();
+      }
+    } catch(e) {}
+  }
+
+  function updateMissionCounters() {
+    document.getElementById('countAllMissions').textContent = cachedMissions.length;
+    document.getElementById('countFoodMissions').textContent = cachedMissions.filter(m => m.category === 'makanan').length;
+    document.getElementById('countSponsorMissions').textContent = cachedMissions.filter(m => m.category === 'sponsor').length;
+    document.getElementById('countSpecialMissions').textContent = cachedMissions.filter(m => m.category === 'special').length;
+  }
+
+  document.querySelectorAll('.filter-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      activeChallengeFilter = chip.dataset.cfilter;
+      renderChallengeCards();
+    });
+  });
+
+  document.getElementById('missionSearchInput').addEventListener('input', () => {
+    renderChallengeCards();
+  });
+
+  function renderChallengeCards() {
+    const grid = document.getElementById('challengeCardsGrid');
+    grid.innerHTML = '';
+
+    const query = (document.getElementById('missionSearchInput').value || '').toLowerCase().trim();
+
+    let filtered = cachedMissions.filter(m => {
+      if (activeChallengeFilter !== 'all' && m.category !== activeChallengeFilter) return false;
+      if (query) {
+        const text = `${m.id} ${m.name} ${m.zone || ''} ${m.title || ''}`.toLowerCase();
+        if (!text.includes(query)) return false;
+      }
+      return true;
+    });
+
+    if (filtered.length === 0) {
+      grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:30px; color:#8C9992;">Tidak ada tantangan yang cocok dengan filter.</div>';
+      return;
+    }
+
+    filtered.forEach(m => {
+      const card = document.createElement('div');
+      card.className = 'challenge-admin-card';
+
+      let taskSummary = '';
+      if (m.type === 'trivia' && m.task && m.task.question) {
+        const ansIdx = m.task.answerIndex || 0;
+        const ansText = (m.task.options && m.task.options[ansIdx]) ? m.task.options[ansIdx] : '-';
+        taskSummary = `
+          <strong>Kuis:</strong> "${m.task.question}"<br>
+          <span style="color:#1B5E20; font-weight:700;">Kunci Jawaban: [${['A','B','C','D'][ansIdx]}] ${ansText}</span>
+        `;
+      } else if (m.secretCode) {
+        taskSummary = `<strong>Kode Rahasia:</strong> <code style="font-family:'Fredoka'; font-weight:700; color:var(--yupi-green-deep);">${m.secretCode}</code>`;
+      } else {
+        taskSummary = `<strong>Instruksi:</strong> ${m.desc || m.title || 'Check-in langsung di lokasi'}`;
+      }
+
+      card.innerHTML = `
+        <div>
+          <div class="challenge-card-header">
+            <div>
+              <div class="challenge-badge-row">
+                <span class="c-badge c-badge-points">+${m.points} Poin</span>
+                <span class="c-badge c-badge-type">${(m.type || 'checkin').toUpperCase()}</span>
+                <span class="c-badge c-badge-zone">${m.zone || m.category}</span>
+              </div>
+              <h4 class="c-title">${m.icon || '📍'} ${m.name}</h4>
+              <small style="color:var(--ink-muted); font-size:11px;">ID: <code>${m.id}</code> · Denah: (${m.coords ? m.coords.x : 0}%, ${m.coords ? m.coords.y : 0}%)</small>
+            </div>
+          </div>
+          <div class="c-details-box" style="margin-top:10px;">
+            ${taskSummary}
+          </div>
+        </div>
+        <div class="c-actions-row">
+          <button class="btn-delete-c" data-id="${m.id}">🗑️ Hapus</button>
+          <button class="btn-edit-c" data-id="${m.id}">✏️ Edit Tantangan</button>
+        </div>
+      `;
+
+      card.querySelector('.btn-edit-c').addEventListener('click', () => openMissionModal(m));
+      card.querySelector('.btn-delete-c').addEventListener('click', () => deleteMission(m.id, m.name));
+
+      grid.appendChild(card);
+    });
+  }
+
+  // --- MODAL EDIT / CREATE MISSION ---
+  const modalOverlay = document.getElementById('missionModalOverlay');
+  const btnCloseModal = document.getElementById('btnCloseMissionModal');
+  const btnCancelModal = document.getElementById('btnCancelMissionModal');
+  const missionEditForm = document.getElementById('missionEditForm');
+  const mFormType = document.getElementById('mFormType');
+  const subFormQuiz = document.getElementById('subFormQuiz');
+  const subFormCode = document.getElementById('subFormCode');
+
+  function openMissionModal(m = null) {
+    document.getElementById('modalMissionHeading').textContent = m ? `✏️ Edit: ${m.name}` : '➕ Tambah Booth / Tantangan Baru';
+    document.getElementById('mFormId').value = m ? m.id : `booth-baru-${Date.now()}`;
+    document.getElementById('mFormId').readOnly = !!m;
+    document.getElementById('mFormName').value = m ? m.name : '';
+    document.getElementById('mFormCategory').value = m ? m.category : 'makanan';
+    document.getElementById('mFormZone').value = m ? (m.zone || '') : 'Klaster Makanan';
+    document.getElementById('mFormPoints').value = m ? m.points : 20;
+    document.getElementById('mFormIcon').value = m ? (m.icon || '📍') : '📍';
+    document.getElementById('mFormCoordX').value = m && m.coords ? m.coords.x : 50;
+    document.getElementById('mFormCoordY').value = m && m.coords ? m.coords.y : 50;
+    document.getElementById('mFormType').value = m ? (m.type || 'trivia') : 'trivia';
+
+    // Quiz fields
+    const task = m && m.task ? m.task : {};
+    document.getElementById('mFormQuestion').value = task.question || '';
+    const opts = task.options || ['', '', '', ''];
+    document.getElementById('mFormOpt0').value = opts[0] || '';
+    document.getElementById('mFormOpt1').value = opts[1] || '';
+    document.getElementById('mFormOpt2').value = opts[2] || '';
+    document.getElementById('mFormOpt3').value = opts[3] || '';
+    document.getElementById('mFormAnswerIndex').value = task.answerIndex !== undefined ? task.answerIndex : 0;
+
+    // Code fields
+    document.getElementById('mFormSecretCode').value = m ? (m.secretCode || '') : '';
+
+    toggleSubForms();
+    modalOverlay.classList.add('active');
+  }
+
+  function toggleSubForms() {
+    const type = mFormType.value;
+    subFormQuiz.style.display = (type === 'trivia') ? 'block' : 'none';
+    subFormCode.style.display = (type === 'code') ? 'block' : 'none';
+  }
+
+  mFormType.addEventListener('change', toggleSubForms);
+
+  btnCloseModal.addEventListener('click', () => modalOverlay.classList.remove('active'));
+  btnCancelModal.addEventListener('click', () => modalOverlay.classList.remove('active'));
+
+  document.getElementById('btnAddNewMission').addEventListener('click', () => openMissionModal(null));
+
+  missionEditForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const id = document.getElementById('mFormId').value.trim();
+    const name = document.getElementById('mFormName').value.trim();
+    const category = document.getElementById('mFormCategory').value;
+    const zone = document.getElementById('mFormZone').value.trim();
+    const points = parseInt(document.getElementById('mFormPoints').value) || 20;
+    const icon = document.getElementById('mFormIcon').value.trim() || '📍';
+    const x = parseFloat(document.getElementById('mFormCoordX').value) || 50;
+    const y = parseFloat(document.getElementById('mFormCoordY').value) || 50;
+    const type = document.getElementById('mFormType').value;
+
+    const mission = {
+      id,
+      name,
+      category,
+      zone,
+      points,
+      icon,
+      type,
+      coords: { x, y },
+      title: name,
+      desc: `Kunjungi ${name} dan selesaikan tantangannya!`
+    };
+
+    if (type === 'trivia') {
+      const q = document.getElementById('mFormQuestion').value.trim();
+      const options = [
+        document.getElementById('mFormOpt0').value.trim() || 'Opsi A',
+        document.getElementById('mFormOpt1').value.trim() || 'Opsi B',
+        document.getElementById('mFormOpt2').value.trim() || 'Opsi C',
+        document.getElementById('mFormOpt3').value.trim() || 'Opsi D'
+      ];
+      const answerIndex = parseInt(document.getElementById('mFormAnswerIndex').value) || 0;
+      mission.task = {
+        type: 'quiz',
+        question: q || 'Apa keunggulan produk booth ini?',
+        options,
+        answerIndex
+      };
+    } else if (type === 'code') {
+      const secretCode = (document.getElementById('mFormSecretCode').value || '').trim().toUpperCase();
+      mission.secretCode = secretCode || ('JLJ-' + id.toUpperCase());
+      mission.task = {
+        type: 'code',
+        prompt: `Masukkan kode rahasia dari penjaga ${name}:`
+      };
+    } else {
+      mission.task = {
+        type: type,
+        prompt: `Konfirmasi kehadiranmu di ${name}:`
+      };
+    }
+
+    try {
+      const res = await fetch('/api/admin/missions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Admin-Key': ADMIN_PIN
+        },
+        body: JSON.stringify({ mission })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        modalOverlay.classList.remove('active');
+        playBeep(1046, 0.15);
+        alert(`Sukses! Misi "${mission.name}" berhasil disimpan.`);
+        loadMissionsData();
+        fetchAdminStats();
+      } else {
+        alert(data.error || 'Gagal menyimpan misi');
+      }
+    } catch(err) {
+      alert('Error: ' + err.message);
+    }
+  });
+
+  async function deleteMission(id, name) {
+    if (!confirm(`Yakin ingin menghapus tantangan "${name}" (${id})?`)) return;
+    try {
+      const res = await fetch(`/api/admin/missions?id=${encodeURIComponent(id)}`, {
+        method: 'DELETE',
+        headers: { 'X-Admin-Key': ADMIN_PIN }
+      });
+      const data = await res.json();
+      if (res.ok) {
+        playBeep(440, 0.1);
+        alert(data.message || 'Misi berhasil dihapus');
+        loadMissionsData();
+        fetchAdminStats();
+      } else {
+        alert(data.error || 'Gagal menghapus misi');
+      }
+    } catch(err) {
+      alert('Error: ' + err.message);
+    }
+  }
+
+  document.getElementById('btnResetMissions').addEventListener('click', async () => {
+    if (!confirm('PERINGATAN: Apakah Anda yakin ingin mengembalikan seluruh susunan tantangan ke default resmi 29 lokasi denah Expo PMW?')) return;
+    try {
+      const res = await fetch('/api/admin/missions/reset', {
+        method: 'POST',
+        headers: { 'X-Admin-Key': ADMIN_PIN }
+      });
+      const data = await res.json();
+      if (res.ok) {
+        alert(data.message || 'Seluruh tantangan berhasil di-reset!');
+        loadMissionsData();
+        fetchAdminStats();
+      }
+    } catch(err) {
+      alert('Error: ' + err.message);
+    }
+  });
+
+  // EXPORT CSV
+  document.getElementById('btnExportCSV').addEventListener('click', () => {
+    let csvContent = 'data:text/csv;charset=utf-8,Waktu Klaim,Waktu Diserahkan,Nama Pengunjung,Identitas NIM/WA,Nama Hadiah,Kode Tiket,Biaya Poin,Status\n';
+    cachedTickets.forEach(c => {
+      csvContent += `"${c.createdAt || ''}","${c.disbursedAt || ''}","${c.userName}","${c.userIdentifier || '-'}","${c.rewardName}","${c.token}","${c.cost}","${c.status}"\n`;
+    });
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', 'Laporan_Penukaran_JELAJAH_Expo.csv');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  });
+
+  // INITIALIZE
+  fetchAdminStats();
+  loadMissionsData();
+  setInterval(fetchAdminStats, 3500);
+</script>
+</body>
+</html>

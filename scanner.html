@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#0A8754">
+  <title>Scanner Panitia — JELAJAH Expo PMW</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/jelajah.css">
+  <style>
+    body {
+      background: #0E2519;
+      color: #FFF;
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .scanner-mobile-app {
+      max-width: 480px;
+      margin: 0 auto;
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    /* TOP BAR */
+    .scanner-topbar {
+      background: linear-gradient(135deg, #055C38 0%, #0A8754 100%);
+      padding: 14px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 3px solid #FFC72C;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+    }
+
+    .scanner-topbar h1 {
+      font-family: 'Fredoka';
+      font-size: 18px;
+      color: #FFF;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .scanner-brand-badge {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: #FFC72C;
+      color: #0E2519;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      font-weight: 700;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+      flex: none;
+    }
+
+    .btn-top-admin {
+      background: rgba(255,255,255,0.15);
+      color: #FFC72C;
+      font-family: 'Fredoka';
+      font-size: 12px;
+      padding: 7px 14px;
+      border-radius: 8px;
+      text-decoration: none;
+      border: 1px solid #FFC72C;
+      font-weight: 600;
+    }
+
+    /* CAMERA VIEWPORT CONTAINER */
+    .camera-frame-container {
+      flex: 1;
+      position: relative;
+      background: #000;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 340px;
+    }
+
+    #reader {
+      width: 100% !important;
+      height: 100% !important;
+      border: none !important;
+    }
+
+    #reader video {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover !important;
+    }
+
+    .camera-fallback-card {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      text-align: center;
+      background: radial-gradient(circle at center, #123322 0%, #081a11 100%);
+      z-index: 5;
+    }
+
+    /* SCANNER RETICLE OVERLAY */
+    .scanner-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+
+    .scanner-box {
+      width: 240px;
+      height: 240px;
+      border: 3px solid #FFC72C;
+      border-radius: 20px;
+      position: relative;
+      box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.55);
+    }
+
+    .scanner-box::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: #FF453A;
+      box-shadow: 0 0 10px #FF453A;
+      animation: scanAnim 2s infinite ease-in-out alternate;
+    }
+
+    @keyframes scanAnim {
+      0% { top: 5%; }
+      100% { top: 95%; }
+    }
+
+    /* BOTTOM CONTROLS & MANUAL FALLBACK */
+    .scanner-bottom-panel {
+      background: #112B1D;
+      border-top-left-radius: 24px;
+      border-top-right-radius: 24px;
+      padding: 22px 18px 26px;
+      box-shadow: 0 -6px 24px rgba(0,0,0,0.5);
+      z-index: 20;
+      border-top: 2px solid rgba(255, 199, 44, 0.3);
+    }
+
+    .btn-camera-trigger {
+      width: 100%;
+      background: linear-gradient(135deg, #FFC72C 0%, #FFA000 100%);
+      color: #0E2519;
+      font-family: 'Fredoka';
+      font-weight: 700;
+      font-size: 16px;
+      padding: 15px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 4px 0 #C9821F;
+      margin-bottom: 14px;
+      transition: transform 0.1s ease;
+    }
+
+    .btn-camera-trigger:active {
+      transform: scale(0.98);
+    }
+
+    .manual-input-box {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .manual-input-box input {
+      flex: 1;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1.5px solid rgba(255,255,255,0.25);
+      background: rgba(255,255,255,0.12);
+      color: #FFF;
+      font-family: 'Fredoka', monospace;
+      font-size: 16px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      outline: none;
+    }
+
+    .manual-input-box input:focus {
+      border-color: #FFC72C;
+      background: rgba(255,255,255,0.18);
+    }
+
+    .manual-input-box button {
+      background: #0A8754;
+      color: #FFF;
+      font-family: 'Fredoka';
+      font-weight: 700;
+      font-size: 14px;
+      padding: 0 18px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    /* SPINNER OVERLAY */
+    .scan-processing-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(14, 37, 25, 0.85);
+      backdrop-filter: blur(6px);
+      z-index: 150;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 24px;
+    }
+
+    .spinner-ring {
+      width: 50px;
+      height: 50px;
+      border: 4px solid rgba(255, 199, 44, 0.3);
+      border-top-color: #FFC72C;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* RESULT MODAL */
+    .result-sheet {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%) translateY(100%);
+      width: 100%;
+      max-width: 480px;
+      background: #FFF;
+      color: #12261B;
+      border-top-left-radius: 28px;
+      border-top-right-radius: 28px;
+      padding: 24px 20px 34px;
+      box-shadow: 0 -12px 40px rgba(0,0,0,0.5);
+      z-index: 200;
+      transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .result-sheet.active {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .sheet-handle {
+      width: 44px;
+      height: 4.5px;
+      background: #D8D2C5;
+      border-radius: 999px;
+      margin: -10px auto 16px;
+    }
+
+    .btn-disburse-big {
+      width: 100%;
+      background: #0A8754;
+      color: #FFF;
+      font-family: 'Fredoka';
+      font-weight: 700;
+      font-size: 17px;
+      padding: 16px;
+      border-radius: 14px;
+      box-shadow: 0 4px 0 #055C38;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .btn-disburse-big:disabled {
+      background: #B0BEC5;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+
+    .btn-close-sheet {
+      width: 100%;
+      background: #ECEFF1;
+      color: #455A64;
+      font-family: 'Fredoka';
+      font-weight: 600;
+      font-size: 14px;
+      padding: 12px;
+      border-radius: 10px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="scanner-mobile-app">
+  <!-- TOPBAR -->
+  <header class="scanner-topbar">
+    <h1>
+      <div class="scanner-brand-badge">📷</div>
+      <span>SCANNER HP PANITIA</span>
+    </h1>
+    <a href="admin.html" class="btn-top-admin">💻 Laptop Admin</a>
+  </header>
+
+  <!-- CAMERA VIEWPORT -->
+  <div class="camera-frame-container" id="cameraViewport">
+    <div id="reader"></div>
+    <div class="camera-fallback-card" id="cameraPromptFallback" style="display:none;">
+      <div style="font-size:46px; margin-bottom:10px;">📸</div>
+      <h3 style="font-family:'Fredoka'; font-size:19px; color:#FFC72C;">Kamera HP Siap Digunakan</h3>
+      <p style="font-size:13px; color:rgba(255,255,255,0.8); margin-top:6px; max-width:280px; line-height:1.5;">
+        Tekan tombol kuning di bawah untuk membuka kamera belakang HP dan jepret QR tiket pengunjung!
+      </p>
+    </div>
+    <div class="scanner-overlay" id="scannerReticle">
+      <div class="scanner-box"></div>
+    </div>
+  </div>
+
+  <!-- BOTTOM CONTROLS -->
+  <div class="scanner-bottom-panel">
+    <!-- NATIVE CAMERA SNAPSHOT PICKER -->
+    <input type="file" id="fileQrInput" accept="image/*" capture="environment" style="display:none;">
+    <button class="btn-camera-trigger" id="btnSnapPhoto">
+      <span>📸</span> Buka Kamera HP &amp; Jepret QR
+    </button>
+
+    <div style="text-align:center; font-size:12px; color:rgba(255,255,255,0.7); margin-bottom:8px;">
+      Atau ketik 4 - 8 digit kode tiket di bawah:
+    </div>
+
+    <!-- MANUAL CODE INPUT -->
+    <div class="manual-input-box">
+      <input type="text" id="manualCode" placeholder="Contoh: JLJ-7MA7" maxlength="12" />
+      <button id="btnVerifyCode">Periksa</button>
+    </div>
+  </div>
+
+  <!-- PROCESSING OVERLAY -->
+  <div class="scan-processing-overlay" id="scanProcessingOverlay" style="display:none;">
+    <div class="spinner-ring"></div>
+    <div id="scanProcessingText" style="font-family:'Fredoka'; font-size:17px; margin-top:16px; color:#FFC72C;">Memproses Foto Kamera...</div>
+    <div style="font-size:12.5px; color:rgba(255,255,255,0.75); margin-top:4px;">Menganalisis QR Code pengunjung</div>
+  </div>
+
+  <!-- RESULT VALIDATION SHEET -->
+  <div class="result-sheet" id="resultSheet">
+    <div class="sheet-handle"></div>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+      <span style="font-size:11px; font-weight:700; color:#8C5913; text-transform:uppercase;">TIKET TERDETEKSI:</span>
+      <span id="ticketBadge" style="font-family:'Fredoka'; font-size:12px; padding:3px 10px; border-radius:999px; background:#E8F5E9; color:#2E7D32; font-weight:700;">
+        SIAP DISERAHKAN ✓
+      </span>
+    </div>
+    
+    <h2 id="sheetRewardName" style="font-family:'Fredoka'; font-size:22px; color:#0A8754; line-height:1.2;">
+      Nama Hadiah
+    </h2>
+
+    <div style="background:#FAF7F0; border:1px solid #E4DDD0; border-radius:12px; padding:12px 14px; margin:14px 0; font-size:13.5px; line-height:1.6;">
+      <div><strong>Pengunjung:</strong> <span id="sheetUserName">-</span></div>
+      <div><strong>Kode Tiket:</strong> <span id="sheetToken" style="font-family:'Fredoka', monospace; font-weight:700; color:#0A8754; letter-spacing:1px;">-</span></div>
+      <div><strong>Biaya:</strong> <span id="sheetCost">-</span> pts</div>
+      <div><strong>Waktu Klaim:</strong> <span id="sheetTime">-</span></div>
+    </div>
+
+    <button class="btn-disburse-big" id="btnDisburseSubmit">
+      <span>✅</span> Serahkan Hadiah Fisik
+    </button>
+    <button class="btn-close-sheet" id="btnCloseSheet">Tutup</button>
+  </div>
+
+</div>
+
+<!-- SCRIPTS: jsQR & HTML5 QRCODE -->
+<script src="js/jsqr.min.js"></script>
+<script src="js/html5-qrcode.min.js"></script>
+<script>
+  let html5QrCode = null;
+  let activeTicket = null;
+  const ADMIN_PIN = 'jelajah1945';
+
+  function feedbackSuccess() {
+    if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+    try {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      const ctx = new AudioCtx();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.frequency.setValueAtTime(880, ctx.currentTime);
+      gain.gain.setValueAtTime(0.15, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.15);
+    } catch(e) {}
+  }
+
+  const overlay = document.getElementById('scanProcessingOverlay');
+  const overlayText = document.getElementById('scanProcessingText');
+
+  function showProcessing(text) {
+    if (overlayText) overlayText.textContent = text || 'Memproses Foto Kamera...';
+    if (overlay) overlay.style.display = 'flex';
+  }
+
+  function hideProcessing() {
+    if (overlay) overlay.style.display = 'none';
+  }
+
+  // START LIVE REAR CAMERA SCANNER IF ALLOWED
+  async function startLiveScanner() {
+    const fallback = document.getElementById('cameraPromptFallback');
+    try {
+      html5QrCode = new Html5Qrcode("reader");
+      await html5QrCode.start(
+        { facingMode: "environment" },
+        { fps: 12, qrbox: { width: 220, height: 220 } },
+        (decodedText) => {
+          handleScannedCode(decodedText);
+        },
+        (errorMessage) => {}
+      );
+      if (fallback) fallback.style.display = 'none';
+    } catch (err) {
+      console.log('Live camera stream not supported or blocked (HTTP), enabling snapshot mode:', err);
+      if (fallback) fallback.style.display = 'flex';
+      const reticle = document.getElementById('scannerReticle');
+      if (reticle) reticle.style.display = 'none';
+    }
+  }
+
+  // NATIVE CAMERA SNAPSHOT WITH AUTOMATIC DOWNSCALING & JSQR DECODING
+  const fileInput = document.getElementById('fileQrInput');
+  const btnSnap = document.getElementById('btnSnapPhoto');
+
+  btnSnap.addEventListener('click', () => {
+    fileInput.click();
+  });
+
+  fileInput.addEventListener('change', (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+
+    showProcessing('Memproses foto kamera...');
+
+    const reader = new FileReader();
+    reader.onerror = () => {
+      hideProcessing();
+      alert('Gagal membaca file foto.');
+    };
+    reader.onload = () => {
+      const img = new Image();
+      img.onerror = () => {
+        hideProcessing();
+        alert('Gagal memproses gambar foto kamera.');
+      };
+      img.onload = () => {
+        // Downscale image to max 900px so mobile browsers don't crash and QR edges are sharp
+        const maxDim = 900;
+        let w = img.width;
+        let h = img.height;
+        if (w > maxDim || h > maxDim) {
+          if (w > h) {
+            h = Math.round((h * maxDim) / w);
+            w = maxDim;
+          } else {
+            w = Math.round((w * maxDim) / h);
+            h = maxDim;
+          }
+        }
+
+        const canvas = document.createElement('canvas');
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext('2d', { willReadFrequently: true });
+        ctx.drawImage(img, 0, 0, w, h);
+
+        let decoded = null;
+
+        // 1. Primary engine: jsQR
+        if (window.jsQR) {
+          try {
+            const imgData = ctx.getImageData(0, 0, w, h);
+            const code = window.jsQR(imgData.data, imgData.width, imgData.height, {
+              inversionAttempts: "dontInvert"
+            }) || window.jsQR(imgData.data, imgData.width, imgData.height, {
+              inversionAttempts: "attemptBoth"
+            });
+            if (code && code.data) {
+              decoded = code.data;
+            }
+          } catch(err) {
+            console.warn('jsQR scan error:', err);
+          }
+        }
+
+        if (decoded) {
+          hideProcessing();
+          handleScannedCode(decoded);
+          return;
+        }
+
+        // 2. Secondary fallback: Html5Qrcode
+        if (window.Html5Qrcode && document.getElementById('reader')) {
+          showProcessing('Mencoba analisis sekunder...');
+          canvas.toBlob(async (blob) => {
+            try {
+              if (!html5QrCode) html5QrCode = new Html5Qrcode("reader");
+              const res = await html5QrCode.scanFile(blob, false);
+              hideProcessing();
+              if (res) return handleScannedCode(res);
+            } catch(e) {}
+            hideProcessing();
+            alert('⚠️ QR Code tidak terdeteksi pada foto.\n\nTips:\n• Pastikan kamera terfokus dan layar HP pengunjung terang.\n• Atau ketik kode tiket di kolom bawah.');
+          }, 'image/jpeg', 0.9);
+        } else {
+          hideProcessing();
+          alert('⚠️ QR Code tidak terdeteksi pada foto.\n\nTips:\n• Pastikan kamera terfokus dan tidak silau.\n• Atau ketik kode tiket langsung di kolom bawah.');
+        }
+      };
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+    fileInput.value = '';
+  });
+
+  // MANUAL CODE INPUT
+  document.getElementById('btnVerifyCode').addEventListener('click', () => {
+    let code = document.getElementById('manualCode').value.trim();
+    if (!code) {
+      alert('Masukkan kode tiket terlebih dahulu!');
+      return;
+    }
+    handleScannedCode(code);
+  });
+
+  document.getElementById('manualCode').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') document.getElementById('btnVerifyCode').click();
+  });
+
+  // PROCESS CODE AGAINST BACKEND SERVER
+  async function handleScannedCode(rawCode) {
+    feedbackSuccess();
+    let token = rawCode.trim().toUpperCase();
+    if (token.includes('=')) {
+      token = token.split('=').pop();
+    }
+    // Auto prefix if user types just the suffix e.g. "7MA7"
+    if (!token.startsWith('JLJ-') && token.length <= 8) {
+      token = 'JLJ-' + token;
+    }
+
+    try {
+      const res = await fetch(`/api/ticket?token=${encodeURIComponent(token)}`);
+      const data = await res.json();
+      if (!res.ok || !data.ticket) {
+        alert(data.error || `Tiket "${token}" tidak ditemukan di database server!`);
+        return;
+      }
+      showResultSheet(data.ticket);
+    } catch(e) {
+      alert('Gagal menghubungi server: ' + e.message);
+    }
+  }
+
+  function showResultSheet(ticket) {
+    activeTicket = ticket;
+    const sheet = document.getElementById('resultSheet');
+    const badge = document.getElementById('ticketBadge');
+    const btn = document.getElementById('btnDisburseSubmit');
+
+    document.getElementById('sheetRewardName').textContent = ticket.rewardName;
+    document.getElementById('sheetUserName').textContent = ticket.userName;
+    document.getElementById('sheetToken').textContent = ticket.token;
+    document.getElementById('sheetCost').textContent = ticket.cost;
+    document.getElementById('sheetTime').textContent = ticket.createdAt || '-';
+
+    if (ticket.status === 'DISBURSED') {
+      badge.textContent = 'SUDAH DIAMBIL (HANGUS)';
+      badge.style.background = '#FFEBEE';
+      badge.style.color = '#C62828';
+      btn.disabled = true;
+      btn.textContent = `⚠️ Sudah Diserahkan (${ticket.disbursedAt || 'Tadi'})`;
+    } else {
+      badge.textContent = 'SIAP DISERAHKAN ✓';
+      badge.style.background = '#E8F5E9';
+      badge.style.color = '#2E7D32';
+      btn.disabled = false;
+      btn.textContent = '✅ Serahkan Hadiah Fisik';
+    }
+
+    sheet.classList.add('active');
+  }
+
+  // SUBMIT DISBURSE ACTION (WITH ADMIN AUTH PIN)
+  document.getElementById('btnDisburseSubmit').addEventListener('click', async () => {
+    if (!activeTicket) return;
+
+    try {
+      const res = await fetch('/api/admin/verify', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Admin-Key': ADMIN_PIN
+        },
+        body: JSON.stringify({ token: activeTicket.token })
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        alert(data.error || 'Gagal memverifikasi tiket');
+        return;
+      }
+
+      feedbackSuccess();
+      alert(`🎉 Sukses! Hadiah "${data.ticket.rewardName}" telah diverifikasi dan diserahkan kepada ${data.ticket.userName}. Tiket sekarang resmi hangus!`);
+      showResultSheet(data.ticket);
+    } catch (e) {
+      alert('Gagal menghubungi server: ' + e.message);
+    }
+  });
+
+  document.getElementById('btnCloseSheet').addEventListener('click', () => {
+    document.getElementById('resultSheet').classList.remove('active');
+  });
+
+  startLiveScanner();
+</script>
+</body>
+</html>

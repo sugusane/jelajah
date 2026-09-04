@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cetak QR Code Booth — Panitia JELAJAH Expo PMW</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #F4F3EE;
+      color: #17241E;
+      padding: 24px;
+    }
+
+    .no-print {
+      max-width: 900px;
+      margin: 0 auto 24px;
+      background: #FFFFFF;
+      border: 2px solid #153726;
+      border-radius: 16px;
+      padding: 20px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+    }
+
+    .no-print h1 {
+      font-family: 'Fredoka';
+      font-size: 22px;
+      color: #153726;
+    }
+
+    .no-print p {
+      font-size: 13px;
+      color: #57655E;
+      margin-top: 4px;
+    }
+
+    .btn-print {
+      background: #F0A93E;
+      color: #0E2519;
+      font-family: 'Fredoka';
+      font-size: 16px;
+      font-weight: 700;
+      padding: 12px 24px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 3px 0 #C9821F;
+    }
+
+    .btn-print:hover {
+      filter: brightness(1.05);
+    }
+
+    /* PRINT GRID (A4 Friendly: 4 Cards per Page) */
+    .print-grid {
+      max-width: 900px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .booth-card {
+      background: #FFFFFF;
+      border: 2.5px solid #153726;
+      border-radius: 18px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      page-break-inside: avoid;
+    }
+
+    .card-top-tag {
+      font-family: 'Fredoka';
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #F0A93E;
+      background: #153726;
+      padding: 3px 12px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+    }
+
+    .card-booth-label {
+      font-family: 'Fredoka';
+      font-size: 20px;
+      color: #153726;
+      margin-bottom: 4px;
+    }
+
+    .card-booth-sub {
+      font-size: 12px;
+      color: #57655E;
+      margin-bottom: 12px;
+    }
+
+    .qr-container {
+      width: 160px;
+      height: 160px;
+      border: 2px solid #153726;
+      border-radius: 12px;
+      padding: 8px;
+      background: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+
+    .code-badge-box {
+      background: #FBEFD9;
+      border: 1.5px dashed #C9821F;
+      border-radius: 8px;
+      padding: 6px 14px;
+      margin-bottom: 10px;
+      width: 100%;
+    }
+
+    .code-badge-box span {
+      font-size: 11px;
+      color: #634710;
+      font-weight: 600;
+      display: block;
+    }
+
+    .code-badge-box strong {
+      font-family: 'Fredoka', monospace;
+      font-size: 18px;
+      color: #153726;
+      letter-spacing: 2px;
+    }
+
+    .card-instructions {
+      font-size: 11px;
+      color: #57655E;
+      line-height: 1.4;
+    }
+
+    .card-footer-url {
+      margin-top: 10px;
+      font-family: 'Fredoka';
+      font-size: 12px;
+      color: #2B8C82;
+      font-weight: 700;
+    }
+
+    @media print {
+      body { background: #FFF; padding: 0; }
+      .no-print { display: none; }
+      .print-grid { gap: 14px; }
+      .booth-card { border-width: 2px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ADMIN TOOLBAR (HIDDEN WHEN PRINTING) -->
+  <div class="no-print">
+    <div>
+      <h1>Lembar Cetak QR Code &amp; Kode Booth JELAJAH</h1>
+      <p>Tempelkan kartu ini di meja/banner masing-masing booth makanan 1-12 dan sponsor A-M.</p>
+    </div>
+    <button class="btn-print" onclick="window.print()">🖨️ Cetak Semua Kartu (A4)</button>
+  </div>
+
+  <!-- PRINTABLE CARDS CONTAINER -->
+  <div class="print-grid" id="cardsGrid">
+    <!-- Populated by JS -->
+  </div>
+
+  <script src="js/map-data.js"></script>
+  <script src="js/qrcode.min.js"></script>
+  <script>
+    const grid = document.getElementById('cardsGrid');
+    const locations = window.JELAJAH_DATA.locations;
+
+    locations.forEach((loc, idx) => {
+      const card = document.createElement('div');
+      card.className = 'booth-card';
+      const targetUrl = `https://jelajah.tech/?mission=${loc.id}`;
+      const codeDisplay = loc.secretCode || ('JLJ-' + loc.id.toUpperCase().replace('BOOTH-', '').replace('SPOT-', ''));
+      const qrId = `qr-booth-${idx}`;
+
+      card.innerHTML = `
+        <div class="card-top-tag">PILOT EXPO PMW 2026</div>
+        <div class="card-booth-label">${loc.name}</div>
+        <div class="card-booth-sub">${loc.zone} · <strong>+${loc.points} Poin</strong></div>
+        <div class="qr-container" id="${qrId}" style="display:flex; align-items:center; justify-content:center;"></div>
+        <div class="code-badge-box">
+          <span>KODE RAHASIA JELAJAH:</span>
+          <strong>${codeDisplay}</strong>
+        </div>
+        <div class="card-instructions">
+          Scan QR atau masukkan kode rahasia di atas untuk klaim poin &amp; tukar hadiah voucher!
+        </div>
+        <div class="card-footer-url">🌐 Buka: jelajah.tech</div>
+      `;
+
+      grid.appendChild(card);
+
+      const qrContainer = document.getElementById(qrId);
+      if (qrContainer && window.QRCode) {
+        new window.QRCode(qrContainer, {
+          text: targetUrl,
+          width: 136,
+          height: 136,
+          colorDark: '#0A8754',
+          colorLight: '#ffffff',
+          correctLevel: window.QRCode.CorrectLevel.M
+        });
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#153726" />
+  <title>JELAJAH — Gamifikasi Expo & Peta Interaktif (jelajah.tech)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/jelajah.css" />
+</head>
+<body>
+
+<div class="app-container">
+  <!-- TOP NAVBAR -->
+  <header class="top-nav">
+    <div class="brand-wrapper">
+      <div class="brand-mascot-badge" id="brandMascotBadge" title="JELAJAH — Gamifikasi Expo & Peta Interaktif" style="cursor:pointer;">
+        🧭
+      </div>
+      <div class="brand-title-wrap">
+        <div class="brand-title">JELAJAH <span style="font-size:11px; background:var(--yupi-gold); color:var(--ink-main); padding:2px 7px; border-radius:999px; font-weight:700;">PMW 2026</span></div>
+        <div class="brand-badge">jelajah.tech · Expo PMW UPNVJT</div>
+      </div>
+    </div>
+    <div class="nav-actions">
+      <div class="points-pill" id="navPointsPill">
+        ⭐ <span id="navPoints">0</span> pts
+      </div>
+      <button class="user-avatar-btn" id="userProfileBtn" title="Ganti Nama">
+        👤
+      </button>
+    </div>
+  </header>
+
+  <!-- EVENT BANNER -->
+  <div class="event-header">
+    <div class="event-meta">
+      <span class="event-tag">LIVE EXPO INTERAKTIF</span>
+      <span class="event-tag" style="background:rgba(255,255,255,0.18); border:1px solid rgba(255,255,255,0.3); color:#FFF; display:inline-flex; align-items:center; gap:6px;">
+        <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#25D366; box-shadow:0 0 8px #25D366;"></span>
+        <strong id="liveVisitorsCount">1</strong> Penjelajah Aktif
+      </span>
+      <button class="sound-toggle" id="soundToggle">🔊 Suara On</button>
+    </div>
+    <h1>Jelajahi Expo PMW</h1>
+    <p>Selesaikan tantangan di booth makanan &amp; sponsor, kumpulkan poin, lalu tukar hadiah voucher &amp; merchandise eksklusif!</p>
+    
+    <!-- PROGRESS TRACKER -->
+    <div class="progress-card">
+      <div class="progress-header">
+        <span>Progres Penjelajahanmu</span>
+        <span id="progressPct" style="color:var(--gold);">0%</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="quick-stats">
+        <span id="completedCount">0/19 Selesai</span>
+        <span id="quickUserName">Halo, Penjelajah PMW!</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT VIEWS -->
+  <main class="main-content-view">
+    
+    <!-- TAB 1: PETA MISI -->
+    <div class="tab-view active" id="tab-map">
+      <!-- RUTE KILAT PROTOTYPE CALLOUT -->
+      <div class="quick-route-banner">
+        <div class="quick-route-icon">⚡</div>
+        <div class="quick-route-content">
+          <h4>RUTE KILAT PROTOTYPE <span class="quick-route-badge">CUKUP 3-4 BOOTH</span></h4>
+          <p>Kamu <strong>tidak perlu</strong> datangi semua booth! Cukup kunjungi <strong>Gate Masuk 1</strong>, <strong>Booth 1 (Kopi)</strong>, <strong>Booth C (Paragon)</strong>, dan <strong>Stage</strong> untuk langsung kumpulkan 85 poin dan tukar voucher / merchandise!</p>
+        </div>
+      </div>
+
+      <!-- FILTER BAR -->
+      <div class="map-filter-bar">
+        <button class="filter-pill active" data-filter="all">
+          <span>Semua Titik</span>
+          <span class="filter-count">19</span>
+        </button>
+        <button class="filter-pill" data-filter="makanan">
+          <span>🍔 Kuliner (1-12)</span>
+          <span class="filter-count">12</span>
+        </button>
+        <button class="filter-pill" data-filter="sponsor">
+          <span>🏢 Sponsor (A-M)</span>
+          <span class="filter-count">13</span>
+        </button>
+        <button class="filter-pill" data-filter="special">
+          <span>📍 Spot Khusus</span>
+          <span class="filter-count">4</span>
+        </button>
+      </div>
+
+      <!-- DESKTOP DUAL-PANE CONTAINER -->
+      <div class="desktop-layout-row">
+        <!-- MAP SECTION (Left on Desktop) -->
+        <section class="map-section">
+          <div class="map-wrapper">
+            <!-- MAP TOOLBAR (KONTROL DENAH) -->
+            <div class="map-toolbar">
+              <button class="map-tool-btn" id="btnZoomIn" title="Perbesar Peta (+)">➕</button>
+              <button class="map-tool-btn" id="btnZoomOut" title="Perkecil Peta (-)">➖</button>
+              <button class="map-tool-btn" id="btnResetZoom" title="Reset Tampilan Peta">⟲</button>
+              <button class="map-tool-btn" id="btnToggleFullscreen" title="Layar Penuh (Fullscreen)">⛶</button>
+            </div>
+
+            <div class="map-legend-btn">
+              <span>🗺️ Denah Expo Resmi</span>
+            </div>
+
+            <!-- MAP VIEWPORT (ZOOMABLE & PAN DRAGGABLE) -->
+            <div class="map-viewport" id="mapViewport">
+              <!-- CANVAS CONTAINER UNTUK SMOOTH TRANSFORM SCALE & TRANSLATE -->
+              <div class="map-canvas-layer" id="mapCanvasLayer">
+                <svg class="map-svg" viewBox="0 0 500 660" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                <!-- Background Floor -->
+                <rect x="0" y="0" width="500" height="660" fill="#F8F6F0" />
+                
+                <!-- Title Bar Denah -->
+                <text x="250" y="22" fill="#57655E" font-family="Inter, sans-serif" font-size="10.5" font-weight="500" text-anchor="middle">
+                  Estimasi area ±11,8 m x ±87 m (skema, tidak skalatis)
+                </text>
+
+                <!-- 1. STAGE UTAMA (Sisi Kiri) -->
+                <g id="svgStageUtama">
+                  <rect x="25" y="45" width="56" height="440" rx="8" ry="8" fill="#ECE7DE" stroke="#D3CDC2" stroke-width="1.5" />
+                  <text x="53" y="260" fill="#2E3832" font-family="Fredoka, sans-serif" font-size="14" font-weight="700" text-anchor="middle">
+                    Stage
+                  </text>
+                  <text x="53" y="278" fill="#57655E" font-family="Inter, sans-serif" font-size="10" text-anchor="middle">
+                    utama
+                  </text>
+                </g>
+
+                <!-- Garis penghubung stage & jalur steril -->
+                <line x1="81" y1="265" x2="92" y2="265" stroke="#2B6CB0" stroke-width="2" />
+
+                <!-- 2. JALUR STERIL (Khusus Panitia) -->
+                <g id="svgJalurSteril">
+                  <rect x="92" y="45" width="46" height="440" rx="6" ry="6" fill="#F0F6FC" stroke="#3182CE" stroke-width="1.2" stroke-dasharray="4 3" />
+                  <text x="115" y="260" fill="#2B6CB0" font-family="Inter, sans-serif" font-size="11.5" font-weight="700" text-anchor="middle">
+                    Jalur
+                  </text>
+                  <text x="115" y="276" fill="#2B6CB0" font-family="Inter, sans-serif" font-size="11.5" font-weight="700" text-anchor="middle">
+                    Steril
+                  </text>
+                  <!-- Dotted line to Akses Staf -->
+                  <line x1="115" y1="485" x2="115" y2="520" stroke="#2B6CB0" stroke-width="2" stroke-dasharray="3 3" />
+                  <text x="115" y="534" fill="#2B6CB0" font-family="Inter, sans-serif" font-size="10" font-weight="600" text-anchor="middle">
+                    Akses staf
+                  </text>
+                </g>
+
+                <!-- 3. BOOTH MAKANAN 1 - 6 (Kolom Tengah Kiri) -->
+                <!-- Blok Atas: Booth 1, 2, 3 -->
+                <g id="svgBoothMakan1to3">
+                  <rect x="150" y="45" width="58" height="180" rx="8" ry="8" fill="#FCEEE6" stroke="#E6BEB0" stroke-width="1.5" />
+                  <!-- Pembagi 1-2-3 -->
+                  <line x1="150" y1="105" x2="208" y2="105" stroke="#E6BEB0" stroke-width="1.2" />
+                  <line x1="150" y1="165" x2="208" y2="165" stroke="#E6BEB0" stroke-width="1.2" />
+                  
+                  <text x="179" y="80" fill="#8C442A" font-family="Inter, sans-serif" font-size="14" font-weight="600" text-anchor="middle">1</text>
+                  <text x="179" y="140" fill="#8C442A" font-family="Inter, sans-serif" font-size="14" font-weight="600" text-anchor="middle">2</text>
+                  <text x="179" y="200" fill="#8C442A" font-family="Inter, sans-serif" font-size="14" font-weight="600" text-anchor="middle">3</text>
+                </g>
+
+                <!-- Blok Bawah: Booth 4, 5, 6 -->
+                <g id="svgBoothMakan4to6">
+                  <rect x="150" y="245" width="58" height="240" rx="8" ry="8" fill="#FCEEE6" stroke="#E6BEB0" stroke-width="1.5" />
+                  <!-- Pembagi 4-5-6 -->
+                  <line x1="150" y1="325" x2="208" y2="325" stroke="#E6BEB0" stroke-width="1.2" />
+                  <line x1="150" y1="405" x2="208" y2="405" stroke="#E6BEB0" stroke-width="1.2" />
+
+                  <text x="179" y="290" fill="#8C442A" font-family="Inter, sans-serif" font-size="14" font-weight="600" text-anchor="middle">4</text>
+                  <text x="179" y="370" fill="#8C442A" font-family="Inter, sans-serif" font-size="14" font-weight="600" text-anchor="middle">5</text>
+                  <text x="179" y="450" fill="#8C442A" font-family="Inter, sans-serif" font-size="14" font-weight="600" text-anchor="middle">6</text>
+                </g>
+
+                <!-- 4. JALUR PENGUNJUNG 1 (Antara Booth 1-6 dan 7-12) -->
+                <g id="svgJalurPengunjung1">
+                  <rect x="218" y="45" width="62" height="440" fill="none" stroke="#D1CDC2" stroke-width="1.2" stroke-dasharray="4 3" />
+                  <text x="249" y="260" fill="#4B5650" font-family="Inter, sans-serif" font-size="11.5" font-weight="700" text-anchor="middle">
+                    Jalur
+                  </text>
+                  <text x="249" y="276" fill="#4B5650" font-family="Inter, sans-serif" font-size="10" text-anchor="middle">
+                    Pengunjung
+                  </text>
+                  <!-- Panah & Teks MASUK -->
+                  <line x1="249" y1="485" x2="249" y2="520" stroke="#9B2C2C" stroke-width="3" />
+                  <text x="249" y="534" fill="#17241E" font-family="Fredoka, sans-serif" font-size="12" font-weight="700" text-anchor="middle">
+                    MASUK
+                  </text>
+                </g>
+
+                <!-- 5. BOOTH MAKANAN 7 - 12 (Kolom Tengah Kanan) -->
+                <!-- Blok Atas: Booth 7, 8, 9 -->
+                <g id="svgBoothMakan7to9">
+                  <rect x="290" y="45" width="58" height="180" rx="8" ry="8" fill="#FCEEE6" stroke="#E6BEB0" stroke-width="1.5" />
+                  <!-- Pembagi 7-8-9 -->
+                  <line x1="290" y1="105" x2="348" y2="105" stroke="#E6BEB0" stroke-width="1.2" />
+                  <line x1="290" y1="165" x2="348" y2="165" stroke="#E6BEB0" stroke-width="1.2" />
+
+                  <text x="319" y="80" fill="#8C442A" font-family="Inter, sans-serif" font-size="14" font-weight="600" text-anchor="middle">7</text>
+                  <text x="319" y="140" fill="#8C442A" font-family="Inter, sans-serif" font-size="14" font-weight="600" text-anchor="middle">8</text>
+                  <text x="319" y="200" fill="#8C442A" font-family="Inter, sans-serif" font-size="14" font-weight="600" text-anchor="middle">9</text>
+                </g>
+
+                <!-- Blok Bawah: Booth 10, 11, 12 -->
+                <g id="svgBoothMakan10to12">
+                  <rect x="290" y="245" width="58" height="240" rx="8" ry="8" fill="#FCEEE6" stroke="#E6BEB0" stroke-width="1.5" />
+                  <!-- Pembagi 10-11-12 -->
+                  <line x1="290" y1="325" x2="348" y2="325" stroke="#E6BEB0" stroke-width="1.2" />
+                  <line x1="290" y1="405" x2="348" y2="405" stroke="#E6BEB0" stroke-width="1.2" />
+
+                  <text x="319" y="290" fill="#8C442A" font-family="Inter, sans-serif" font-size="14" font-weight="600" text-anchor="middle">10</text>
+                  <text x="319" y="370" fill="#8C442A" font-family="Inter, sans-serif" font-size="14" font-weight="600" text-anchor="middle">11</text>
+                  <text x="319" y="450" fill="#8C442A" font-family="Inter, sans-serif" font-size="14" font-weight="600" text-anchor="middle">12</text>
+                </g>
+
+                <!-- 6. JALUR PENGUNJUNG 2 (Antara Booth 7-12 dan Sponsor) -->
+                <g id="svgJalurPengunjung2">
+                  <rect x="358" y="45" width="62" height="440" fill="none" stroke="#D1CDC2" stroke-width="1.2" stroke-dasharray="4 3" />
+                  <text x="389" y="260" fill="#4B5650" font-family="Inter, sans-serif" font-size="11.5" font-weight="700" text-anchor="middle">
+                    Jalur
+                  </text>
+                  <text x="389" y="276" fill="#4B5650" font-family="Inter, sans-serif" font-size="10" text-anchor="middle">
+                    Pengunjung
+                  </text>
+                  <!-- Panah & Teks MASUK -->
+                  <line x1="389" y1="485" x2="389" y2="520" stroke="#9B2C2C" stroke-width="3" />
+                  <text x="389" y="534" fill="#17241E" font-family="Fredoka, sans-serif" font-size="12" font-weight="700" text-anchor="middle">
+                    MASUK
+                  </text>
+                </g>
+
+                <!-- 7. BOOTH SPONSOR A - M (Deretan Kanan Vertikal) -->
+                <g id="svgBoothSponsor">
+                  <rect x="430" y="45" width="45" height="440" rx="6" ry="6" fill="#EBF7EE" stroke="#A7D7B5" stroke-width="1.5" />
+                  <!-- 13 Kotak A sampai M (tinggi ~33.8px per booth) -->
+                  <!-- Pembagi antar booth sponsor -->
+                  <line x1="430" y1="78.8" x2="475" y2="78.8" stroke="#A7D7B5" stroke-width="1" />
+                  <line x1="430" y1="112.6" x2="475" y2="112.6" stroke="#A7D7B5" stroke-width="1" />
+                  <line x1="430" y1="146.4" x2="475" y2="146.4" stroke="#A7D7B5" stroke-width="1" />
+                  <line x1="430" y1="180.2" x2="475" y2="180.2" stroke="#A7D7B5" stroke-width="1" />
+                  <line x1="430" y1="214.0" x2="475" y2="214.0" stroke="#A7D7B5" stroke-width="1" />
+                  <line x1="430" y1="247.8" x2="475" y2="247.8" stroke="#A7D7B5" stroke-width="1" />
+                  <line x1="430" y1="281.6" x2="475" y2="281.6" stroke="#A7D7B5" stroke-width="1" />
+                  <line x1="430" y1="315.4" x2="475" y2="315.4" stroke="#A7D7B5" stroke-width="1" />
+                  <line x1="430" y1="349.2" x2="475" y2="349.2" stroke="#A7D7B5" stroke-width="1" />
+                  <line x1="430" y1="383.0" x2="475" y2="383.0" stroke="#A7D7B5" stroke-width="1" />
+                  <line x1="430" y1="416.8" x2="475" y2="416.8" stroke="#A7D7B5" stroke-width="1" />
+                  <line x1="430" y1="450.6" x2="475" y2="450.6" stroke="#A7D7B5" stroke-width="1" />
+
+                  <!-- Label Huruf A-M -->
+                  <text x="452.5" y="67" fill="#22663E" font-family="Inter, sans-serif" font-size="11" font-weight="600" text-anchor="middle">A</text>
+                  <text x="452.5" y="101" fill="#22663E" font-family="Inter, sans-serif" font-size="11" font-weight="600" text-anchor="middle">B</text>
+                  <text x="452.5" y="135" fill="#22663E" font-family="Inter, sans-serif" font-size="11" font-weight="600" text-anchor="middle">C</text>
+                  <text x="452.5" y="169" fill="#22663E" font-family="Inter, sans-serif" font-size="11" font-weight="600" text-anchor="middle">D</text>
+                  <text x="452.5" y="203" fill="#22663E" font-family="Inter, sans-serif" font-size="11" font-weight="600" text-anchor="middle">E</text>
+                  <text x="452.5" y="236" fill="#22663E" font-family="Inter, sans-serif" font-size="11" font-weight="600" text-anchor="middle">F</text>
+                  <text x="452.5" y="270" fill="#22663E" font-family="Inter, sans-serif" font-size="11" font-weight="600" text-anchor="middle">G</text>
+                  <text x="452.5" y="304" fill="#22663E" font-family="Inter, sans-serif" font-size="11" font-weight="600" text-anchor="middle">H</text>
+                  <text x="452.5" y="338" fill="#22663E" font-family="Inter, sans-serif" font-size="11" font-weight="600" text-anchor="middle">I</text>
+                  <text x="452.5" y="372" fill="#22663E" font-family="Inter, sans-serif" font-size="11" font-weight="600" text-anchor="middle">J</text>
+                  <text x="452.5" y="405" fill="#22663E" font-family="Inter, sans-serif" font-size="11" font-weight="600" text-anchor="middle">K</text>
+                  <text x="452.5" y="439" fill="#22663E" font-family="Inter, sans-serif" font-size="11" font-weight="600" text-anchor="middle">L</text>
+                  <text x="452.5" y="473" fill="#22663E" font-family="Inter, sans-serif" font-size="11" font-weight="600" text-anchor="middle">M</text>
+                </g>
+
+                <!-- 8. LEGENDA DENAH (Sesuai Gambar Asli) -->
+                <g id="svgLegenda" transform="translate(40, 565)">
+                  <!-- Item 1: Booth makan -->
+                  <rect x="0" y="0" width="14" height="14" rx="3" ry="3" fill="#FCEEE6" stroke="#E6BEB0" stroke-width="1.2" />
+                  <text x="22" y="11" fill="#4B5650" font-family="Inter, sans-serif" font-size="10.5">Booth makan, bernomor 1-12</text>
+
+                  <!-- Item 2: Booth sponsor -->
+                  <rect x="0" y="20" width="14" height="14" rx="3" ry="3" fill="#EBF7EE" stroke="#A7D7B5" stroke-width="1.2" />
+                  <text x="22" y="31" fill="#4B5650" font-family="Inter, sans-serif" font-size="10.5">Booth sponsor, berlabel A-M</text>
+
+                  <!-- Item 3: Jalur steril -->
+                  <rect x="0" y="40" width="14" height="14" rx="3" ry="3" fill="#F0F6FC" stroke="#3182CE" stroke-width="1.2" stroke-dasharray="3 2" />
+                  <text x="22" y="51" fill="#4B5650" font-family="Inter, sans-serif" font-size="10.5">Jalur steril (khusus panitia)</text>
+
+                  <!-- Item 4: Jalur pengunjung -->
+                  <rect x="0" y="60" width="14" height="14" rx="3" ry="3" fill="none" stroke="#A09E96" stroke-width="1.2" stroke-dasharray="3 2" />
+                  <text x="22" y="71" fill="#4B5650" font-family="Inter, sans-serif" font-size="10.5">Jalur pengunjung (publik)</text>
+                </g>
+              </svg>
+
+              <!-- DYNAMIC INTERACTIVE PINS LAYER OVERLAY -->
+              <div class="map-pins-layer" id="mapPinsLayer"></div>
+            </div>
+
+            <!-- ZOOM LEVEL STATUS PILL -->
+            <div class="map-zoom-badge" id="mapZoomBadge">🔍 100% · Geser &amp; Cubit/Scroll Zoom</div>
+          </div>
+          </div>
+        </section>
+
+        <!-- SIDE PANEL (Right on Desktop) -->
+        <div class="desktop-side-panel">
+          <!-- QUICK HELPER CARD -->
+          <div class="quick-mission-card" style="margin:0;">
+            <div class="quick-mission-info">
+              <h4>Tap Pin Emas di Peta</h4>
+              <p>Kunjungi booth, jawab trivia atau minta kode rahasia untuk klaim poin!</p>
+            </div>
+            <button class="btn-open-mission" onclick="document.querySelector('.map-pin.todo')?.click();">
+              Cari Misi
+            </button>
+          </div>
+
+          <!-- DESKTOP REWARDS QUICK PREVIEW -->
+          <div style="background:var(--paper-card); border:1.5px solid var(--line); border-radius:14px; padding:16px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+              <h4 style="font-family:'Fredoka'; font-size:15px; color:var(--forest);">🎁 Hadiah Terpopuler</h4>
+              <button onclick="document.querySelector('[data-tab=\'rewards\']').click()" style="font-size:12px; color:var(--teal); font-weight:700;">Lihat Semua &rarr;</button>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:8px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 12px; background:#FAF7F0; border-radius:8px; font-size:12.5px;">
+                <span>🎟️ Voucher Diskon Rp 3.000 Kuliner</span>
+                <strong style="color:var(--gold-deep); font-family:'Fredoka';">50 pts</strong>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 12px; background:#FAF7F0; border-radius:8px; font-size:12.5px;">
+                <span>🔑 Gantungan Kunci JELAJAH</span>
+                <strong style="color:var(--gold-deep); font-family:'Fredoka';">75 pts</strong>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 12px; background:#FAF7F0; border-radius:8px; font-size:12.5px;">
+                <span>🏷️ Voucher Diskon Rp 5.000 Kuliner</span>
+                <strong style="color:var(--gold-deep); font-family:'Fredoka';">90 pts</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- EXPO VISITOR TIPS CARD -->
+          <div style="background:#EAF7F0; border:1.5px solid #BFE4CE; border-radius:14px; padding:14px; display:flex; align-items:center; gap:12px;">
+            <div style="font-size:26px; flex:none;">💡</div>
+            <div>
+              <h5 style="font-family:'Fredoka'; font-size:13.5px; color:var(--forest);">Tips Penjelajah Expo</h5>
+              <p style="font-size:11.5px; color:#4E6855; line-height:1.4;">Cukup kunjungi 3-4 booth rute kilat untuk langsung menukarkan voucher di Meja Hadiah!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BOOTH EXPLORATION CARDS GRID (RPG QUEST STYLE) -->
+      <section class="booth-cards-section">
+        <div class="booth-section-header">
+          <div class="booth-section-title-wrap">
+            <span class="booth-badge-pill">🎯 DAFTAR MISI EKSPLORASI</span>
+            <h3 class="booth-section-heading">Kunjungi Booth &amp; Dapatkan Poin</h3>
+            <p class="booth-section-sub">Tap kartu booth untuk menjawab kuis atau masukkan kode rahasia dari tenant!</p>
+          </div>
+        </div>
+        <div class="booth-cards-grid" id="boothCardsGrid">
+          <!-- Dynamic booth cards rendered by app.js -->
+        </div>
+      </section>
+    </div>
+
+    <!-- TAB 2: KATALOG HADIAH & VOUCHER -->
+    <div class="tab-view" id="tab-rewards">
+      <div class="rewards-container">
+        <div class="rewards-hero-card">
+          <div class="rewards-hero-icon">🎁</div>
+          <div class="rewards-hero-text">
+            <h3>Tukar Poin Jadi Hadiah Nyata!</h3>
+            <p>Voucher diskon makanan didanai sponsor, stiker hologram &amp; ganci eksklusif siap diambil di booth info.</p>
+          </div>
+        </div>
+        <div class="reward-cards-grid" id="rewardCardsGrid"></div>
+      </div>
+    </div>
+
+    <!-- TAB 3: PAPAN SKOR LEADERBOARD -->
+    <div class="tab-view" id="tab-leaderboard">
+      <div class="leaderboard-view">
+        <div class="podium-container">
+          <div class="podium-title">🏆 Top Penjelajah Expo</div>
+          <div class="podium-ranks">
+            <!-- Rank 2 -->
+            <div class="podium-item second">
+              <div class="podium-avatar">🥈</div>
+              <div class="podium-name" id="podium2Name">Nadia S.</div>
+              <div class="podium-pts" id="podium2Pts">240 pts</div>
+              <div class="podium-pillar">2</div>
+            </div>
+            <!-- Rank 1 -->
+            <div class="podium-item first">
+              <div class="podium-avatar">
+                <span class="podium-crown">👑</span>
+                🥇
+              </div>
+              <div class="podium-name" id="podium1Name">Fathur R.</div>
+              <div class="podium-pts" id="podium1Pts">265 pts</div>
+              <div class="podium-pillar">1</div>
+            </div>
+            <!-- Rank 3 -->
+            <div class="podium-item third">
+              <div class="podium-avatar">🥉</div>
+              <div class="podium-name" id="podium3Name">Dimas A.</div>
+              <div class="podium-pts" id="podium3Pts">215 pts</div>
+              <div class="podium-pillar">3</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="leaderboard-list" id="leaderboardList"></div>
+      </div>
+    </div>
+
+    <!-- TAB 4: PANDUAN CARA BERMAIN -->
+    <div class="tab-view" id="tab-guide">
+      <div style="padding:16px;">
+        <div style="background:var(--bg-card); border:1.5px solid var(--border-line); border-radius:18px; padding:20px; box-shadow:var(--shadow-sm);">
+          
+          <!-- JELAJAH GUIDE CARD -->
+          <div style="display:flex; align-items:center; gap:14px; background:linear-gradient(135deg, var(--yupi-green-light) 0%, #FFF8E6 100%); border:2px solid var(--yupi-gold); border-radius:14px; padding:14px 16px; margin-bottom:16px;">
+            <div style="width:54px; height:54px; border-radius:14px; background:var(--yupi-gold); border:2px solid #FFF; flex:none; box-shadow:0 3px 8px rgba(0,0,0,0.15); display:flex; align-items:center; justify-content:center; font-size:28px;">
+              🧭
+            </div>
+            <div>
+              <div style="font-family:'Fredoka'; font-size:16px; color:var(--yupi-green-deep); font-weight:700;">
+                Selamat Datang di JELAJAH! 🧭
+              </div>
+              <p style="font-size:12px; color:var(--ink-muted); margin-top:2px; line-height:1.4;">
+                Platform gamifikasi interaktif penjelajahan expo berbasis peta denah real-time, kuis seru booth, dan penukaran reward instan!
+              </p>
+            </div>
+          </div>
+
+          <h3 style="font-family:'Fredoka'; font-size:18px; color:var(--yupi-green); margin-bottom:12px;">
+            Cara Bermain JELAJAH di Expo
+          </h3>
+          <ol style="padding-left:20px; font-size:13.5px; color:var(--ink-main); line-height:1.7;">
+            <li><strong>Pilih Titik Kunjungan:</strong> Cari nomor booth makanan (1-12) atau booth sponsor (A-M) yang ingin kamu datangi.</li>
+            <li><strong>Selesaikan Tantangan:</strong>
+              <ul style="margin:4px 0 8px 16px; list-style:circle;">
+                <li>Kuis Trivia: Jawab pertanyaan seputar tenant / brand kampus.</li>
+                <li>Kode Rahasia: Minta kode rahasia ke penjaga booth saat berkunjung!</li>
+                <li>Foto Spot: Upload foto keseruan di depan panggung atau booth.</li>
+              </ul>
+            </li>
+            <li><strong>Kumpulkan Poin:</strong> Setiap misi memberimu 15 - 30 poin.</li>
+            <li><strong>Tukar Hadiah:</strong> Buka tab Hadiah, pilih voucher diskon makanan atau merchandise, lalu tunjukkan layar klaim ke Meja Panitia.</li>
+          </ol>
+
+          <!-- PROTOTYPE RULE CALLOUT -->
+          <div style="background:#FFF9E6; border:1.5px dashed var(--yupi-gold); border-radius:12px; padding:14px; margin-top:16px;">
+            <div style="font-family:'Fredoka'; font-size:14px; font-weight:700; color:var(--yupi-gold-deep); display:flex; align-items:center; gap:6px;">
+              <span>⚡</span> Aturan Khusus Prototype:
+            </div>
+            <p style="font-size:12.5px; color:#6B4B18; margin-top:4px; line-height:1.5;">
+              Pengunjung <strong>tidak perlu mendatangi seluruh 19 booth</strong>! Cukup selesaikan <strong>3 sampai 4 booth</strong> (misalnya Gate Masuk, 1 Booth Kuliner, 1 Sponsor Paragon, dan Panggung), kamu sudah mengantongi 85+ poin dan bisa langsung klaim voucher!
+            </p>
+          </div>
+
+          <div style="margin-top:20px; padding-top:16px; border-top:1px solid var(--border-line); text-align:center;">
+            <p style="font-size:12px; color:var(--ink-muted);">
+              Dikembangkan untuk Pilot PMW 2026 UPN "Veteran" Jawa Timur<br>
+              <strong>Domain Resmi:</strong> <a href="https://jelajah.tech" style="color:var(--yupi-green); font-weight:600;">jelajah.tech</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- BOTTOM NAVIGATION BAR -->
+  <nav class="bottom-nav">
+    <button class="nav-item active" data-tab="map">
+      <span class="nav-item-icon">🗺️</span>
+      <span>Peta Misi</span>
+    </button>
+    <button class="nav-item" data-tab="rewards">
+      <span class="nav-item-icon">🎁</span>
+      <span>Hadiah</span>
+    </button>
+    <button class="nav-item" data-tab="leaderboard">
+      <span class="nav-item-icon">🏆</span>
+      <span>Papan Skor</span>
+    </button>
+    <button class="nav-item" data-tab="guide">
+      <span class="nav-item-icon">ℹ️</span>
+      <span>Panduan</span>
+    </button>
+  </nav>
+
+  <!-- MODAL: MISSION DETAIL & CHALLENGE -->
+  <div class="modal-overlay" id="missionModal">
+    <div class="bottom-sheet">
+      <div class="sheet-drag-handle"></div>
+      <button class="sheet-close-btn">&times;</button>
+      <div class="modal-badge-row">
+        <span class="modal-tag" id="missionZone">Klaster Makanan</span>
+        <span class="modal-points-reward" id="missionPoints">+20 Poin</span>
+      </div>
+      <h3 id="missionTitle" style="font-family:'Fredoka'; font-size:20px; color:var(--forest); margin-bottom:4px;">
+        Booth Misi
+      </h3>
+      <p id="missionDesc" style="font-size:13px; color:var(--ink-muted); margin-bottom:12px;">
+        Deskripsi tantangan
+      </p>
+      <div class="mission-task-box" id="missionTaskBox"></div>
+    </div>
+  </div>
+
+  <!-- MODAL: CLAIM HADIAH / TIKET VOUCHER -->
+  <div class="modal-overlay" id="rewardModal">
+    <div class="bottom-sheet">
+      <div class="sheet-drag-handle"></div>
+      <button class="sheet-close-btn">&times;</button>
+      <h3 id="rewardModalTitle" style="font-family:'Fredoka'; font-size:19px; color:var(--forest); margin-bottom:6px;">
+        Klaim Hadiah
+      </h3>
+      <div id="rewardModalContent"></div>
+    </div>
+  </div>
+
+  <!-- MODAL: AUTENTIKASI PENGUNJUNG (DAFTAR / MASUK ANTI-NUYUL) -->
+  <div class="modal-overlay" id="authModal">
+    <div class="bottom-sheet">
+      <div class="sheet-drag-handle"></div>
+      <button class="sheet-close-btn">&times;</button>
+      <div style="text-align:center; margin-bottom:14px;">
+        <span style="font-size:28px;">🧭</span>
+        <h3 style="font-family:'Fredoka'; font-size:20px; color:var(--forest); margin:4px 0 2px 0;">Akun Penjelajah PMW</h3>
+        <p style="font-size:12px; color:var(--ink-muted); margin:0;">Daftar akun agar poin &amp; vouchermu tersimpan aman!</p>
+      </div>
+
+      <div style="display:flex; gap:8px; margin-bottom:14px; background:#EDEAE1; padding:4px; border-radius:10px;">
+        <button type="button" id="authTabBtnRegister" style="flex:1; padding:8px; border:none; border-radius:8px; font-family:'Fredoka'; font-size:13.5px; font-weight:700; background:var(--forest); color:#FFF; cursor:pointer;">
+          Daftar Baru
+        </button>
+        <button type="button" id="authTabBtnLogin" style="flex:1; padding:8px; border:none; border-radius:8px; font-family:'Fredoka'; font-size:13.5px; font-weight:700; background:transparent; color:var(--forest); cursor:pointer;">
+          Masuk Akun
+        </button>
+      </div>
+
+      <!-- FORM REGISTER -->
+      <form id="formRegister">
+        <div style="margin-bottom:10px;">
+          <label style="font-size:11.5px; font-weight:700; color:var(--forest); display:block; margin-bottom:4px;">NAMA LENGKAP:</label>
+          <input type="text" id="regName" class="code-input" style="text-transform:none; font-size:14px;" placeholder="Nama lengkapmu..." required />
+        </div>
+        <div style="margin-bottom:10px;">
+          <label style="font-size:11.5px; font-weight:700; color:var(--forest); display:block; margin-bottom:4px;">NIM / NO. WHATSAPP / EMAIL:</label>
+          <input type="text" id="regIdentifier" class="code-input" style="text-transform:none; font-size:14px;" placeholder="Contoh: 21081010001 / 081234..." required />
+          <small style="font-size:10.5px; color:var(--ink-muted); display:block; margin-top:2px;">Wajib valid untuk verifikasi pengambilan hadiah di meja panitia.</small>
+        </div>
+        <div style="margin-bottom:14px;">
+          <label style="font-size:11.5px; font-weight:700; color:var(--forest); display:block; margin-bottom:4px;">PASSWORD (MIN. 4 KARAKTER):</label>
+          <input type="password" id="regPassword" class="code-input" style="font-size:14px;" placeholder="••••" required minlength="4" />
+        </div>
+        <button type="submit" class="btn-submit-action" id="btnSubmitRegister">Daftar &amp; Simpan Akun</button>
+      </form>
+
+      <!-- FORM LOGIN -->
+      <form id="formLogin" style="display:none;">
+        <div style="margin-bottom:10px;">
+          <label style="font-size:11.5px; font-weight:700; color:var(--forest); display:block; margin-bottom:4px;">NIM / NO. WHATSAPP / EMAIL:</label>
+          <input type="text" id="loginIdentifier" class="code-input" style="text-transform:none; font-size:14px;" placeholder="Masukkan identitas terdaftar..." required />
+        </div>
+        <div style="margin-bottom:14px;">
+          <label style="font-size:11.5px; font-weight:700; color:var(--forest); display:block; margin-bottom:4px;">PASSWORD:</label>
+          <input type="password" id="loginPassword" class="code-input" style="font-size:14px;" placeholder="••••" required />
+        </div>
+        <button type="submit" class="btn-submit-action" id="btnSubmitLogin">Masuk ke Akun</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: PROFIL USER -->
+  <div class="modal-overlay" id="profileModal">
+    <div class="bottom-sheet">
+      <div class="sheet-drag-handle"></div>
+      <button class="sheet-close-btn">&times;</button>
+      <h3 style="font-family:'Fredoka'; font-size:20px; color:var(--forest); margin-bottom:4px;">
+        Profil Penjelajah
+      </h3>
+      <p style="font-size:12.5px; color:var(--ink-muted); margin-bottom:14px;">
+        Akun ini aktif di sesi penjelajahan Expo PMW.
+      </p>
+
+      <div id="profileLoggedInView">
+        <div style="background:#F6FAF7; border:1.5px solid #C8E6C9; border-radius:12px; padding:12px; margin-bottom:14px; font-size:13px;">
+          <div style="margin-bottom:6px;"><strong>Nama:</strong> <span id="profDisplayName">-</span></div>
+          <div style="margin-bottom:6px;"><strong>Identitas (NIM/WA):</strong> <span id="profDisplayIdent">-</span></div>
+          <div><strong>Status:</strong> <span style="color:#1B5E20; font-weight:700;">Terverifikasi Resmi ✓</span></div>
+        </div>
+        <div style="display:flex; gap:10px;">
+          <button type="button" class="btn-submit-action" id="btnSwitchAccount" style="background:#8C442A;">Keluar / Ganti Akun</button>
+        </div>
+      </div>
+
+      <div id="profileGuestView" style="display:none;">
+        <p style="font-size:12px; color:#A04000; margin-bottom:10px;">Kamu saat ini menjelajah sebagai Tamu. Daftarkan akunmu sekarang agar vouchermu tidak hilang!</p>
+        <button type="button" class="btn-submit-action" id="btnOpenAuthFromProf">Daftar / Masuk Akun</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL KHUSUS PANITIA / ADMIN (TERSEMBUNYI DARI USER BIASA) -->
+  <div class="modal-overlay" id="adminSecretModal">
+    <div class="bottom-sheet">
+      <div class="sheet-drag-handle"></div>
+      <button class="sheet-close-btn">&times;</button>
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+        <span style="font-size:26px;">🛡️</span>
+        <div>
+          <h3 style="font-family:'Fredoka'; font-size:19px; color:var(--forest); margin:0;">
+            Akses Khusus Panitia Expo
+          </h3>
+          <p style="font-size:12px; color:var(--ink-muted); margin:0;">
+            Hanya untuk staf &amp; validator resmi acara PMW.
+          </p>
+        </div>
+      </div>
+
+      <div id="adminPinSection">
+        <label style="font-size:12px; font-weight:700; color:var(--forest); display:block; margin-bottom:6px;">MASUKKAN PIN ADMIN:</label>
+        <input type="password" id="adminPinInput" class="code-input" placeholder="Ketik PIN Admin..." maxlength="20" />
+        <button class="btn-submit-action" id="btnVerifyAdminPin" style="margin-top:10px;">Buka Panel Panitia</button>
+      </div>
+
+      <div id="adminLinksSection" style="display:none; margin-top:10px;">
+        <div style="background:#EAF7F0; border:1px solid #BFE4CE; border-radius:12px; padding:12px; margin-bottom:14px; font-size:12.5px; color:#155724;">
+          ✅ Terverifikasi sebagai Panitia Expo PMW
+        </div>
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <a href="scanner.html?key=jelajah1945" target="_blank" style="background:#0A8754; color:#FFF; padding:12px 16px; border-radius:12px; text-decoration:none; font-family:'Fredoka'; font-size:14px; font-weight:600; display:flex; align-items:center; justify-content:space-between;">
+            <span>📱 Buka Scanner Kamera HP Panitia</span>
+            <span>&rarr;</span>
+          </a>
+          <a href="admin.html?key=jelajah1945" target="_blank" style="background:#153726; color:#FFF; padding:12px 16px; border-radius:12px; text-decoration:none; font-family:'Fredoka'; font-size:14px; font-weight:600; display:flex; align-items:center; justify-content:space-between;">
+            <span>💻 Buka Panel Admin Laptop &amp; Stok</span>
+            <span>&rarr;</span>
+          </a>
+          <a href="tv-leaderboard.html" target="_blank" style="background:#2B6CB0; color:#FFF; padding:12px 16px; border-radius:12px; text-decoration:none; font-family:'Fredoka'; font-size:14px; font-weight:600; display:flex; align-items:center; justify-content:space-between;">
+            <span>📺 Tampilan TV Big Screen &amp; Leaderboard</span>
+            <span>&rarr;</span>
+          </a>
+          <a href="admin-print-qr.html?key=jelajah1945" target="_blank" style="background:#4A5568; color:#FFF; padding:12px 16px; border-radius:12px; text-decoration:none; font-family:'Fredoka'; font-size:14px; font-weight:600; display:flex; align-items:center; justify-content:space-between;">
+            <span>🖨️ Cetak Lembar QR Meja Booth</span>
+            <span>&rarr;</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div class="toast-notice" id="toastNotice">
+    <span>✨</span>
+    <span id="toastText">Poin bertambah!</span>
+  </div>
+
+  <!-- CONFETTI CANVAS -->
+  <canvas id="confettiCanvas"></canvas>
+</div>
+
+<!-- SCRIPTS -->
+<script src="js/map-data.js"></script>
+<script src="js/qrcode.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
